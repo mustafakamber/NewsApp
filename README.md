@@ -1,1 +1,0 @@
-<h1 align="left">Diary Plus</h1>
