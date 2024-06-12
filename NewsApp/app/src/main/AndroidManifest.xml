@@ -40,4 +40,5 @@
             android:name="clientIdValue"
             android:value="${WEB_CLIENT_ID}" />
     </application>
+
 </manifest>

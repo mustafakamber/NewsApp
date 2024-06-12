@@ -52,7 +52,6 @@ android {
 dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.circleimageview)
 
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.work.runtime.ktx)
