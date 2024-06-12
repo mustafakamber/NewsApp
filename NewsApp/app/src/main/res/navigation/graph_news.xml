@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_confirmationFragment"
+            app:destination="@id/confirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -22,6 +25,12 @@
         <argument
             android:name="newsUUID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailFragment_self"
+            app:destination="@id/detailFragment" />
+        <argument
+            android:name="isFromReadList"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -41,4 +50,8 @@
             android:id="@+id/action_readListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/confirmationFragment"
+        android:name="com.mustk.newsapp.ui.news.view.ConfirmationFragment"
+        android:label="ConfirmationFragment" />
 </navigation>

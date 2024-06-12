@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.mustk.newsapp.databinding.FragmentLoginBinding
@@ -24,13 +24,8 @@ import javax.inject.Inject
 class LoginFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel : LoginViewModel by viewModels()
     @Inject lateinit var googleSignInClient: GoogleSignInClient
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModel()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,22 +37,17 @@ class LoginFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupViewModel()
         setupLoginScreen()
         observeLiveData()
     }
-
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-    }
-
+    
     private fun setupLoginScreen() = with(binding) {
         loginTitleText.slideDown()
         loginEmailEditText.addTextChangedListener {
-            viewModel.setVisibleEmailEndIcon()
+            viewModel.setEmailEndIcon(true)
         }
         loginPasswordEditText.addTextChangedListener {
-            viewModel.setVisiblePasswordEndIcon()
+            viewModel.setPasswordEndIcon(true)
         }
         loginButton.setOnClickListener {
             val emailAddress = loginEmailEditText.text.toString().trim()
@@ -102,26 +92,30 @@ class LoginFragment @Inject constructor() : Fragment() {
     }
 
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.emailErrorText) { emailError ->
-            loginEmailEditText.error = getString(emailError)
+        observe(viewModel.emailErrorText) { event ->
+            event.getContentIfNotHandled()?.let { emailError ->
+                loginEmailEditText.error = getString(emailError)
+            }
         }
-        observe(viewModel.emailEndIconVisible) { boolean ->
+        observe(viewModel.emailEndIconVisibility) { boolean ->
             loginEmailInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.passwordErrorText) { passwordError ->
-            loginPasswordEditText.error = getString(passwordError)
+        observe(viewModel.passwordErrorText) { event ->
+            event.getContentIfNotHandled()?.let { passwordError ->
+                loginPasswordEditText.error = getString(passwordError)
+            }
         }
-        observe(viewModel.passwordEndIconVisible) { boolean ->
+        observe(viewModel.passwordEndIconVisibility) { boolean ->
             loginPasswordInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.networkErrorMessage) { event ->
+        observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { toastMessage ->
                 Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
             }
         }
         observe(viewModel.navigateToHome) { event ->
-            event.getContentIfNotHandled()?.let { success ->
-                if (success) navigateToHomeScreen()
+            event.getContentIfNotHandled()?.let {
+               navigateToHomeScreen()
             }
         }
     }

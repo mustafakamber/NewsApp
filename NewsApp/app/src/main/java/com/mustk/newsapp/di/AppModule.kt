@@ -1,6 +1,9 @@
 package com.mustk.newsapp.di
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import androidx.room.Room
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -9,10 +12,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.service.NewsService
 import com.mustk.newsapp.domain.NewsRepository
+import com.mustk.newsapp.roomdb.NewsDao
+import com.mustk.newsapp.roomdb.NewsDatabase
 import com.mustk.newsapp.shared.Constant.APIKEY_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.API_KEY
 import com.mustk.newsapp.shared.Constant.BASE_URL
-import com.mustk.newsapp.shared.Constant.WEB_CLIENT_ID
+import com.mustk.newsapp.shared.Constant.SQLITE_DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,17 +34,41 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTokenInterceptor(): Interceptor {
+    fun provideApplicationInfo(@ApplicationContext context: Context): ApplicationInfo {
+        return context.packageManager.getApplicationInfo(
+            context.packageName,
+            PackageManager.GET_META_DATA
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideTokenInterceptor(applicationInfo: ApplicationInfo): Interceptor {
+        val apikey = applicationInfo.metaData["apikeyValue"].toString()
         return Interceptor { chain ->
             var original = chain.request()
             val url = original.url().newBuilder()
-                .addQueryParameter(APIKEY_QUERY_PARAM, API_KEY)
+                .addQueryParameter(APIKEY_QUERY_PARAM, apikey)
                 .build()
             original = original.newBuilder()
                 .url(url)
                 .build()
             chain.proceed(original)
         }
+    }
+
+    @Singleton
+    @Provides
+    fun provideGoogleSignInClient(
+        @ApplicationContext context: Context,
+        applicationInfo: ApplicationInfo
+    ): GoogleSignInClient {
+        val clientId = applicationInfo.metaData["clientIdValue"].toString()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(clientId)
+            .requestEmail()
+            .build()
+        return GoogleSignIn.getClient(context, gso)
     }
 
     @Singleton
@@ -63,18 +91,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNewsService(retrofit: Retrofit): NewsService {
-        return retrofit.create(NewsService::class.java)
-    }
-
-    @Provides
-    fun provideNewsDataSource(newsService : NewsService): NewsDataSource {
-        return NewsRepository(newsService)
-    }
-
-    /*
-    @Singleton
-    @Provides
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
@@ -84,16 +100,28 @@ object AppModule {
     fun provideFirebaseDatabase(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
-     */
 
     @Singleton
     @Provides
-    fun provideGoogleSignInClient(@ApplicationContext context: Context): GoogleSignInClient {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(WEB_CLIENT_ID)
-            .requestEmail()
-            .build()
-        return GoogleSignIn.getClient(context, gso)
+    fun provideNewsService(retrofit: Retrofit): NewsService {
+        return retrofit.create(NewsService::class.java)
     }
+
+    @Provides
+    fun provideNewsDataSource(newsService: NewsService, newsDao: NewsDao): NewsDataSource {
+        return NewsRepository(newsService, newsDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRoomDatabase(
+        @ApplicationContext context: Context
+    ) = Room.databaseBuilder(
+        context, NewsDatabase::class.java, SQLITE_DATABASE_NAME
+    ).build()
+
+    @Provides
+    @Singleton
+    fun provideDao(database: NewsDatabase) = database.newsDao()
 }
 

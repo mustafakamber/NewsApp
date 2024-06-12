@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.mustk.newsapp.databinding.FragmentSearchBinding
 import com.mustk.newsapp.ui.news.adapter.NewsAdapter
@@ -23,13 +21,8 @@ import javax.inject.Inject
 class SearchFragment  @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModel()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,42 +38,39 @@ class SearchFragment  @Inject constructor() : Fragment() {
         observeLiveData()
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
-    }
-
     private fun setupSearchScreen() = with(binding){
         newsAdapter.setOnNewsClickListener { uuid ->
             navigateDetailScreen(uuid)
         }
         searchRecyclerView.adapter = newsAdapter
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean = false
-            override fun onQueryTextChange(keyQuery: String): Boolean {
-                viewModel.onSearchTextChange(keyQuery)
-                return true
-            }
-        })
+        searchEditText.addTextChangedListener {
+            val query = it.toString()
+            viewModel.onSearchTextChange(query)
+        }
     }
 
     private fun navigateDetailScreen(newsUUID : String){
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(newsUUID)
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(newsUUID,false)
         findNavController().navigate(action)
     }
 
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.searchInitMessage) { boolean ->
-            searchMessage.isVisible = boolean
+        observe(viewModel.initMessage) { boolean ->
+            searchInitMessage.isVisible = boolean
         }
-        observe(viewModel.searchNewsList){ news ->
+        observe(viewModel.notFoundMessage) { boolean ->
+            searchNotFoundMessage.isVisible = boolean
+        }
+        observe(viewModel.recyclerView){ boolean ->
+            searchRecyclerView.isVisible = boolean
+        }
+        observe(viewModel.loading) { boolean ->
+            searchLoadingBar.isVisible = boolean
+        }
+        observe(viewModel.newsList){ news ->
             newsAdapter.submitList(news)
         }
-        observe(viewModel.searchLoading) { boolean ->
-            searchLoadingBar.isInvisible = !boolean
-            searchRecyclerView.isInvisible = boolean
-        }
-        observe(viewModel.networkErrorMessage) { event ->
+        observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { message ->
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }

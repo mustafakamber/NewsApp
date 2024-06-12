@@ -7,30 +7,35 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.databinding.RecyclerNewsRowBinding
+import com.mustk.newsapp.shared.Constant.SHORT_TITLE_MAX_SIZE
 import com.mustk.newsapp.util.downloadImageFromUrl
+import com.mustk.newsapp.util.truncateString
 import javax.inject.Inject
 
-class NewsAdapter @Inject constructor(): ListAdapter<News, NewsAdapter.NewsHolder>(MovieDiffCallback()) {
+class NewsAdapter @Inject constructor() :
+    ListAdapter<News, NewsAdapter.NewsHolder>(NewsDiffCallback()) {
 
     private var onNewsClickListener: ((String) -> Unit)? = null
 
     inner class NewsHolder(private val binding: RecyclerNewsRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(news: News) = with(binding) {
-            rowNewsPosterImageView.downloadImageFromUrl(news.imageUrl)
-            rowNewsTitleTextView.text = news.title
-            rowNewsSourceTextView.text = news.source
-            news.publishedTime?.let {
-                val newsDate = it.substring(0,10)
-                val newsTime = it.substring(11,16)
-                rowNewsDateTextView.text = newsDate
-                rowNewsTimeTextView.text = newsTime
+            news.imageUrl?.let {
+                rowNewsPosterImageView.downloadImageFromUrl(it)
+            }
+            news.title?.let {
+                rowNewsTitleTextView.text = it.truncateString(SHORT_TITLE_MAX_SIZE)
+            }
+            news.getShortSource()?.let {
+                rowNewsSourceTextView.text = it.source
+            }
+            news.getPublishedDateAndTime()?.let {
+                rowNewsDateTextView.text = it.date
+                rowNewsTimeTextView.text = it.time
             }
             rowNewsCardView.setOnClickListener {
-                news.uuid?.let { uuid ->
-                    onNewsClickListener?.let {
-                        it(uuid)
-                    }
+                onNewsClickListener?.let {
+                    it(news.uuid)
                 }
             }
         }
@@ -51,12 +56,12 @@ class NewsAdapter @Inject constructor(): ListAdapter<News, NewsAdapter.NewsHolde
     }
 }
 
-class MovieDiffCallback : DiffUtil.ItemCallback<News>() {
+class NewsDiffCallback : DiffUtil.ItemCallback<News>() {
     override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
-        return oldItem == newItem
+        return oldItem.uuid == newItem.uuid
     }
 
     override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
-        return oldItem == newItem
+        return oldItem.uuid == newItem.uuid
     }
 }

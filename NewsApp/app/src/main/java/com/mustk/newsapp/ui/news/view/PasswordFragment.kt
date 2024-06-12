@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mustk.newsapp.R
@@ -23,12 +23,7 @@ class PasswordFragment @Inject constructor() : BottomSheetDialogFragment() {
     override fun getTheme(): Int = R.style.BottomSheetDialogTheme
 
     private lateinit var binding: FragmentPasswordBinding
-    private lateinit var viewModel: PasswordViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModel()
-    }
+    private val viewModel: PasswordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +42,7 @@ class PasswordFragment @Inject constructor() : BottomSheetDialogFragment() {
 
     private fun setupPasswordScreen() = with(binding) {
         resetEmailEditText.addTextChangedListener {
-            viewModel.setVisibleEmailEndIcon()
+            viewModel.setEmailEndIcon(true)
         }
         resetSendButton.setOnClickListener {
             val emailAddress = resetEmailEditText.text.toString().trim()
@@ -58,29 +53,28 @@ class PasswordFragment @Inject constructor() : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[PasswordViewModel::class.java]
-    }
 
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.networkErrorMessage) { event ->
+        observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { toastMessage ->
                 Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
             }
         }
-        observe(viewModel.emailErrorText) { emailError ->
-            resetEmailEditText.error = getString(emailError)
+        observe(viewModel.emailErrorText) { event ->
+            event.getContentIfNotHandled()?.let { emailError ->
+                resetEmailEditText.error = getString(emailError)
+            }
         }
-        observe(viewModel.resetTitleText) { titleMessage ->
+        observe(viewModel.titleText) { titleMessage ->
             resetInfoText.text = getString(titleMessage)
         }
-        observe(viewModel.emailEndIconVisible) { boolean ->
+        observe(viewModel.emailEndIconVisibility) { boolean ->
             resetEmailInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.backButtonVisible) { boolean ->
+        observe(viewModel.backButtonVisibility) { boolean ->
             resetBackButton.isVisible = boolean
         }
-        observe(viewModel.sendButtonVisible) { boolean ->
+        observe(viewModel.sendButtonVisibility) { boolean ->
             resetSendButton.isVisible = boolean
         }
     }

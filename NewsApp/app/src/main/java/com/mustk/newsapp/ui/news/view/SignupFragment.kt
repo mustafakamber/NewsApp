@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.mustk.newsapp.databinding.FragmentSignupBinding
 import com.mustk.newsapp.ui.NewsActivity
@@ -22,12 +22,7 @@ import javax.inject.Inject
 class SignupFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
-    private lateinit var viewModel: SignupViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupViewModel()
-    }
+    private val viewModel: SignupViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,20 +38,16 @@ class SignupFragment @Inject constructor() : Fragment() {
         observeLiveData()
     }
 
-    private fun setupViewModel() {
-        viewModel = ViewModelProvider(this)[SignupViewModel::class.java]
-    }
-
     private fun setupSignupScreen() = with(binding) {
         signupTitleText.slideDown()
         signupEmailEditText.addTextChangedListener {
-            viewModel.setVisibleEmailEndIcon()
+            viewModel.setEmailEndIcon(true)
         }
         signupPasswordEditText.addTextChangedListener {
-            viewModel.setVisiblePasswordEndIcon()
+            viewModel.setPasswordEndIcon(true)
         }
         signupConfirmPasswordEditText.addTextChangedListener {
-            viewModel.setVisibleConfirmPasswordEndIcon()
+            viewModel.setConfirmPasswordEndIcon(true)
         }
         loginText.setOnClickListener {
             findNavController().popBackStack()
@@ -76,32 +67,38 @@ class SignupFragment @Inject constructor() : Fragment() {
     }
 
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.emailErrorText) { emailError ->
-            signupEmailEditText.error = getString(emailError)
+        observe(viewModel.emailErrorText) { event ->
+            event.getContentIfNotHandled()?.let { emailError ->
+                signupEmailEditText.error = getString(emailError)
+            }
         }
-        observe(viewModel.emailEndIconVisible) { boolean ->
+        observe(viewModel.emailEndIconVisibility) { boolean ->
             signupEmailInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.passwordErrorText) { passwordError ->
-            signupPasswordEditText.error = getString(passwordError)
+        observe(viewModel.passwordErrorText) { event ->
+            event.getContentIfNotHandled()?.let { passwordError ->
+                signupPasswordEditText.error = getString(passwordError)
+            }
         }
-        observe(viewModel.passwordEndIconVisible) { boolean ->
+        observe(viewModel.passwordEndIconVisibility) { boolean ->
             signupPasswordInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.confirmPasswordErrorText) { confirmPasswordError ->
-            signupConfirmPasswordEditText.error = getString(confirmPasswordError)
+        observe(viewModel.confirmPasswordErrorText) { event ->
+            event.getContentIfNotHandled()?.let { confirmPasswordError ->
+                signupConfirmPasswordEditText.error = getString(confirmPasswordError)
+            }
         }
-        observe(viewModel.confirmPasswordEndIconVisible) { boolean ->
+        observe(viewModel.confirmPasswordEndIconVisibility) { boolean ->
             signupConfirmPasswordInputLayout.isEndIconVisible = boolean
         }
-        observe(viewModel.networkErrorMessage) { event ->
+        observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { toastMessage ->
                 Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
             }
         }
         observe(viewModel.navigateToHome) { event ->
-            event.getContentIfNotHandled()?.let { success ->
-                if (success) navigateHomeScreen()
+            event.getContentIfNotHandled()?.let {
+                navigateHomeScreen()
             }
         }
     }

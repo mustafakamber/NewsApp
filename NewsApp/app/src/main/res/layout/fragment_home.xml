@@ -7,73 +7,93 @@
     android:layout_height="match_parent"
     tools:context=".ui.news.view.HomeFragment">
 
-    <ProgressBar
-        android:id="@+id/homeCategoryLoadingBar"
-        style="@style/loadingBarStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeTabLayout" />
-
     <TextView
-        android:id="@+id/headLineText"
-        style="@style/mediumBoldTextStyle"
+        android:id="@+id/headLineTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/mediumBoldPrimaryTextStyle"
         android:layout_marginStart="@dimen/small_spacing_size"
         android:layout_marginTop="@dimen/small_spacing_size"
         android:text="@string/home_headline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        android:text="@string/home_logout"
-        app:layout_constraintBottom_toBottomOf="@id/headLineText"
+    <ImageButton
+        android:id="@+id/signOutButton"
+        style="@style/smallButtonStyle"
+        android:layout_marginEnd="@dimen/extra_tiny_spacing_size"
+        android:src="@drawable/ic_logout"
+        app:layout_constraintBottom_toBottomOf="@id/headLineTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/headLineText" />
+        app:layout_constraintTop_toTopOf="@id/headLineTextView" />
 
-    <com.denzcoskun.imageslider.ImageSlider
-        android:id="@+id/headLineImageSlider"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/homeSwipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/headline_slider_height_size"
-        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_height="@dimen/match_constraint_size"
         android:layout_marginTop="@dimen/small_spacing_size"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        app:iss_auto_cycle="true"
-        app:iss_corner_radius="36"
-        app:iss_period="2000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headLineText" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/homeTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/tiny_spacing_size"
-        android:layout_marginTop="@dimen/tiny_spacing_size"
-        android:layout_marginEnd="@dimen/tiny_spacing_size"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headLineImageSlider"
-        app:tabMode="scrollable" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeRecyclerView"
-        style="@style/linearRecyclerViewStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeTabLayout" />
+        app:layout_constraintTop_toBottomOf="@id/headLineTextView">
 
-    <ProgressBar
-        android:id="@+id/homeHeadlineLoadingBar"
-        style="@style/loadingBarStyle"
-        app:layout_constraintBottom_toTopOf="@id/homeTabLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                android:id="@+id/homeCategoryLoadingBar"
+                style="@style/loadingBarStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeTabLayout"/>
+
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/headLineImageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/large_image_size"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/extra_tiny_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                app:iss_auto_cycle="true"
+                app:iss_corner_radius="36"
+                app:iss_period="2000"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/homeTabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/tiny_spacing_size"
+                android:layout_marginTop="@dimen/tiny_spacing_size"
+                android:layout_marginEnd="@dimen/extra_tiny_spacing_size"
+                android:backgroundTint="?android:attr/colorBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headLineImageSlider"
+                app:tabMode="scrollable" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeRecyclerView"
+                style="@style/linearRecyclerViewStyle"
+                android:layout_marginTop="@dimen/extra_tiny_spacing_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeTabLayout"/>
+
+            <ProgressBar
+                android:id="@+id/homeHeadlineLoadingBar"
+                style="@style/loadingBarStyle"
+                app:layout_constraintBottom_toTopOf="@id/homeTabLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

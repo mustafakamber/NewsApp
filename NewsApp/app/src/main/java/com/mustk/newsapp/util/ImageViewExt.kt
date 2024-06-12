@@ -10,7 +10,7 @@ import com.mustk.newsapp.R
 fun ImageView.downloadImageFromUrl(url: String?) {
     val options = RequestOptions()
         .placeholder(placeHolderProgressBar(this.context))
-        .error(R.drawable.ic_launcher_foreground)
+        .error(R.drawable.baseline_image_not_supported_24)
     Glide.with(this.context)
         .setDefaultRequestOptions(options)
         .load(url)

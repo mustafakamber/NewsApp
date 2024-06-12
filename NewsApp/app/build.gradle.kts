@@ -6,6 +6,8 @@ plugins {
     id("kotlin-android")
     id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
+    id("com.google.secrets_gradle_plugin") version "0.4"
 }
 
 android {
@@ -20,6 +22,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -48,12 +54,20 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.circleimageview)
 
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.work.runtime.ktx)
+    ksp(libs.androidx.room.compiler)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.adapter.rxjava2)
 
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.glide)
+
+    implementation (libs.android.recyclerview.swipedecorator)
 
     implementation(libs.kotlinx.coroutines.android)
 
@@ -62,25 +76,25 @@ dependencies {
     implementation(libs.androidx.activity)
     kapt(libs.hilt.android.compiler)
 
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.androidx.core.splashscreen)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx:25.0.0")
-    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
-    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.play.services.auth)
 
-    implementation("androidx.cardview:cardview:1.0.0")
+    implementation(libs.androidx.cardview)
 
-    implementation("com.github.denzcoskun:ImageSlideshow:0.1.0")
+    implementation(libs.imageslideshow)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.android.car.ui:car-ui-lib:2.6.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.car.ui.lib)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

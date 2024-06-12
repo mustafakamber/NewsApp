@@ -20,22 +20,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/gradient_recycler_background">
-
-            <ImageView
-                android:id="@+id/rowNewsPosterImageView"
-                style="@style/largeImageViewStyle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/sample_news_image" />
+        <ImageView
+            android:id="@+id/rowNewsPosterImageView"
+            style="@style/largeImageViewStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/sample_news_image" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:background="@drawable/gradient_recycler_background"
                 app:layout_constraintBottom_toBottomOf="@id/rowNewsPosterImageView"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -45,12 +41,12 @@
                     android:id="@+id/rowNewsTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/mediumBoldSecondaryTextStyle"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/small_text_size"
                     android:layout_marginStart="@dimen/little_spacing_size"
                     android:layout_marginTop="@dimen/tiny_spacing_size"
                     android:layout_marginEnd="@dimen/little_spacing_size"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/medium_text_size"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -58,6 +54,8 @@
 
                 <TextView
                     android:id="@+id/rowNewsSourceTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/tinyPrimaryTextStyle"
                     android:layout_marginTop="@dimen/tiny_spacing_size"
                     android:layout_marginBottom="@dimen/little_spacing_size"
@@ -80,6 +78,8 @@
 
                 <TextView
                     android:id="@+id/rowNewsDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     style="@style/tinyPrimaryTextStyle"
                     android:layout_marginStart="@dimen/tiny_spacing_size"
                     android:layout_marginTop="@dimen/tiny_spacing_size"
@@ -90,6 +90,8 @@
                 <TextView
                     android:id="@+id/rowNewsTimeTextView"
                     style="@style/tinyPrimaryTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tiny_spacing_size"
                     android:layout_marginTop="@dimen/tiny_spacing_size"
                     app:layout_constraintStart_toEndOf="@id/rowNewsDateTextView"
@@ -97,8 +99,6 @@
                     tools:text="@string/sample_time" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 

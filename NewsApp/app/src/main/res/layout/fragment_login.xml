@@ -38,6 +38,8 @@
     <TextView
         android:id="@+id/loginTitleText"
         style="@style/largeBoldPrimaryTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
         android:text="@string/login_title_text"
@@ -45,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.18" />
+        app:layout_constraintVertical_bias="0.115" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginEmailInputLayout"
@@ -70,7 +72,7 @@
         android:id="@+id/loginPasswordInputLayout"
         style="@style/textInputLayoutStyle"
         android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/little_spacing_size"
+        android:layout_marginTop="@dimen/tiny_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +90,8 @@
 
     <TextView
         android:id="@+id/forgotPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/smallNormalTextStyle"
         android:layout_marginTop="@dimen/extra_tiny_spacing_size"
         android:text="@string/login_forgot_password_text"
@@ -98,7 +102,7 @@
         android:id="@+id/loginButton"
         style="@style/largeButtonStyle"
         android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
         android:text="@string/login_text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,8 +111,10 @@
 
     <TextView
         android:id="@+id/orContinueWithText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/smallNormalTextStyle"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:text="@string/or_continue_with_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,9 +138,9 @@
 
     <ImageButton
         android:id="@+id/googleButton"
-        style="@style/smallCircularButtonStyle"
+        style="@style/smallCircularPrimaryButtonStyle"
         android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
         android:src="@drawable/ic_google"
         app:layout_constraintEnd_toEndOf="parent"
@@ -144,18 +150,25 @@
     <TextView
         android:id="@+id/dontHaveAccountText"
         style="@style/smallNormalTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
+        android:layout_marginBottom="@dimen/extra_small_spacing_size"
         android:text="@string/have_account_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/googleButton" />
+        app:layout_constraintTop_toBottomOf="@id/googleButton"
+        app:layout_constraintVertical_bias="0.25" />
 
     <TextView
         android:id="@+id/signupText"
         style="@style/smallBoldPrimaryTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tiny_spacing_size"
         android:text="@string/signup_text"
         app:layout_constraintBottom_toBottomOf="@id/dontHaveAccountText"
