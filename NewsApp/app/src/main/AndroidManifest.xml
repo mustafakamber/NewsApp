@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".NewsApplication"
         android:allowBackup="true"
@@ -39,5 +40,4 @@
             android:name="clientIdValue"
             android:value="${WEB_CLIENT_ID}" />
     </application>
-
 </manifest>
