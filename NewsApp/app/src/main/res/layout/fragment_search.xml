@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.news.view.SearchFragment">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchInputLayout"
+        style="@style/textInputLayoutStyle"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/large_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEditText"
+            style="@style/textInputEditTextStyle"
+            android:hint="@string/search_hint"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ProgressBar
+        android:id="@+id/searchLoadingBar"
+        style="@style/loadingBarStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInputLayout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecyclerView"
+        style="@style/linearRecyclerViewStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInputLayout" />
+
+    <LinearLayout
+        android:id="@+id/searchInitMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInputLayout">
+
+        <ImageView
+            android:id="@+id/searchImageView"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:src="@drawable/baseline_search_24"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/searchTextView"
+            style="@style/tinySecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing_size"
+            android:text="@string/search_message" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/searchNotFoundMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInputLayout">
+
+        <ImageView
+            android:id="@+id/searchNullImageView"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:src="@drawable/baseline_search_off_24"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/searchNullTextView"
+            style="@style/tinySecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing_size"
+            android:text="@string/search_not_found" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
