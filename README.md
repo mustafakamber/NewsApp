@@ -47,10 +47,10 @@
 
 | Login  | Signup | Detail |
 | ----- | ------------ | ------------ |
-|<img src="https://i.ibb.co/hHtnV74/Login-Fragment.png" width="325" height="470"/>|<img src="https://i.ibb.co/9vsC7nr/Signup-Fragment.png" width="325" height="470"/>|<img src="https://i.ibb.co/vVxtjwM/Detail-Fragment.png" width="325" height="470"/>
+|<img src="https://i.ibb.co/hHtnV74/Login-Fragment.png" width="540" height="1200"/>|<img src="https://i.ibb.co/9vsC7nr/Signup-Fragment.png" width="540" height="1200"/>|<img src="https://i.ibb.co/vVxtjwM/Detail-Fragment.png" width="540" height="1200"/>
 
 </br>
 
 | Home  | Search | Read List |
 | ----- | ------------ | ------------ |
-|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="325" height="470"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="325" height="470"/>|<img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="325" height="470"/>
+|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="540" height="1200"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="540" height="1200"/>|<img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="540" height="1200"/>
