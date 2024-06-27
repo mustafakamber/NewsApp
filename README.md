@@ -5,6 +5,8 @@
 
 <h2 align="left">Which technologies did I use?</h2>
 
+<h3 align="left">
+
 - UI Elements
     - XML
   
@@ -41,6 +43,8 @@
     - Navigation Component
     - LiveData
     - View Binding
+
+</h3>
 
 <h2 align="left">Some Images about App:</h2>
 
