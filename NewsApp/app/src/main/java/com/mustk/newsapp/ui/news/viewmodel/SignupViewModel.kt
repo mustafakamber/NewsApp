@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
-import com.mustk.newsapp.shared.Constant
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
 import com.mustk.newsapp.shared.Constant.PASSWORD_LIMIT
 import com.mustk.newsapp.shared.Constant.USERS_COLLECTION

@@ -8,7 +8,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
+import com.mustk.newsapp.shared.Constant.CATEGORIES_FIELD
+import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
+import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
 import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
+import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
+import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_FIELD
+import com.mustk.newsapp.shared.Constant.SNIPPET_FIELD
+import com.mustk.newsapp.shared.Constant.SOURCE_FIELD
+import com.mustk.newsapp.shared.Constant.TITLE_FIELD
 import com.mustk.newsapp.shared.Constant.USER_FIELD
 import com.mustk.newsapp.shared.Constant.UUID_FIELD
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,7 +52,7 @@ class ReadListViewModel @Inject constructor(
 
     fun refreshReadListData() {
         initState()
-        fetchNewsFromLocal()
+        fetchNewsListFromLocal()
     }
 
     private fun setReadListEmptyMessageVisibility(boolean: Boolean) {
@@ -85,7 +93,7 @@ class ReadListViewModel @Inject constructor(
 
     private fun setReadListNews(newsList: List<News>) {
         if (newsList.isEmpty()) {
-            resultNoDataState()
+            fetchNewsListFromCloud()
         } else {
             resultDataState()
             _readListNews.value = newsList
@@ -187,7 +195,64 @@ class ReadListViewModel @Inject constructor(
         }
     }
 
-    private fun fetchNewsFromLocal() {
+    private fun fetchNewsListFromCloud() {
+        val currentUser = auth.currentUser
+        val email = currentUser?.email
+        if (email != null) {
+            database.collection(NEWS_COLLECTION)
+                .whereEqualTo(USER_FIELD, email)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        val newsListFromCloud = ArrayList<News>()
+                        for (document in documents) {
+                            val newsData = document.data
+                            val newsUser = newsData[USER_FIELD] as String
+                            val newsUUID = newsData[UUID_FIELD] as String
+                            val newsTitle = newsData[TITLE_FIELD] as String
+                            val newsDescription = newsData[DESCRIPTION_FIELD] as String
+                            val newsImageUrl = newsData[IMAGE_URL_FIELD] as String
+                            val newsUrl = newsData[NEWS_URL_FIELD] as String
+                            val newsPublishedAt = newsData[PUBLISHED_AT_FIELD] as String
+                            val newsSource = newsData[SOURCE_FIELD] as String
+                            val newsCategories = newsData[CATEGORIES_FIELD] as List<String>
+                            val newsSnippet = newsData[SNIPPET_FIELD] as String
+                            val news = News(
+                                null,
+                                newsUUID,
+                                newsUser,
+                                newsTitle,
+                                newsDescription,
+                                newsImageUrl,
+                                newsUrl,
+                                newsPublishedAt,
+                                newsSource,
+                                newsCategories,
+                                newsSnippet
+                            )
+                            newsListFromCloud.add(news)
+                        }
+                        saveNewsListToLocal(newsListFromCloud)
+                    } else {
+                        resultNoDataState()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    exception.localizedMessage?.let {
+                        showToastMessage(it)
+                    }
+                }
+        }
+    }
+
+    private fun saveNewsListToLocal(newsList: List<News>) {
+        viewModelScope.launch {
+            repository.saveNewsListData(newsList)
+            fetchNewsListFromLocal()
+        }
+    }
+
+    private fun fetchNewsListFromLocal() {
         loadingState()
         val currentUser = auth.currentUser
         val email = currentUser?.email

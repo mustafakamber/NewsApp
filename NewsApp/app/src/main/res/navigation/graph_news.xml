@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_confirmationFragment"
-            app:destination="@id/confirmationFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -50,8 +47,4 @@
             android:id="@+id/action_readListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/confirmationFragment"
-        android:name="com.mustk.newsapp.ui.news.view.ConfirmationFragment"
-        android:label="ConfirmationFragment" />
 </navigation>

@@ -37,12 +37,14 @@ data class News(
     @SerializedName(CATEGORIES_FIELD) val category: List<String>?,
     @SerializedName(SNIPPET_FIELD) val snippet: String?,
 ){
+
     fun getShortSource() : ShortSource? {
         return source?.let {
             val formattedSource = it.truncateString(SHORT_SOURCE_MAX_SIZE)
             ShortSource(formattedSource)
         }
     }
+
     fun getPublishedDateAndTime(): PublishedDateTime? {
         return publishedAt?.let {
             val date: String = it.substring(PUBLISHED_AT_DATE_MIN, PUBLISHED_AT_DATE_MAX)
@@ -52,6 +54,7 @@ data class News(
             PublishedDateTime(formattedDate, time)
         }
     }
+
     fun getFormattedCategories(): FormattedCategories? {
         return category?.let {
             val formattedCategories: String = it.joinToString(CATEGORY_BRACKET) { categoryItem ->
@@ -60,6 +63,7 @@ data class News(
             FormattedCategories(formattedCategories)
         }
     }
+
     fun updateUserModel(news: News, user : String): News {
         news.user = user
         return news

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.databinding.RecyclerNewsRowBinding
 import com.mustk.newsapp.shared.Constant.SHORT_TITLE_MAX_SIZE
-import com.mustk.newsapp.util.downloadImageFromUrl
+import com.mustk.newsapp.util.downloadImageFromURL
 import com.mustk.newsapp.util.truncateString
 import javax.inject.Inject
 
@@ -19,9 +19,10 @@ class NewsAdapter @Inject constructor() :
 
     inner class NewsHolder(private val binding: RecyclerNewsRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(news: News) = with(binding) {
             news.imageUrl?.let {
-                rowNewsPosterImageView.downloadImageFromUrl(it)
+                rowNewsPosterImageView.downloadImageFromURL(it)
             }
             news.title?.let {
                 rowNewsTitleTextView.text = it.truncateString(SHORT_TITLE_MAX_SIZE)
@@ -57,6 +58,7 @@ class NewsAdapter @Inject constructor() :
 }
 
 class NewsDiffCallback : DiffUtil.ItemCallback<News>() {
+
     override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
         return oldItem.uuid == newItem.uuid
     }

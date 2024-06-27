@@ -53,7 +53,6 @@ class PasswordFragment @Inject constructor() : BottomSheetDialogFragment() {
         }
     }
 
-
     private fun observeLiveData() = with(binding) {
         observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { toastMessage ->

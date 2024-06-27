@@ -66,6 +66,10 @@ class NewsRepository @Inject constructor(
         newsDao.insertNews(news)
     }
 
+    override suspend fun saveNewsListData(newsList: List<News>) {
+        newsDao.insertNewsList(newsList)
+    }
+
     override suspend fun deleteNewsData(news: News) {
         newsDao.deleteNews(news)
     }
@@ -75,7 +79,7 @@ class NewsRepository @Inject constructor(
     }
 
     override suspend fun fetchNewsDataLocal(user: String): List<News> {
-        return newsDao.fetchNews(user)
+        return newsDao.fetchNewsList(user)
     }
 
     override suspend fun fetchNewsDataByUUID(uuid: String, user: String): News {

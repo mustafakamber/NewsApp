@@ -1,11 +1,15 @@
 package com.mustk.newsapp.broadcastreceiver
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.mustk.newsapp.R
 import com.mustk.newsapp.services.NotificationService
+import com.mustk.newsapp.shared.Constant
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_HOUR
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_MINUTE
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_NEXT_DAY
@@ -22,8 +26,11 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         notificationService.showNotification()
         scheduleNextAlarm(context)
+        createNotificationChannel(context)
     }
+
     companion object {
+
         fun scheduleNextAlarm(context: Context) {
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(context, NotificationReceiver::class.java)
@@ -47,6 +54,17 @@ class NotificationReceiver : BroadcastReceiver() {
                 calendar.timeInMillis,
                 pendingIntent
             )
+        }
+
+        private fun createNotificationChannel(context : Context){
+            val channel = NotificationChannel(
+                Constant.CHANNEL_ID,
+                Constant.NOTIFICATION_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            channel.description = context.getString(R.string.channel_description)
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

@@ -18,7 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment  @Inject constructor() : Fragment() {
+class
+
+SearchFragment  @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()

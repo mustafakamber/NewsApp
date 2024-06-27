@@ -14,6 +14,9 @@ interface NewsDao {
     @Insert
     suspend fun insertNews(news: News)
 
+    @Insert
+    suspend fun insertNewsList(newsList: List<News>)
+
     @Delete
     suspend fun deleteNews(news: News)
 
@@ -21,7 +24,7 @@ interface NewsDao {
     suspend fun deleteAllNews(newsList: List<News>)
 
     @Query("SELECT * FROM $NEWS_COLLECTION WHERE $USER_FIELD = :userEmail")
-    suspend fun fetchNews(userEmail: String): List<News>
+    suspend fun fetchNewsList(userEmail: String): List<News>
 
     @Query("SELECT * FROM $NEWS_COLLECTION WHERE $UUID_FIELD = :newsUUID AND $USER_FIELD = :userEmail")
     suspend fun fetchNewsByUUID(newsUUID: String, userEmail: String): News

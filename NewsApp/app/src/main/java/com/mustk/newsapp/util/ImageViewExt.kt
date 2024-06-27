@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mustk.newsapp.R
 
-fun ImageView.downloadImageFromUrl(url: String?) {
+fun ImageView.downloadImageFromURL(url: String?) {
     val options = RequestOptions()
         .placeholder(placeHolderProgressBar(this.context))
         .error(R.drawable.baseline_image_not_supported_24)

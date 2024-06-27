@@ -16,7 +16,7 @@ import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.news.adapter.NewsAdapter
 import com.mustk.newsapp.ui.news.viewmodel.DetailViewModel
-import com.mustk.newsapp.util.downloadImageFromUrl
+import com.mustk.newsapp.util.downloadImageFromURL
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -111,7 +111,7 @@ class DetailFragment @Inject constructor() : Fragment() {
                     detailCategoriesTextView.text = it.categories
                 }
                 detailTitleTextView.text = title
-                detailPosterImageView.downloadImageFromUrl(imageUrl)
+                detailPosterImageView.downloadImageFromURL(imageUrl)
                 detailDescriptionTextView.text = description
                 getPublishedDateAndTime()?.let {
                     detailDateTextView.text = it.date

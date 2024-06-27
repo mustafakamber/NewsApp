@@ -30,8 +30,7 @@ class DetailViewModel @Inject constructor(
     private val repository: NewsDataSource,
     private val auth: FirebaseAuth,
     private val database: FirebaseFirestore
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
 
     private val _detailLoading = MutableLiveData<Boolean>()
     val detailLoading: LiveData<Boolean>
@@ -62,11 +61,25 @@ class DetailViewModel @Inject constructor(
         get() = _deleteButtonVisibility
 
     init {
+        initState()
+    }
+
+    private fun initState() {
         setDetailItemsVisibility(false)
         setSaveButtonVisibility(false)
         setDeleteButtonVisibility(false)
         setDetailLoadingVisibility(true)
         setSimilarLoadingVisibility(true)
+    }
+
+    private fun savedNewsState() {
+        setSaveButtonVisibility(false)
+        setDeleteButtonVisibility(true)
+    }
+
+    private fun unsavedNewsState() {
+        setSaveButtonVisibility(true)
+        setDeleteButtonVisibility(false)
     }
 
     fun saveNews() {
@@ -110,6 +123,17 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    private fun setSimilarNews(newsList: List<News>) {
+        _similarNews.value = newsList
+    }
+
+    private fun detailResultState(uuid: String, news: News) {
+        setDetailItemsVisibility(true)
+        setDetailLoadingVisibility(false)
+        checkNewsExistInCloudDatabase(uuid)
+        setDetailNews(news)
+    }
+
     private fun checkNewsExistInCloudDatabase(newsUUID: String?) {
         val currentUser = auth.currentUser
         if (newsUUID != null && currentUser?.email != null) {
@@ -119,11 +143,9 @@ class DetailViewModel @Inject constructor(
                 .get()
                 .addOnSuccessListener { documents ->
                     if (documents.isEmpty) {
-                        setSaveButtonVisibility(true)
-                        setDeleteButtonVisibility(false)
+                        unsavedNewsState()
                     } else {
-                        setSaveButtonVisibility(false)
-                        setDeleteButtonVisibility(true)
+                        savedNewsState()
                     }
                 }.addOnFailureListener { error ->
                     error.localizedMessage?.let {
@@ -138,17 +160,9 @@ class DetailViewModel @Inject constructor(
             val currentUser = auth.currentUser ?: return@let
             val email = currentUser.email ?: return@let
             with(news) {
-                val requiredFields = listOf(
-                    uuid,
-                    title,
-                    description,
-                    imageUrl,
-                    newsUrl,
-                    publishedAt,
-                    source,
-                    category,
-                    snippet
-                )
+                val requiredFields = listOf(uuid, title, description,
+                    imageUrl, newsUrl, publishedAt,
+                    source, category, snippet)
                 if (requiredFields.any { it == null }) return@let
                 else {
                     val newsMap = hashMapOf(
@@ -182,8 +196,7 @@ class DetailViewModel @Inject constructor(
             viewModelScope.launch {
                 repository.saveNewsData(updatedNews)
                 showSnackBarMessage(R.string.saved)
-                setSaveButtonVisibility(false)
-                setDeleteButtonVisibility(true)
+                savedNewsState()
             }
         }
     }
@@ -218,8 +231,7 @@ class DetailViewModel @Inject constructor(
         _detailNews.value?.let { news ->
             repository.deleteNewsData(news)
             showSnackBarMessage(R.string.deleted)
-            setSaveButtonVisibility(true)
-            setDeleteButtonVisibility(false)
+            unsavedNewsState()
         }
     }
 
@@ -227,10 +239,7 @@ class DetailViewModel @Inject constructor(
         safeRequest(
             response = { repository.fetchNewsDataDetail(uuid) },
             successStatusData = { newsDetail ->
-                setDetailItemsVisibility(true)
-                setDetailLoadingVisibility(false)
-                checkNewsExistInCloudDatabase(uuid)
-                setDetailNews(newsDetail)
+                detailResultState(uuid, newsDetail)
                 showSnackBarMessage(R.string.fetch_from_api)
             })
     }
@@ -240,11 +249,8 @@ class DetailViewModel @Inject constructor(
         val email = currentUser?.email
         if (email != null) {
             viewModelScope.launch {
-                setDetailItemsVisibility(true)
                 val newsData = repository.fetchNewsDataByUUID(uuid, email)
-                setDetailLoadingVisibility(false)
-                checkNewsExistInCloudDatabase(uuid)
-                setDetailNews(newsData)
+                detailResultState(uuid, newsData)
                 showSnackBarMessage(R.string.fetch_from_sqlite)
             }
         }
@@ -266,7 +272,7 @@ class DetailViewModel @Inject constructor(
                 },
                 successStatusData = { similarNews ->
                     setSimilarLoadingVisibility(false)
-                    _similarNews.value = similarNews.data
+                    setSimilarNews(similarNews.data)
                 }
             )
         }
