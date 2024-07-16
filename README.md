@@ -1,0 +1,61 @@
+<h1 align="left">NewsApp 📰 </h1>
+
+<h3 align="left"><img src="https://i.ibb.co/zFbXW9D/news-app-logo-1.png" width="200px" height="200px"> </h3>
+
+<h3 align="left">NewsApp is a mobile application that allows users to easily access the latest news. This app displays headlines, content summaries, and images, enabling users to discover news that interests them.</h3>
+
+<h2 align="left"><a href="https://www.thenewsapi.com">Data Source 🔗</a></h2>
+
+
+<h2 align="left">Architecture 📐</h2>
+
+<h3 align="left">
+
+- MVVM
+
+</h3>
+
+<h2 align="left">Tech 🛠️</h2>
+
+<h3 align="left">
+
+- XML Layout UI Elements
+
+- Firebase Auth
+
+- Google Sign In
+
+- Firebase Firestore
+
+- Room
+
+- Hilt
+
+- Broadcast Receiver
+
+- Coroutine
+
+- Retrofit
+
+- OkHttp
+
+- Glide
+
+- Navigation Component
+
+- LiveData
+
+</h3>
+
+<h2 align="left">Images 📷</h2>
+
+
+| Login  | Signup | Detail |
+| ----- | ------------ | ------------ |
+|<img src="https://i.ibb.co/hHtnV74/Login-Fragment.png" width="216" height="480"/>|<img src="https://i.ibb.co/9vsC7nr/Signup-Fragment.png" width="216" height="480"/>|<img src="https://i.ibb.co/vVxtjwM/Detail-Fragment.png" width="216" height="480"/>
+
+</br>
+
+| Home  | Search | Read List |
+| ----- | ------------ | ------------ |
+|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="216" height="480"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="216" height="480"/>|<img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="216" height="480"/>
