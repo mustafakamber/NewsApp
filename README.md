@@ -58,10 +58,16 @@
 
 | Login  | Signup | Detail |
 | ----- | ------------ | ------------ |
-|<img src="https://i.ibb.co/hHtnV74/Login-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/9vsC7nr/Signup-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/vVxtjwM/Detail-Fragment.png" width="230.4" height="512"/>
+|<img src="https://i.ibb.co/hHtnV74/Login-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/9vsC7nr/Signup-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/VpYDqHq/Screenshot-20240717-191343.png" width="230.4" height="512"/>
 
 </br>
 
 | Home  | Search | Read List |
 | ----- | ------------ | ------------ |
 |<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="230.4" height="512"/>
+
+</br>
+
+| See More
+| ----- 
+| <img src="https://i.ibb.co/GTxHvTs/Screenshot-20240717-191250.png" width="230.4" height="512"/>
