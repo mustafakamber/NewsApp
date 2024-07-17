@@ -62,12 +62,12 @@
 
 </br>
 
-| Home  | Search | Read List |
+| See More  | Home | Search |
 | ----- | ------------ | ------------ |
-|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="230.4" height="512"/>
+|<img src="https://i.ibb.co/GTxHvTs/Screenshot-20240717-191250.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="230.4" height="512"/>
 
 </br>
 
-| See More
-| ----- 
-| <img src="https://i.ibb.co/GTxHvTs/Screenshot-20240717-191250.png" width="230.4" height="512"/>
+| Read List |
+| ----- |
+| <img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="230.4" height="512"/>
