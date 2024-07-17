@@ -28,6 +28,9 @@
         <argument
             android:name="isFromReadList"
             app:argType="boolean" />
+        <action
+            android:id="@+id/action_detailFragment_to_seeMoreFragment"
+            app:destination="@id/seeMoreFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -46,5 +49,14 @@
         <action
             android:id="@+id/action_readListFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seeMoreFragment"
+        android:name="com.mustk.newsapp.ui.news.view.SeeMoreFragment"
+        android:label="fragment_see_more"
+        tools:layout="@layout/fragment_see_more" >
+        <argument
+            android:name="newsURL"
+            app:argType="string" />
     </fragment>
 </navigation>

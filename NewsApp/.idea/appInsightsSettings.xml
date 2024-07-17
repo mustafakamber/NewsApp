@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.mustk.newsapp" />
+                  <option name="mobileSdkAppId" value="1:679277662160:android:42d6437745fd04fa0133d5" />
+                  <option name="projectId" value="newsapp-93ddb" />
+                  <option name="projectNumber" value="679277662160" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

@@ -144,6 +144,20 @@
                 tools:text="@string/sample_news_description" />
 
             <TextView
+                android:id="@+id/detailSeeMoreTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:ellipsize="end"
+                android:text="@string/detail_see_more"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="@dimen/small_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailDescriptionTextView" />
+
+            <TextView
                 android:id="@+id/detailSourceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -250,7 +264,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detailDescriptionTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/detailSeeMoreTextView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detailRecyclerView"

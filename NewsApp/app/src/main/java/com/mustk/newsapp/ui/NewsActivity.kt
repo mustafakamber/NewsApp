@@ -29,7 +29,10 @@ class NewsActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navigationBottomView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            navigationBottomView.isVisible = destination.id != R.id.detailFragment
+            when (destination.id) {
+                R.id.detailFragment, R.id.seeMoreFragment -> navigationBottomView.isVisible = false
+                else -> navigationBottomView.isVisible = true
+            }
         }
     }
 }

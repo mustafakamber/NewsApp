@@ -53,6 +53,7 @@
     <string name="readlist_message">Your Read List is empty.</string>
     <string name="detail_title">News Detail</string>
     <string name="detail_similar">Similar News 📰</string>
+    <string name="detail_see_more">see more</string>
     <string name="readlist_title">Read List</string>
     <string name="channel_name">Channel Name</string>
     <string name="channel_description">Channel Description</string>

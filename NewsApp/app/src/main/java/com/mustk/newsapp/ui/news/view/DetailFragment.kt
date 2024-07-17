@@ -70,6 +70,9 @@ class DetailFragment @Inject constructor() : Fragment() {
         detailShareButton.setOnClickListener {
             navigateToShareScreen()
         }
+        detailSeeMoreTextView.setOnClickListener{
+            navigateToSeeMoreScreen()
+        }
     }
 
     private fun navigateToShareScreen() {
@@ -86,6 +89,13 @@ class DetailFragment @Inject constructor() : Fragment() {
     private fun restartDetailScreen(uuid: String) {
         val action = DetailFragmentDirections.actionDetailFragmentSelf(uuid,false)
         findNavController().navigate(action)
+    }
+
+    private fun navigateToSeeMoreScreen() {
+        viewModel.detailNews.value?.newsUrl?.let { newsUrl ->
+            val action = DetailFragmentDirections.actionDetailFragmentToSeeMoreFragment(newsUrl)
+            findNavController().navigate(action)
+        }
     }
 
     private fun observeLiveData() = with(binding) {
