@@ -47,6 +47,12 @@
 
 </h3>
 
+<h2 align="left">Themes ☀️🌙</h2>
+
+| Light  | Dark |
+| ----- | ------------ | 
+|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/rZf3Jm5/Screenshot-1720013138.png" width="230.4" height="512"/>
+
 <h2 align="left">Images 📷</h2>
 
 
