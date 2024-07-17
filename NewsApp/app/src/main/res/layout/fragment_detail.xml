@@ -26,9 +26,9 @@
         android:text="@string/detail_title"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/detailExitButton"
-        app:layout_constraintEnd_toStartOf="@+id/detailShareButton"
+        app:layout_constraintEnd_toStartOf="@id/detailShareButton"
         app:layout_constraintHorizontal_bias="0.65"
-        app:layout_constraintStart_toEndOf="@+id/detailExitButton"
+        app:layout_constraintStart_toEndOf="@id/detailExitButton"
         app:layout_constraintTop_toTopOf="@id/detailExitButton" />
 
     <ImageButton
@@ -155,7 +155,7 @@
                 android:textSize="@dimen/small_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailDescriptionTextView" />
+                app:layout_constraintTop_toBottomOf="@id/detailDescriptionTextView" />
 
             <TextView
                 android:id="@+id/detailSourceTextView"
@@ -264,7 +264,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detailSeeMoreTextView" />
+                app:layout_constraintTop_toBottomOf="@id/detailSeeMoreTextView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detailRecyclerView"

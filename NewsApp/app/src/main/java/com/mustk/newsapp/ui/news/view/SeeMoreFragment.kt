@@ -33,18 +33,6 @@ class SeeMoreFragment @Inject constructor() : Fragment() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebViewScreen() = with(binding){
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (webView.canGoBack()){
-                    webView.goBack()
-                }
-                else {
-                    findNavController().popBackStack()
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
-
         arguments?.let { bundle ->
             val args = SeeMoreFragmentArgs.fromBundle(bundle)
             val newsURL = args.newsURL
@@ -57,5 +45,17 @@ class SeeMoreFragment @Inject constructor() : Fragment() {
                 webViewClient = WebViewClient()
             }
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (webView.canGoBack()){
+                    webView.goBack()
+                }
+                else {
+                    findNavController().popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,callback)
     }
 }
