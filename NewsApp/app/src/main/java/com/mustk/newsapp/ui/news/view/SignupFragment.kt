@@ -1,6 +1,5 @@
 package com.mustk.newsapp.ui.news.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,10 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentSignupBinding
-import com.mustk.newsapp.ui.NewsActivity
 import com.mustk.newsapp.ui.news.viewmodel.SignupViewModel
 import com.mustk.newsapp.util.observe
 import com.mustk.newsapp.util.slideDown
@@ -23,6 +23,7 @@ class SignupFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSignupBinding
     private val viewModel: SignupViewModel by viewModels()
+    @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,9 +62,11 @@ class SignupFragment @Inject constructor() : Fragment() {
     }
 
     private fun navigateHomeScreen() {
-        val intentToNewsScreen = Intent(requireActivity(), NewsActivity::class.java)
-        startActivity(intentToNewsScreen)
-        requireActivity().finish()
+        val action = SignupFragmentDirections.actionSignupFragmentToHomeFragment()
+        val navOptions = navOptionsBuilder
+            .setPopUpTo(R.id.signupFragment, true)
+            .build()
+        findNavController().navigate(action, navOptions)
     }
 
     private fun observeLiveData() = with(binding) {

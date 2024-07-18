@@ -3,6 +3,7 @@ package com.mustk.newsapp.di
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import androidx.navigation.NavOptions
 import androidx.room.Room
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -123,5 +124,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDao(database: NewsDatabase) = database.newsDao()
+
+    @Provides
+    fun provideNavOptions(@ApplicationContext context: Context): NavOptions.Builder {
+        return NavOptions.Builder()
+    }
 }
 

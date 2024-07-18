@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import com.mustk.newsapp.R
 import com.mustk.newsapp.shared.Constant.CHANNEL_ID
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_REQUEST_CODE
-import com.mustk.newsapp.ui.AuthActivity
+import com.mustk.newsapp.ui.NewsActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ class NotificationService @Inject constructor(
 
     fun showNotification() {
         if (isPreviousNotificationVisible()) return
-        val intentToApp = Intent(context, AuthActivity::class.java)
+        val intentToApp = Intent(context, NewsActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
             NOTIFICATION_REQUEST_CODE,

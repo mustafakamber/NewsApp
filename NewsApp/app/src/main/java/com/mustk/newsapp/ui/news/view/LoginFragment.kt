@@ -1,6 +1,5 @@
 package com.mustk.newsapp.ui.news.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentLoginBinding
-import com.mustk.newsapp.ui.NewsActivity
+import com.mustk.newsapp.ui.news.viewmodel.AuthViewModel
 import com.mustk.newsapp.ui.news.viewmodel.LoginViewModel
 import com.mustk.newsapp.util.observe
 import com.mustk.newsapp.util.slideDown
@@ -25,7 +27,9 @@ class LoginFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val viewModel : LoginViewModel by viewModels()
+    private val authViewModel : AuthViewModel by activityViewModels()
     @Inject lateinit var googleSignInClient: GoogleSignInClient
+    @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,9 +90,11 @@ class LoginFragment @Inject constructor() : Fragment() {
     }
 
     private fun navigateToHomeScreen() {
-        val intentToNewsScreen = Intent(requireActivity(), NewsActivity::class.java)
-        startActivity(intentToNewsScreen)
-        requireActivity().finish()
+        val action = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+        val navOptions = navOptionsBuilder
+            .setPopUpTo(R.id.loginFragment, true)
+            .build()
+        findNavController().navigate(action, navOptions)
     }
 
     private fun observeLiveData() = with(binding) {
@@ -116,6 +122,11 @@ class LoginFragment @Inject constructor() : Fragment() {
         observe(viewModel.navigateToHome) { event ->
             event.getContentIfNotHandled()?.let {
                navigateToHomeScreen()
+            }
+        }
+        observe(authViewModel.navigateToHome) { event ->
+            event.getContentIfNotHandled()?.let {
+                navigateToHomeScreen()
             }
         }
     }

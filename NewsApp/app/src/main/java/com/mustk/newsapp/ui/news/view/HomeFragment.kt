@@ -1,6 +1,5 @@
 package com.mustk.newsapp.ui.news.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.google.android.material.tabs.TabLayout
@@ -21,7 +21,6 @@ import com.mustk.newsapp.shared.Constant.CATEGORY_POLITIC
 import com.mustk.newsapp.shared.Constant.CATEGORY_SCIENCE
 import com.mustk.newsapp.shared.Constant.CATEGORY_SPORT
 import com.mustk.newsapp.shared.Constant.CATEGORY_TECH
-import com.mustk.newsapp.ui.AuthActivity
 import com.mustk.newsapp.ui.news.adapter.NewsAdapter
 import com.mustk.newsapp.ui.news.viewmodel.HomeViewModel
 import com.mustk.newsapp.util.observe
@@ -35,6 +34,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
     private lateinit var confirmation: ConfirmationFragment
+    @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,9 +118,11 @@ class HomeFragment @Inject constructor() : Fragment() {
     }
 
     private fun navigateToLoginScreen() {
-        val intentToAuthScreen = Intent(requireActivity(), AuthActivity::class.java)
-        startActivity(intentToAuthScreen)
-        requireActivity().finish()
+        val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+        val navOptions = navOptionsBuilder
+            .setPopUpTo(R.id.homeFragment, true)
+            .build()
+        findNavController().navigate(action, navOptions)
     }
 
     private fun observeLiveData() = with(binding) {
