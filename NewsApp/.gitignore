@@ -1,7 +1,13 @@
 *.iml
 .gradle
 /local.properties
-/.idea/*
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/discord.xml
 .DS_Store
 /build
 /captures
@@ -10,4 +16,5 @@
 local.properties
 /app/google-services.json
 /app/schemas
+.idea
 
