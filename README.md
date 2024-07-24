@@ -25,6 +25,8 @@
 
 - Google Sign In
 
+- Google Admob
+
 - Firebase Firestore
 
 - Room
@@ -36,6 +38,8 @@
 - Coroutine
 
 - Retrofit
+
+- Gson
 
 - OkHttp
 

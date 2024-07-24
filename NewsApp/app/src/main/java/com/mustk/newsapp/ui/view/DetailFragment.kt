@@ -78,11 +78,9 @@ class DetailFragment @Inject constructor() : Fragment() {
                     detailAdView = interstitialAd
                 }
             })
-
         onBackPressed {
             checkInterstitialAd()
         }
-
         newsAdapter.setOnNewsClickListener { uuid ->
             restartDetailScreen(uuid)
         }
