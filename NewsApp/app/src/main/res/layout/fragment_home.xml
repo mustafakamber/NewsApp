@@ -40,6 +40,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ProgressBar
                 android:id="@+id/homeCategoryLoadingBar"
                 style="@style/loadingBarStyle"
@@ -48,19 +49,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/homeTabLayout"/>
 
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/homeAdView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                app:adSize="BANNER"
+                app:adUnitId="@string/banner_test_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/headLineImageSlider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/large_image_size"
+                android:layout_marginTop="@dimen/tiny_spacing_size"
                 android:layout_marginStart="@dimen/small_spacing_size"
-                android:layout_marginTop="@dimen/extra_tiny_spacing_size"
                 android:layout_marginEnd="@dimen/small_spacing_size"
                 app:iss_auto_cycle="true"
                 app:iss_corner_radius="36"
                 app:iss_period="2000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/homeAdView" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/homeTabLayout"
@@ -90,7 +103,7 @@
                 app:layout_constraintBottom_toTopOf="@id/homeTabLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/homeAdView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

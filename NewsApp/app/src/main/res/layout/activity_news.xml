@@ -13,22 +13,23 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/match_constraint_size"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/graph_news"
         app:layout_constraintBottom_toTopOf="@id/navigationBottomView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/graph_news" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationBottomView"
-        style="@style/navigationBottomViewStyle"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/navigation_size"
+        app:itemIconSize="@dimen/small_image_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_navigation">
-
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/menu_navigation"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,26 @@
         <meta-data
             android:name="clientIdValue"
             android:value="${WEB_CLIENT_ID}" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${APPLICATION_ID}"
+            />
+        <meta-data
+            android:name="homeBannerAdIdValue"
+            android:value="${HOME_BANNER_ID}"
+            />
+        <meta-data
+            android:name="searchBannerAdIdValue"
+            android:value="${SEARCH_BANNER_ID}"
+            />
+        <meta-data
+            android:name="detailInterstitialAdIdValue"
+            android:value="${DETAIL_INTERSTITIAL_ID}"
+            />
+        <meta-data
+            android:name="seeMoreBannerAdIdValue"
+            android:value="${SEE_MORE_BANNER_ID}"
+            />
     </application>
 
 </manifest>

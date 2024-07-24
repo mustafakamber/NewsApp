@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.navigation.NavOptions
 import androidx.room.Room
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -128,6 +129,12 @@ object AppModule {
     @Provides
     fun provideNavOptions(@ApplicationContext context: Context): NavOptions.Builder {
         return NavOptions.Builder()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAdRequest(): AdRequest {
+        return AdRequest.Builder().build()
     }
 }
 

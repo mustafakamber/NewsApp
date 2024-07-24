@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.adapter.rxjava2)
+    implementation(libs.play.services.ads)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.glide)
     implementation (libs.android.recyclerview.swipedecorator)

@@ -64,4 +64,5 @@ object Constant {
     const val CATEGORY_CONVERT_CHAR = ","
     const val DATABASE_VERSION = 5
     const val TITLE_FIRST_WORD_CHAR = " "
+    const val INTER_TEST = "ca-app-pub-3940256099942544/1033173712"
 }

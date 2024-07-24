@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Theme.NewsApp.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
@@ -20,6 +20,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Tertiary brand colors. -->
         <item name="colorTertiary">@color/white</item>
+        <item name="colorOnTertiary">#f4ecf3</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -46,12 +47,6 @@
         <item name="android:layout_height">@dimen/huge_image_size</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:src">@drawable/poster</item>
-    </style>
-
-    <!-- NavigationBottomView -->
-    <style name="navigationBottomViewStyle" >
-        <item name="itemIconTint">@color/dark_pink</item>
-        <item name="itemTextColor">@color/dark_pink</item>
     </style>
 
     <!-- TextInput -->

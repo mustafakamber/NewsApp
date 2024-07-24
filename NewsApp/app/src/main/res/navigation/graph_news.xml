@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mustk.newsapp.ui.news.view.HomeFragment"
+        android:name="com.mustk.newsapp.ui.view.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.mustk.newsapp.ui.news.view.DetailFragment"
+        android:name="com.mustk.newsapp.ui.view.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.mustk.newsapp.ui.news.view.SearchFragment"
+        android:name="com.mustk.newsapp.ui.view.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/readListFragment"
-        android:name="com.mustk.newsapp.ui.news.view.ReadListFragment"
+        android:name="com.mustk.newsapp.ui.view.ReadListFragment"
         android:label="fragment_read_list"
         tools:layout="@layout/fragment_read_list" >
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/seeMoreFragment"
-        android:name="com.mustk.newsapp.ui.news.view.SeeMoreFragment"
+        android:name="com.mustk.newsapp.ui.view.SeeMoreFragment"
         android:label="fragment_see_more"
         tools:layout="@layout/fragment_see_more" >
         <argument
@@ -64,7 +64,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mustk.newsapp.ui.news.view.LoginFragment"
+        android:name="com.mustk.newsapp.ui.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.mustk.newsapp.ui.news.view.SignupFragment"
+        android:name="com.mustk.newsapp.ui.view.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup">
         <action
@@ -89,7 +89,12 @@
 
     <dialog
         android:id="@+id/passwordFragment"
-        android:name="com.mustk.newsapp.ui.news.view.PasswordFragment"
+        android:name="com.mustk.newsapp.ui.view.PasswordFragment"
         android:label="PasswordFragment"
         tools:layout="@layout/fragment_password"/>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.mustk.newsapp.ui.view.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

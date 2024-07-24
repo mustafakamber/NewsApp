@@ -9,7 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.ActivityNewsBinding
-import com.mustk.newsapp.ui.news.viewmodel.AuthViewModel
+import com.mustk.newsapp.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,10 +46,19 @@ class NewsActivity : AppCompatActivity() {
         navigationBottomView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.detailFragment, R.id.seeMoreFragment, R.id.loginFragment,
-                R.id.signupFragment, R.id.passwordFragment -> navigationBottomView.isVisible = false
-                else -> navigationBottomView.isVisible = true
+                R.id.loginFragment, R.id.passwordFragment, R.id.signupFragment,
+                R.id.detailFragment, R.id.seeMoreFragment -> {
+                    updateBottomNavigationViewVisibility(false)
+                }
+                R.id.homeFragment, R.id.searchFragment, R.id.readListFragment,
+                R.id.settingsFragment -> {
+                    updateBottomNavigationViewVisibility(true)
+                }
             }
         }
+    }
+
+    private fun updateBottomNavigationViewVisibility(isVisible: Boolean) {
+        binding.navigationBottomView.isVisible = isVisible
     }
 }
