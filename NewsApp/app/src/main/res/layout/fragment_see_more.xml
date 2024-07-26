@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.news.view.SeeMoreFragment">
+    tools:context=".ui.view.SeeMoreFragment">
 
     <WebView
         android:id="@+id/webView"

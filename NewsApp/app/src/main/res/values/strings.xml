@@ -69,4 +69,17 @@
     <string name="saved">1 News saved to Read List</string>
     <string name="fetch_from_api">The news details were retrieved from the API.</string>
     <string name="fetch_from_sqlite">The news details were retrieved from the SQLite.</string>
+    <string name="settings_title">Settings</string>
+    <string name="default_email">abc@gmail.com</string>
+    <string name="settings_preferences">Preferences</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_extra">Extra</string>
+    <string name="settings_item_notification">Notifications</string>
+    <string name="settings_item_language">Language</string>
+    <string name="settings_item_theme">Dark Theme</string>
+    <string name="settings_item_change_password">Change Password</string>
+    <string name="settings_item_delete_account">Delete Account</string>
+    <string name="settings_item_logout">Log Out</string>
+    <string name="settings_item_about_me">About Me</string>
+    <string name="settings_item_send_message">Send a Message</string>
 </resources>

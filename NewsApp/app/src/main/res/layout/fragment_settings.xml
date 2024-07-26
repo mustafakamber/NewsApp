@@ -1,14 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.news.view.SettingsFragment">
+    tools:context=".ui.view.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/settingsTextView"
+        style="@style/mediumBoldPrimaryTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginBottom="@dimen/large_spacing_size"
+        android:text="@string/settings_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <ScrollView
+        android:id="@+id/settingsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_spacing_size"
+        app:layout_constraintTop_toBottomOf="@id/settingsTextView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/settingsProfileImageView"
+                android:layout_width="@dimen/medium_image_size"
+                android:layout_height="@dimen/medium_image_size"
+                android:layout_marginTop="@dimen/small_spacing_size"
+                android:src="@drawable/default_profile_image"
+                app:civ_border_color="?attr/colorPrimary"
+                app:civ_border_width="@dimen/medium_border_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/settingsProfileEmailTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tiny_spacing_size"
+                android:text="@string/default_email"
+                android:textSize="@dimen/small_text_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsProfileImageView" />
+
+            <TextView
+                android:id="@+id/settingsPreferencesTextView"
+                style="@style/settingsItemCategoryTextStyle"
+                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginTop="@dimen/large_spacing_size"
+                android:text="@string/settings_preferences"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsProfileEmailTextView" />
+
+            <LinearLayout
+                android:id="@+id/settingsPreferencesLinear"
+                style="@style/settingsButtonLinearStyle"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/little_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsPreferencesTextView">
+
+                <RelativeLayout
+                    android:id="@+id/notificationButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/notificationImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_notifications_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/notificationImageView"
+                        android:text="@string/settings_item_notification" />
+
+                    <Switch
+                        android:id="@+id/notificationSwitch"
+                        style="@style/settingsSwitchStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/languageButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/languageImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_language_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/languageImageView"
+                        android:text="@string/settings_item_language" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/themeButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size"
+                    android:layout_marginBottom="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/themeImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_dark_mode_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/themeImageView"
+                        android:text="@string/settings_item_theme" />
+
+                    <Switch
+                        android:id="@+id/themeSwitch"
+                        style="@style/settingsSwitchStyle" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/settingsAccountTextView"
+                style="@style/settingsItemCategoryTextStyle"
+                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginTop="@dimen/small_spacing_size"
+                android:text="@string/settings_account"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsPreferencesLinear" />
+
+            <LinearLayout
+                android:id="@+id/settingsAccountLinear"
+                style="@style/settingsButtonLinearStyle"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/little_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsAccountTextView">
+
+                <RelativeLayout
+                    android:id="@+id/changePasswordButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/passwordImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_lock_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/passwordImageView"
+                        android:text="@string/settings_item_change_password" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/deleteAccountButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/deleteAccountImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_no_accounts_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/deleteAccountImageView"
+                        android:text="@string/settings_item_delete_account" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/logOutButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size"
+                    android:layout_marginBottom="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/logOutImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_logout_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/logOutImageView"
+                        android:text="@string/settings_item_logout" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/settingExtraTextView"
+                style="@style/settingsItemCategoryTextStyle"
+                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginTop="@dimen/small_spacing_size"
+                android:text="@string/settings_extra"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsAccountLinear" />
+
+            <LinearLayout
+                android:id="@+id/settingsExtraLinear"
+                style="@style/settingsButtonLinearStyle"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/little_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingExtraTextView">
+
+                <RelativeLayout
+                    android:id="@+id/sendMessageButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/messageImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_message_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/messageImageView"
+                        android:text="@string/settings_item_send_message" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/aboutMeButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size"
+                    android:layout_marginBottom="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/aboutMeImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_info_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/aboutMeImageView"
+                        android:text="@string/settings_item_about_me" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/settingsPlaceHolderLinear"
+                style="@style/settingsButtonLinearStyle"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/tiny_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsExtraLinear">
+
+                <RelativeLayout
+                    android:id="@+id/placeHolderButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/placeHolderImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_message_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/placeHolderImageView"
+                        android:text="@string/settings_item_send_message" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
