@@ -82,4 +82,5 @@
     <string name="settings_item_logout">Log Out</string>
     <string name="settings_item_about_me">About Me</string>
     <string name="settings_item_send_message">Send a Message</string>
+    <string name="settings_item_share_app">Share this App</string>
 </resources>

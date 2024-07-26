@@ -19,8 +19,8 @@
         <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Tertiary brand colors. -->
-        <item name="colorTertiary">@color/white</item>
-        <item name="colorOnTertiary">#f4ecf3</item>
+        <item name="colorTertiary">#f4ecf3</item>
+        <item name="colorOnTertiary">#30242c</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -214,16 +214,16 @@
     </style>
 
     <style name="selectionSwitch">
-        <item name="android:colorControlActivated">?attr/colorOnPrimary</item>
+        <item name="android:colorControlActivated">?attr/colorPrimary</item>
     </style>
 
     <style name="settingsButtonTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerVertical">true</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/small_text_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
     <style name="settingsButtonForwardStyle">

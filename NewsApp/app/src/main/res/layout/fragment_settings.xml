@@ -263,8 +263,7 @@
                 <RelativeLayout
                     android:id="@+id/aboutMeButton"
                     style="@style/settingsButtonRelativeStyle"
-                    android:layout_marginTop="@dimen/little_spacing_size"
-                    android:layout_marginBottom="@dimen/extra_tiny_spacing_size">
+                    android:layout_marginTop="@dimen/little_spacing_size">
 
                     <ImageView
                         android:id="@+id/aboutMeImageView"
@@ -276,6 +275,27 @@
                         android:layout_marginStart="@dimen/large_spacing_size"
                         android:layout_toEndOf="@id/aboutMeImageView"
                         android:text="@string/settings_item_about_me" />
+
+                    <ImageView style="@style/settingsButtonForwardStyle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/shareAppButton"
+                    style="@style/settingsButtonRelativeStyle"
+                    android:layout_marginTop="@dimen/little_spacing_size"
+                    android:layout_marginBottom="@dimen/extra_tiny_spacing_size">
+
+                    <ImageView
+                        android:id="@+id/shareAppImageView"
+                        style="@style/settingsButtonImageStyle"
+                        android:src="@drawable/baseline_share_24" />
+
+                    <TextView
+                        style="@style/settingsButtonTextStyle"
+                        android:layout_marginStart="@dimen/large_spacing_size"
+                        android:layout_toEndOf="@id/shareAppImageView"
+                        android:text="@string/settings_item_share_app" />
 
                     <ImageView style="@style/settingsButtonForwardStyle" />
 
