@@ -55,7 +55,7 @@
 
 | Light  | Dark |
 | ----- | ------------ | 
-|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/rZf3Jm5/Screenshot-1720013138.png" width="230.4" height="512"/>
+|<img src="https://i.ibb.co/jD9XP0F/New-Home.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/5nFMt8f/New-Home-Dark.png" width="230.4" height="512"/>
 
 <h2 align="left">Images 📷</h2>
 
@@ -68,10 +68,10 @@
 
 | See More  | Home | Search |
 | ----- | ------------ | ------------ |
-|<img src="https://i.ibb.co/GTxHvTs/Screenshot-20240717-191250.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/F3KD1J7/Home-Fragmengt.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/RbFXDTH/Search-Fragment.png" width="230.4" height="512"/>
+|<img src="https://i.ibb.co/GTxHvTs/Screenshot-20240717-191250.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/jD9XP0F/New-Home.png" width="230.4" height="512"/>|<img src="https://i.ibb.co/d4dnbZv/New-Search.png" width="230.4" height="512"/>
 
 </br>
 
-| Read List |
-| ----- |
-| <img src="https://i.ibb.co/cvgKPL2/Read-List-Fragment.png" width="230.4" height="512"/>
+| Read List | Settings |
+| ----- | ------------ |
+| <img src="https://i.ibb.co/1dPy2Yf/New-Read.png" width="230.4" height="512"/> | <img src="https://i.ibb.co/f8d4Dq5/new-seettings.png" width="230.4" height="512"/> |
