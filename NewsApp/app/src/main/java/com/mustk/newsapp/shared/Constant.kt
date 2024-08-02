@@ -1,13 +1,27 @@
 package com.mustk.newsapp.shared
 
 object Constant {
+    const val SHARED_PREFS_NAME = "app_preferences"
+    const val NOTIFICATIONS_ENABLED = "notifications_enabled"
+    const val DARK_THEME_ENABLED = "dark_theme_enabled"
+    const val LANGUAGE_ITEM = "language_item"
+    const val SEND_MESSAGE_EMAIL = "mustkmber@gmail.com"
+    const val NULL_PATH_IMAGE = "https://i.ibb.co/8m7z4x0/poster.jpg"
+    const val APP_URL = "https://github.com/mustafakamber/NewsApp"
+    const val ABOUT_ME_URL = "https://github.com/mustafakamber"
     const val APIKEY_QUERY_PARAM = "api_token"
     const val LANGUAGE_QUERY_PARAM = "language"
     const val ALL_QUERY_PARAM = "all"
     const val UUID_QUERY_PARAM = "uuid/"
     const val SEARCH_QUERY_PARAM = "search"
     const val CATEGORIES_QUERY_PARAM = "categories"
-    const val LANGUAGE = "en"
+    const val LANGUAGE_EN = "en"
+    const val LANGUAGE_TR = "tr"
+    const val LANGUAGE_FR = "fr"
+    const val LANGUAGE_ES = "es"
+    const val LANGUAGE_IT = "it"
+    const val LANGUAGE_DE = "de"
+    const val LANGUAGE_AR = "ar"
     const val BASE_URL = "https://api.thenewsapi.com/v1/news/"
     const val USERS_COLLECTION = "Users"
     const val NEWS_COLLECTION = "News"
@@ -15,6 +29,7 @@ object Constant {
     const val USER_FIELD = "user"
     const val TITLE_FIELD = "title"
     const val DESCRIPTION_FIELD = "description"
+    const val PHOTO_FIELD = "photo"
     const val IMAGE_URL_FIELD = "image_url"
     const val NEWS_URL_FIELD = "url"
     const val PUBLISHED_AT_FIELD = "published_at"
@@ -28,6 +43,7 @@ object Constant {
     const val CODE_FIELD = "code"
     const val MESSAGE_FIELD = "message"
     const val FOUND_FIELD = "found"
+    const val LANGUAGE_FIELD = "language"
     const val RETURNED_FIELD = "returned"
     const val LIMIT_FIELD = "limit"
     const val PAGE_FIELD = "page"
@@ -45,6 +61,7 @@ object Constant {
     const val TIME_OUT_MILLIS = 500L
     const val SEARCH_THRESHOLD_LENGTH = 2
     const val DATE_BRACKET = "-"
+    const val NULL_PHOTO = " "
     const val CATEGORY_BRACKET = ", "
     const val CHANNEL_ID = "channel_id"
     const val NOTIFICATION_NAME = "NewsNotification"
@@ -61,6 +78,7 @@ object Constant {
     const val NOTIFICATION_MINUTE = 30
     const val NOTIFICATION_SECOND = 0
     const val NOTIFICATION_NEXT_DAY = 1
+    const val HEADLINE_SIZE = 3
     const val CATEGORY_CONVERT_CHAR = ","
     const val DATABASE_VERSION = 5
     const val TITLE_FIRST_WORD_CHAR = " "

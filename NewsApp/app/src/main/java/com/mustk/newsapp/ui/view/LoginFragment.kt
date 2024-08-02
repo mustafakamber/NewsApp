@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentLoginBinding
-import com.mustk.newsapp.ui.viewmodel.AuthViewModel
+import com.mustk.newsapp.ui.viewmodel.NewsViewModel
 import com.mustk.newsapp.ui.viewmodel.LoginViewModel
 import com.mustk.newsapp.util.observe
 import com.mustk.newsapp.util.slideDown
@@ -27,7 +27,7 @@ class LoginFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val viewModel : LoginViewModel by viewModels()
-    private val authViewModel : AuthViewModel by activityViewModels()
+    private val authViewModel : NewsViewModel by activityViewModels()
     @Inject lateinit var googleSignInClient: GoogleSignInClient
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
@@ -80,7 +80,7 @@ class LoginFragment @Inject constructor() : Fragment() {
         }
 
     private fun navigateToPasswordScreen() {
-        val action = LoginFragmentDirections.actionLoginFragmentToPasswordFragment()
+        val action = LoginFragmentDirections.actionLoginFragmentToPasswordFragment(null)
         findNavController().navigate(action)
     }
 

@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -91,10 +88,25 @@
         android:id="@+id/passwordFragment"
         android:name="com.mustk.newsapp.ui.view.PasswordFragment"
         android:label="PasswordFragment"
-        tools:layout="@layout/fragment_password"/>
+        tools:layout="@layout/fragment_password">
+        <argument
+            android:name="password"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.mustk.newsapp.ui.view.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_seeMoreFragment"
+            app:destination="@id/seeMoreFragment" />
+    </fragment>
 </navigation>

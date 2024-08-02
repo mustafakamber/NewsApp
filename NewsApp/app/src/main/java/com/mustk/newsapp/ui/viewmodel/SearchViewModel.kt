@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.LANGUAGE
+import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
 import com.mustk.newsapp.shared.Constant.SEARCH_THRESHOLD_LENGTH
 import com.mustk.newsapp.shared.Constant.TIME_OUT_MILLIS
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -129,7 +129,7 @@ class SearchViewModel @Inject constructor(private val repository: NewsDataSource
     private fun fetchSearchNewsListFromAPI(newsKey: String) {
         loadingState()
         safeRequest(
-            response = { repository.fetchNewsDataForSearch(LANGUAGE, newsKey) },
+            response = { repository.fetchNewsDataForSearch(newsKey) },
             successStatusData = { searchData ->
                 if (searchData.data.isEmpty()) {
                     resultNotFoundState()

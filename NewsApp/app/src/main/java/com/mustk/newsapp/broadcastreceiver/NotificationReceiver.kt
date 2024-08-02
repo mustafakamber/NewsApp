@@ -9,9 +9,10 @@ import android.content.Context
 import android.content.Intent
 import com.mustk.newsapp.R
 import com.mustk.newsapp.services.NotificationService
-import com.mustk.newsapp.shared.Constant
+import com.mustk.newsapp.shared.Constant.CHANNEL_ID
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_HOUR
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_MINUTE
+import com.mustk.newsapp.shared.Constant.NOTIFICATION_NAME
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_NEXT_DAY
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_SECOND
 import com.mustk.newsapp.shared.Constant.PENDING_INTENT_REQUEST_CODE
@@ -58,8 +59,8 @@ class NotificationReceiver : BroadcastReceiver() {
 
         private fun createNotificationChannel(context : Context){
             val channel = NotificationChannel(
-                Constant.CHANNEL_ID,
-                Constant.NOTIFICATION_NAME,
+                CHANNEL_ID,
+                NOTIFICATION_NAME,
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             channel.description = context.getString(R.string.channel_description)

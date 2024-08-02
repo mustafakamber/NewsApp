@@ -8,6 +8,7 @@ import com.mustk.newsapp.shared.Constant.CATEGORY_BRACKET
 import com.mustk.newsapp.shared.Constant.DATE_BRACKET
 import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
 import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
+import com.mustk.newsapp.shared.Constant.LANGUAGE_FIELD
 import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
 import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
 import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_DATE_MAX
@@ -36,6 +37,7 @@ data class News(
     @SerializedName(SOURCE_FIELD) val source : String?,
     @SerializedName(CATEGORIES_FIELD) val category: List<String>?,
     @SerializedName(SNIPPET_FIELD) val snippet: String?,
+    @SerializedName(LANGUAGE_FIELD) val language : String?,
 ){
 
     fun getShortSource() : ShortSource? {

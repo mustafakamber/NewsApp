@@ -16,7 +16,6 @@ interface NewsDataSource {
     ): Resource<BaseResponse>
 
     suspend fun fetchNewsDataForSearch(
-        language: String,
         search : String
     ) : Resource<BaseResponse>
 
@@ -36,7 +35,7 @@ interface NewsDataSource {
 
     suspend fun deleteNewsData(news: News)
 
-    suspend fun deleteAllNewsData(newsList : List<News>)
+    suspend fun deleteNewsList(user: String)
 
     suspend fun fetchNewsDataLocal(user: String): List<News>
 

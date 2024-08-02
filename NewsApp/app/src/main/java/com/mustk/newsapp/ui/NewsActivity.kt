@@ -3,20 +3,21 @@ package com.mustk.newsapp.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.ActivityNewsBinding
-import com.mustk.newsapp.ui.viewmodel.AuthViewModel
+import com.mustk.newsapp.ui.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NewsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewsBinding
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: NewsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,7 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         checkCurrentUser()
+        //checkUITheme()
         setupNavigationBottomView()
     }
 
@@ -38,6 +40,18 @@ class NewsActivity : AppCompatActivity() {
     private fun checkCurrentUser() {
         viewModel.currentUserCheck()
     }
+
+    /*
+    private fun checkUITheme() {
+        viewModel.darkThemeEnabled.value?.let { isEnabled ->
+            if (isEnabled) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+    }
+     */
 
     private fun setupNavigationBottomView() = with(binding) {
         val navHostFragment =

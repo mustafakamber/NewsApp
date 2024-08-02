@@ -1,9 +1,7 @@
 package com.mustk.newsapp.ui.view
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +22,7 @@ import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.adapter.NewsAdapter
 import com.mustk.newsapp.ui.viewmodel.DetailViewModel
-import com.mustk.newsapp.util.downloadImageFromURL
+import com.mustk.newsapp.util.downloadNewsImageFromURL
 import com.mustk.newsapp.util.observe
 import com.mustk.newsapp.util.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,8 +34,7 @@ class DetailFragment @Inject constructor() : Fragment() {
     private lateinit var binding : FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
-    @Inject
-    lateinit var adRequest: AdRequest
+    @Inject lateinit var adRequest: AdRequest
     private var detailAdView: InterstitialAd? = null
 
     override fun onCreateView(
@@ -68,12 +65,9 @@ class DetailFragment @Inject constructor() : Fragment() {
         InterstitialAd.load(requireContext(), INTER_TEST,
             adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    adError?.let {
-                        it.toString()?.let { Log.d(TAG, it) }
-                    }
+                    showToastMessage(adError.toString())
                     detailAdView = null
                 }
-
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     detailAdView = interstitialAd
                 }
@@ -139,10 +133,14 @@ class DetailFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private fun showToastMessage(message : String){
+        Toast.makeText(requireContext(),message, Toast.LENGTH_SHORT).show()
+    }
+
     private fun observeLiveData() = with(binding) {
         observe(viewModel.errorMessage) { event ->
             event.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                showToastMessage(message)
             }
         }
         observe(viewModel.snackbarMessage) { event ->
@@ -162,7 +160,7 @@ class DetailFragment @Inject constructor() : Fragment() {
                     detailCategoriesTextView.text = it.categories
                 }
                 detailTitleTextView.text = title
-                detailPosterImageView.downloadImageFromURL(imageUrl)
+                detailPosterImageView.downloadNewsImageFromURL(imageUrl)
                 detailDescriptionTextView.text = description
                 getPublishedDateAndTime()?.let {
                     detailDateTextView.text = it.date

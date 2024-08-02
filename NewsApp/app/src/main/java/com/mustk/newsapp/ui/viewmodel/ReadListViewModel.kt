@@ -11,6 +11,7 @@ import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.shared.Constant.CATEGORIES_FIELD
 import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
 import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
+import com.mustk.newsapp.shared.Constant.LANGUAGE_FIELD
 import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
 import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
 import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_FIELD
@@ -121,9 +122,11 @@ class ReadListViewModel @Inject constructor(
     }
 
     private fun deleteAllNewsFromLocal() {
-        _readListNews.value?.let { newsList ->
-            viewModelScope.launch {
-                repository.deleteAllNewsData(newsList)
+        _readListNews.value?.forEach { newsItem ->
+            newsItem.user?.let { user ->
+                viewModelScope.launch {
+                    repository.deleteNewsList(user)
+                }
             }
         }
     }
@@ -217,6 +220,7 @@ class ReadListViewModel @Inject constructor(
                             val newsSource = newsData[SOURCE_FIELD] as String
                             val newsCategories = newsData[CATEGORIES_FIELD] as List<String>
                             val newsSnippet = newsData[SNIPPET_FIELD] as String
+                            val newsLanguage = newsData[LANGUAGE_FIELD] as String
                             val news = News(
                                 null,
                                 newsUUID,
@@ -228,7 +232,8 @@ class ReadListViewModel @Inject constructor(
                                 newsPublishedAt,
                                 newsSource,
                                 newsCategories,
-                                newsSnippet
+                                newsSnippet,
+                                newsLanguage
                             )
                             newsListFromCloud.add(news)
                         }

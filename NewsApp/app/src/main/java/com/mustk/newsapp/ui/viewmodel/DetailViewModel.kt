@@ -11,7 +11,7 @@ import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.shared.Constant.CATEGORIES_FIELD
 import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
 import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
-import com.mustk.newsapp.shared.Constant.LANGUAGE
+import com.mustk.newsapp.shared.Constant.LANGUAGE_FIELD
 import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
 import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
 import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_FIELD
@@ -119,7 +119,7 @@ class DetailViewModel @Inject constructor(
     private fun setDetailNews(news: News) {
         _detailNews.value = news
         news.getFormattedCategories()?.let {
-            fetchSimilarNewsFromAPI(news.title, it.categories)
+            fetchSimilarNewsFromAPI(news.title, it.categories,news.language)
         }
     }
 
@@ -175,7 +175,8 @@ class DetailViewModel @Inject constructor(
                         PUBLISHED_AT_FIELD to publishedAt,
                         SOURCE_FIELD to source,
                         CATEGORIES_FIELD to category,
-                        SNIPPET_FIELD to snippet
+                        SNIPPET_FIELD to snippet,
+                        LANGUAGE_FIELD to language
                     )
                     database.collection(NEWS_COLLECTION).add(newsMap)
                         .addOnFailureListener { error ->
@@ -256,8 +257,8 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun fetchSimilarNewsFromAPI(title: String?, categories: String?) {
-        if (title != null && categories != null) {
+    private fun fetchSimilarNewsFromAPI(title: String?, categories: String?,language: String?) {
+        if (title != null && categories != null && language != null) {
             val searchTitle = title.replaceFirstChar { it.lowercase() }.substringBefore(
                 TITLE_FIRST_WORD_CHAR
             )
@@ -265,7 +266,7 @@ class DetailViewModel @Inject constructor(
             safeRequest(
                 response = {
                     repository.fetchNewsDataForSimilar(
-                        LANGUAGE,
+                        language,
                         searchTitle,
                         searchCategories
                     )

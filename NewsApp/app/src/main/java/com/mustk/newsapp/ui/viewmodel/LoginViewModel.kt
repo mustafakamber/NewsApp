@@ -13,6 +13,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
+import com.mustk.newsapp.shared.Constant.NULL_PHOTO
+import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
 import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
 import com.mustk.newsapp.shared.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -105,7 +107,7 @@ class LoginViewModel @Inject constructor(
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
             .addOnSuccessListener {
-                checkIfEmailExistsForLogin(account.email.toString())
+                checkIfEmailExistsForLogin(account.email.toString(), account.photoUrl.toString())
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
@@ -117,7 +119,7 @@ class LoginViewModel @Inject constructor(
     private fun signInWithEmailAndPassword(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                checkIfEmailExistsForLogin(email)
+                checkIfEmailExistsForLogin(email, NULL_PHOTO)
             }.addOnFailureListener { error ->
                 error.localizedMessage?.let {
                     showToastMessage(it)
@@ -125,11 +127,11 @@ class LoginViewModel @Inject constructor(
             }
     }
 
-    private fun checkIfEmailExistsForLogin(email: String) {
+    private fun checkIfEmailExistsForLogin(email: String, photo: String) {
         checkEmailExistInDatabase(
             email,
             onEmailNotFound = {
-                addUserForLogin(email)
+                addUserForLogin(email, photo)
             },
             onEmailFound = {
                 navigateToHomeScreen()
@@ -163,9 +165,10 @@ class LoginViewModel @Inject constructor(
             }
     }
 
-    private fun addUserForLogin(email: String) {
+    private fun addUserForLogin(email: String, photo: String) {
         addUserToDatabase(
             email,
+            photo,
             onUserAdded = {
                 navigateToHomeScreen()
             },
@@ -177,10 +180,11 @@ class LoginViewModel @Inject constructor(
 
     private fun addUserToDatabase(
         email: String,
+        photo: String,
         onUserAdded: () -> Unit,
         onErrorMessage: (String) -> Unit
     ) {
-        val user = hashMapOf(EMAIL_FIELD to email)
+        val user = hashMapOf(EMAIL_FIELD to email, PHOTO_FIELD to photo)
         database.collection(USERS_COLLECTION)
             .add(user)
             .addOnSuccessListener {

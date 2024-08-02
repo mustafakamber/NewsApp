@@ -8,7 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
+import com.mustk.newsapp.shared.Constant.NULL_PHOTO
 import com.mustk.newsapp.shared.Constant.PASSWORD_LIMIT
+import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
 import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
 import com.mustk.newsapp.shared.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -115,7 +117,7 @@ class SignupViewModel @Inject constructor(
     private fun createUserWithEmailAndPassword(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                addUserForSignup(email)
+                addUserForSignup(email, NULL_PHOTO)
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
@@ -124,9 +126,10 @@ class SignupViewModel @Inject constructor(
             }
     }
 
-    private fun addUserForSignup(email: String) {
+    private fun addUserForSignup(email: String,photo: String) {
         addUserToDatabase(
             email,
+            photo,
             onUserAdded = {
                 navigateToHomeScreen()
             },
@@ -138,10 +141,11 @@ class SignupViewModel @Inject constructor(
 
     private fun addUserToDatabase(
         email: String,
+        photo: String,
         onUserAdded: () -> Unit,
         onErrorMessage: (String) -> Unit
     ) {
-        val user = hashMapOf(EMAIL_FIELD to email)
+        val user = hashMapOf(EMAIL_FIELD to email, PHOTO_FIELD to photo)
         database.collection(USERS_COLLECTION)
             .add(user)
             .addOnSuccessListener {

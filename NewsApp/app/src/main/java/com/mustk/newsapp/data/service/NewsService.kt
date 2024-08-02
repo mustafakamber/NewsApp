@@ -28,8 +28,7 @@ interface NewsService {
 
     @GET(ALL_QUERY_PARAM)
     suspend fun fetchNewsDataForSearch(
-        @Query(LANGUAGE_QUERY_PARAM) language: String,
-        @Query(SEARCH_QUERY_PARAM) search : String,
+        @Query(SEARCH_QUERY_PARAM) search: String
     ) : Response<BaseResponse>
 
     @GET("$UUID_QUERY_PARAM{uuid}")

@@ -7,10 +7,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.mustk.newsapp.R
 
-fun ImageView.downloadImageFromURL(url: String?) {
+fun ImageView.downloadNewsImageFromURL(url: String?) {
     val options = RequestOptions()
         .placeholder(placeHolderProgressBar(this.context))
-        .error(R.drawable.baseline_image_not_supported_24)
+        .error(R.drawable.poster)
+    Glide.with(this.context)
+        .setDefaultRequestOptions(options)
+        .load(url)
+        .into(this)
+}
+
+fun ImageView.downloadProfileImageFromURL(url: String?) {
+    val options = RequestOptions()
+        .placeholder(placeHolderProgressBar(this.context))
+        .error(R.drawable.default_profile_image)
     Glide.with(this.context)
         .setDefaultRequestOptions(options)
         .load(url)

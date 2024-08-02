@@ -18,11 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/signOutButton"
-        style="@style/smallButtonStyle"
-        android:layout_marginEnd="@dimen/extra_tiny_spacing_size"
-        android:src="@drawable/ic_logout"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/countrySelectSpinner"
+        android:layout_width="@dimen/large_button_size"
+        android:layout_height="wrap_content"
+        app:tabPadding="0dp"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabMinWidth="10dp"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:backgroundTint="?android:attr/colorBackground"
+        app:tabMode="scrollable"
         app:layout_constraintBottom_toBottomOf="@id/headLineTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/headLineTextView" />
@@ -68,6 +74,8 @@
                 android:layout_marginTop="@dimen/tiny_spacing_size"
                 android:layout_marginStart="@dimen/small_spacing_size"
                 android:layout_marginEnd="@dimen/small_spacing_size"
+                app:iss_placeholder="@drawable/poster"
+                app:iss_error_image="@drawable/error"
                 app:iss_auto_cycle="true"
                 app:iss_corner_radius="36"
                 app:iss_period="2000"
@@ -103,7 +111,37 @@
                 app:layout_constraintBottom_toTopOf="@id/homeTabLayout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/homeAdView" />
+                app:layout_constraintTop_toBottomOf="@id/homeAdView"/>
+
+            <LinearLayout
+                android:id="@+id/homeNotFoundMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeTabLayout">
+
+                <ImageView
+                    android:id="@+id/homeNullImageView"
+                    android:layout_width="@dimen/medium_image_size"
+                    android:layout_height="@dimen/medium_image_size"
+                    android:src="@drawable/baseline_newspaper_24"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/homeNullTextView"
+                    style="@style/tinySecondaryTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_spacing_size"
+                    android:text="@string/home_not_found" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

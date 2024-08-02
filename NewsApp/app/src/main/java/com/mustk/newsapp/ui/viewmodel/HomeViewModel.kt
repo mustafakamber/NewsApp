@@ -3,28 +3,27 @@ package com.mustk.newsapp.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.denzcoskun.imageslider.models.SlideModel
-import com.google.firebase.auth.FirebaseAuth
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.shared.Constant.CATEGORY_GENERAL
-import com.mustk.newsapp.shared.Constant.LANGUAGE
-import com.mustk.newsapp.shared.Event
+import com.mustk.newsapp.shared.Constant.HEADLINE_SIZE
+import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
+import com.mustk.newsapp.shared.Constant.NULL_PATH_IMAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: NewsDataSource,
-    private val auth: FirebaseAuth
+    private val repository: NewsDataSource
 ) : BaseViewModel() {
-
-    private val _navigateToLogin = MutableLiveData<Event<Boolean>>()
-    val navigateToLogin: LiveData<Event<Boolean>>
-        get() = _navigateToLogin
 
     private val _categoryLoading = MutableLiveData<Boolean>()
     val categoryLoading: LiveData<Boolean>
         get() = _categoryLoading
+
+    private val _categoryNullMessage = MutableLiveData<Boolean>()
+    val categoryNullMessage: LiveData<Boolean>
+        get() = _categoryNullMessage
 
     private val _categoryNewsList = MutableLiveData<List<News>>()
     val categoryNewsList: LiveData<List<News>>
@@ -52,24 +51,30 @@ class HomeViewModel @Inject constructor(
     val imageSliderView: LiveData<Boolean>
         get() = _imageSliderView
 
-    private val _lastSelectedTabPosition = MutableLiveData<Int>()
-    val lastSelectedTabPosition: LiveData<Int> get() = _lastSelectedTabPosition
+    private val _lastSelectedCategoryTabPosition = MutableLiveData<Int>()
+    val lastSelectedTabCategoryPosition: LiveData<Int> get() = _lastSelectedCategoryTabPosition
+
+    private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
+    val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
 
     private val initCategory = CATEGORY_GENERAL
+    private val initLanguage = LANGUAGE_EN
 
     private var selectedCategory = initCategory
+    private var selectedLanguage = initLanguage
 
     init {
         refreshHomeData()
+        println("SA")
     }
 
-    fun swipeRefreshState() {
+    fun swipeRefreshClicked() {
         setSwipeRefreshLoadingVisibility(true)
         refreshHomeData()
         setSwipeRefreshLoadingVisibility(false)
     }
 
-    private fun refreshHomeData() {
+     private fun refreshHomeData() {
         initHeadlineState()
         initCategoryState()
         fetchHeadlineNewsFromAPI()
@@ -104,8 +109,16 @@ class HomeViewModel @Inject constructor(
         _categoryNewsList.value = news
     }
 
-    fun setLastSelectedTabPosition(position: Int) {
-        _lastSelectedTabPosition.value = position
+    private fun setCategoryNullMessage(boolean: Boolean) {
+        _categoryNullMessage.value = boolean
+    }
+
+    fun setCategoryLastSelectedTabPosition(position: Int) {
+        _lastSelectedCategoryTabPosition.value = position
+    }
+
+    fun setCountryLastSelectedTabPosition(position: Int) {
+        _lastSelectedLanguageTabPosition.value = position
     }
 
     private fun initHeadlineState() {
@@ -126,53 +139,85 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun initCategoryState() {
+        setCategoryNullMessage(false)
         setRecyclerViewVisibility(false)
         setCategoryLoadingVisibility(false)
     }
 
     private fun loadingCategoryState() {
+        setCategoryNullMessage(false)
         setRecyclerViewVisibility(false)
         setCategoryLoadingVisibility(true)
     }
 
     private fun resultCategoryState(){
         setRecyclerViewVisibility(true)
+        setCategoryNullMessage(false)
         setCategoryLoadingVisibility(false)
     }
 
+    private fun nullCategoryState() {
+        setRecyclerViewVisibility(false)
+        setCategoryLoadingVisibility(false)
+        setCategoryNullMessage(true)
+    }
+
+    fun setSlideListClear(){
+        _slideList.clear()
+        setHeadlineNewsList(_slideList)
+    }
+
     private fun fetchHeadlineNewsFromAPI() {
+        setSlideListClear()
         loadingHeadLineState()
         safeRequest(
-            response = { repository.fetchNewsDataForHeadline(LANGUAGE) },
+            response = { repository.fetchNewsDataForHeadline(selectedLanguage) },
             successStatusData = { newsData ->
                 newsData.data.forEach {
-                    if (!it.imageUrl.isNullOrEmpty()) {
+                    if (it.imageUrl.isNullOrEmpty()) {
+                        _slideList.add(SlideModel(NULL_PATH_IMAGE, it.title))
+                    }else{
                         _slideList.add(SlideModel(it.imageUrl, it.title))
                     }
-                    resultHeadlineState()
-                    setHeadlineNewsList(_slideList)
+                    if (_slideList.size == HEADLINE_SIZE){
+                        resultHeadlineState()
+                        setHeadlineNewsList(_slideList)
+                    }
                 }
             })
     }
 
     fun fetchCategoryNewsFromAPI(category: String) {
-        selectedCategory = category
+        setSelectedCategory(category)
         loadingCategoryState()
         safeRequest(
-            response = { repository.fetchNewsDataForCategories(LANGUAGE, selectedCategory) },
+            response = {
+                repository.fetchNewsDataForCategories(
+                    selectedLanguage,
+                    selectedCategory
+                )
+            },
             successStatusData = { newsData ->
-                resultCategoryState()
-                setCategoryNewsList(newsData.data)
+                if (newsData.data.isEmpty()) {
+                    nullCategoryState()
+                } else {
+                    resultCategoryState()
+                    setCategoryNewsList(newsData.data)
+                }
             }
         )
     }
 
-    fun currentUserLogOut() {
-        auth.signOut()
-        navigateToLoginScreen()
+    private fun setSelectedCategory(category: String) {
+        selectedCategory = category
     }
-
-    private fun navigateToLoginScreen() {
-        _navigateToLogin.value = Event(true)
+    private fun setSelectedLanguage(language: String) {
+        selectedLanguage = language
+    }
+    fun onLanguageChanged(language: String){
+        if (selectedLanguage != language){
+            setSelectedLanguage(language)
+            refreshHomeData()
+        }
     }
 }

@@ -1,7 +1,24 @@
 <resources>
-    <string name="app_name">NewsApp</string>
+    <string name="app_name" translatable="false">NewsApp</string>
     <string name="banner_test_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notification_work_id" translatable="false">my_id</string>
+    <string name="default_email" translatable="false">abc@gmail.com</string>
+    <string name="sample_news_source" translatable="false">news.mydrivers.com</string>
+    <string name="sample_time" translatable="false">12:32</string>
+    <string name="sample_date" translatable="false">27-05-2024</string>
+    <string name="sample_news_title" translatable="false">Memorial Day 2024 tech deals you can still get this weekend..</string>
+    <string name="sample_news_description" translatable="false">İmza töreninde açıklamalarda bulunan Jose Mourinho, isminin Fenerbahçe\'yle anılmaya başladığı andan itibaren taraftarların sevgisini derinden hissettiğini belirterek, "Normalde bir teknik adam elde ettiği zaferden sonra bu sevgiyi görür. Ama bunun öncesinde bunu hissedebiliyorum. Bu da bana büyük bir sorumluluk veriyor. Sizlere söz veriyorum ki şu andan itibaren ben de sizin ailenize aitim. Bu forma tıpkı benim derim, kemiğim gibi olacak. Futbol sizler, bizler için bir tutkudur. Öyle zannediyorum ki bu tutkuyu hissedebileceğim en iyi yerlerden birisindeyim." ifadelerini kullandı..</string>
+    <string name="point" translatable="false">●</string>
+    <string name="channel_name" translatable="false">Channel Name</string>
+    <string name="channel_description" translatable="false">Channel Description</string>
+    <string name="sample_categories" translatable="false">General, Sport, Entertainment, Science</string>
+    <string name="spinner_uk" translatable="false">🇬🇧</string>
+    <string name="spinner_tr" translatable="false">🇹🇷</string>
+    <string name="spinner_fr" translatable="false">🇫🇷</string>
+    <string name="spinner_es" translatable="false">🇪🇸</string>
+    <string name="spinner_it" translatable="false">🇮🇹</string>
+    <string name="spinner_de" translatable="false">🇩🇪</string>
+    <string name="spinner_ar" translatable="false">🇸🇦</string>
     <string name="login_title_text">Hello,\nWelcome to \nthe News\nWorld!</string>
     <string name="email_hint_text">Email address</string>
     <string name="password_hint_text">Password</string>
@@ -40,27 +57,19 @@
     <string name="tab_local">Local</string>
     <string name="tab_cloud">Cloud</string>
     <string name="see_all">See All</string>
-    <string name="sample_news_title">Memorial Day 2024 tech deals you can still get this weekend..</string>
-    <string name="sample_news_source">news.mydrivers.com</string>
-    <string name="sample_news_description">İmza töreninde açıklamalarda bulunan Jose Mourinho, isminin Fenerbahçe\'yle anılmaya başladığı andan itibaren taraftarların sevgisini derinden hissettiğini belirterek, "Normalde bir teknik adam elde ettiği zaferden sonra bu sevgiyi görür. Ama bunun öncesinde bunu hissedebiliyorum. Bu da bana büyük bir sorumluluk veriyor. Sizlere söz veriyorum ki şu andan itibaren ben de sizin ailenize aitim. Bu forma tıpkı benim derim, kemiğim gibi olacak. Futbol sizler, bizler için bir tutkudur. Öyle zannediyorum ki bu tutkuyu hissedebileceğim en iyi yerlerden birisindeyim." ifadelerini kullandı..</string>
-    <string name="point">●</string>
-    <string name="sample_date">27-05-2024</string>
-    <string name="sample_categories">General, Sport, Entertainment, Science</string>
-    <string name="sample_time">12:32</string>
     <string name="search_hint">Search</string>
     <string name="notification_title">Hey!</string>
     <string name="notification_content">How about checking out today\'s news? 📰</string>
     <string name="search_message">Hey! Is there a news that interests you?\nSearch and discover now! 📰</string>
     <string name="search_not_found">Sorry, we couldn\'t find any results 😔</string>
+    <string name="home_not_found">Sorry, we couldn\'t find any news 😔</string>
     <string name="readlist_message">Your Read List is empty.</string>
     <string name="detail_title">News Detail</string>
     <string name="detail_similar">Similar News 📰</string>
     <string name="detail_see_more">see more</string>
     <string name="readlist_title">Read List</string>
-    <string name="channel_name">Channel Name</string>
-    <string name="channel_description">Channel Description</string>
-    <string name="notification_work_id">my_id</string>
     <string name="logout_alert">Are you sure want to log out?</string>
+    <string name="delete_account_alert">Are you sure want to delete this account?</string>
     <string name="readlist_alert">Are you sure you want to delete all read list news?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -70,7 +79,6 @@
     <string name="fetch_from_api">The news details were retrieved from the API.</string>
     <string name="fetch_from_sqlite">The news details were retrieved from the SQLite.</string>
     <string name="settings_title">Settings</string>
-    <string name="default_email">abc@gmail.com</string>
     <string name="settings_preferences">Preferences</string>
     <string name="settings_account">Account</string>
     <string name="settings_extra">Extra</string>
@@ -83,4 +91,6 @@
     <string name="settings_item_about_me">About Me</string>
     <string name="settings_item_send_message">Send a Message</string>
     <string name="settings_item_share_app">Share this App</string>
+    <string name="spinner_english">English</string>
+    <string name="spinner_turkish">Turkish</string>
 </resources>

@@ -41,6 +41,10 @@ class PasswordFragment @Inject constructor() : BottomSheetDialogFragment() {
     }
 
     private fun setupPasswordScreen() = with(binding) {
+        arguments?.apply {
+            val args = PasswordFragmentArgs.fromBundle(this)
+            resetEmailEditText.setText(args.password)
+        }
         resetEmailEditText.addTextChangedListener {
             viewModel.setEmailEndIcon(true)
         }

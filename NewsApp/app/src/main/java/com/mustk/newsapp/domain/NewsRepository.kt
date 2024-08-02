@@ -44,10 +44,9 @@ class NewsRepository @Inject constructor(
     }
 
     override suspend fun fetchNewsDataForSearch(
-        language: String,
         search: String
     ): Resource<BaseResponse> {
-        return performApiCall { newsService.fetchNewsDataForSearch(language, search) }
+        return performApiCall { newsService.fetchNewsDataForSearch(search) }
     }
 
     override suspend fun fetchNewsDataDetail(uuid: String): Resource<News> {
@@ -74,8 +73,8 @@ class NewsRepository @Inject constructor(
         newsDao.deleteNews(news)
     }
 
-    override suspend fun deleteAllNewsData(newsList: List<News>) {
-        newsDao.deleteAllNews(newsList)
+    override suspend fun deleteNewsList(user: String) {
+        newsDao.deleteNewsList(user)
     }
 
     override suspend fun fetchNewsDataLocal(user: String): List<News> {

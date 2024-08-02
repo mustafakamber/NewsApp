@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.databinding.RecyclerNewsRowBinding
 import com.mustk.newsapp.shared.Constant.SHORT_TITLE_MAX_SIZE
-import com.mustk.newsapp.util.downloadImageFromURL
+import com.mustk.newsapp.util.downloadNewsImageFromURL
 import com.mustk.newsapp.util.truncateString
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class NewsAdapter @Inject constructor() :
 
         fun bind(news: News) = with(binding) {
             news.imageUrl?.let {
-                rowNewsPosterImageView.downloadImageFromURL(it)
+                rowNewsPosterImageView.downloadNewsImageFromURL(it)
             }
             news.title?.let {
                 rowNewsTitleTextView.text = it.truncateString(SHORT_TITLE_MAX_SIZE)

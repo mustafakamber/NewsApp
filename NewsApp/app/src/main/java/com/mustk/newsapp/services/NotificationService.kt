@@ -7,7 +7,9 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.mustk.newsapp.R
 import com.mustk.newsapp.shared.Constant.CHANNEL_ID
+import com.mustk.newsapp.shared.Constant.NOTIFICATIONS_ENABLED
 import com.mustk.newsapp.shared.Constant.NOTIFICATION_REQUEST_CODE
+import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
 import com.mustk.newsapp.ui.NewsActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -18,8 +20,13 @@ class NotificationService @Inject constructor(
     private val notificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+    private val sharedPreferences by lazy {
+        context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
     fun showNotification() {
         if (isPreviousNotificationVisible()) return
+        if (!isNotificationSwitchChecked()) return
         val intentToApp = Intent(context, NewsActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
@@ -44,5 +51,9 @@ class NotificationService @Inject constructor(
             }
         }
         return false
+    }
+
+    private fun isNotificationSwitchChecked(): Boolean {
+        return sharedPreferences.getBoolean(NOTIFICATIONS_ENABLED, true)
     }
 }
