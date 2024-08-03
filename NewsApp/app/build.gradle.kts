@@ -77,7 +77,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.androidx.cardview)
-    implementation(libs.imageslideshow)
+    implementation(libs.autoimageslider)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

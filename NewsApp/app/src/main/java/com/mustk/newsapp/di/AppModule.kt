@@ -19,6 +19,7 @@ import com.mustk.newsapp.roomdb.NewsDatabase
 import com.mustk.newsapp.shared.Constant.APIKEY_QUERY_PARAM
 import com.mustk.newsapp.shared.Constant.BASE_URL
 import com.mustk.newsapp.shared.Constant.SQLITE_DATABASE_NAME
+import com.mustk.newsapp.ui.adapter.SliderAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

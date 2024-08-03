@@ -195,7 +195,7 @@ class DetailViewModel @Inject constructor(
             val email = currentUser.email ?: return@let
             val updatedNews = news.updateUserModel(news, email)
             viewModelScope.launch {
-                repository.saveNewsData(updatedNews)
+                repository.saveNewsToRoom(updatedNews)
                 showSnackBarMessage(R.string.saved)
                 savedNewsState()
             }
@@ -230,7 +230,7 @@ class DetailViewModel @Inject constructor(
 
     private fun deleteLocalDatabase() = viewModelScope.launch {
         _detailNews.value?.let { news ->
-            repository.deleteNewsData(news)
+            repository.deleteNewsFromRoom(news)
             showSnackBarMessage(R.string.deleted)
             unsavedNewsState()
         }
@@ -238,7 +238,7 @@ class DetailViewModel @Inject constructor(
 
     private fun fetchDetailNewsFromAPI(uuid: String) {
         safeRequest(
-            response = { repository.fetchNewsDataDetail(uuid) },
+            response = { repository.fetchNewsDetail(uuid) },
             successStatusData = { newsDetail ->
                 detailResultState(uuid, newsDetail)
                 showSnackBarMessage(R.string.fetch_from_api)
@@ -250,7 +250,7 @@ class DetailViewModel @Inject constructor(
         val email = currentUser?.email
         if (email != null) {
             viewModelScope.launch {
-                val newsData = repository.fetchNewsDataByUUID(uuid, email)
+                val newsData = repository.fetchNewsByUUIDAndUserFromRoom(uuid, email)
                 detailResultState(uuid, newsData)
                 showSnackBarMessage(R.string.fetch_from_sqlite)
             }
@@ -265,7 +265,7 @@ class DetailViewModel @Inject constructor(
             val searchCategories = categories.lowercase()
             safeRequest(
                 response = {
-                    repository.fetchNewsDataForSimilar(
+                    repository.fetchSimilarNews(
                         language,
                         searchTitle,
                         searchCategories

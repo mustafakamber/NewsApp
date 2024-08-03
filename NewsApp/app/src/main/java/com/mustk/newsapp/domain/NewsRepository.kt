@@ -30,30 +30,30 @@ class NewsRepository @Inject constructor(
         }
     }
 
-    override suspend fun fetchNewsDataForCategories(
+    override suspend fun fetchNewsListByCategory(
         language: String,
         category: String
     ): Resource<BaseResponse> {
         return performApiCall { newsService.fetchNewsDataForCategories(language, category) }
     }
 
-    override suspend fun fetchNewsDataForHeadline(
+    override suspend fun fetchHeadlineNews(
         language: String
     ): Resource<BaseResponse> {
         return performApiCall { newsService.fetchNewsDataForHeadline(language) }
     }
 
-    override suspend fun fetchNewsDataForSearch(
+    override suspend fun searchNews(
         search: String
     ): Resource<BaseResponse> {
         return performApiCall { newsService.fetchNewsDataForSearch(search) }
     }
 
-    override suspend fun fetchNewsDataDetail(uuid: String): Resource<News> {
+    override suspend fun fetchNewsDetail(uuid: String): Resource<News> {
         return performApiCall { newsService.fetchNewsDataForDetail(uuid) }
     }
 
-    override suspend fun fetchNewsDataForSimilar(
+    override suspend fun fetchSimilarNews(
         language: String,
         search: String,
         category: String
@@ -61,27 +61,27 @@ class NewsRepository @Inject constructor(
         return performApiCall { newsService.fetchNewsDataForSimilar(language, search, category) }
     }
 
-    override suspend fun saveNewsData(news: News) {
+    override suspend fun saveNewsToRoom(news: News) {
         newsDao.insertNews(news)
     }
 
-    override suspend fun saveNewsListData(newsList: List<News>) {
+    override suspend fun saveNewsListToRoom(newsList: List<News>) {
         newsDao.insertNewsList(newsList)
     }
 
-    override suspend fun deleteNewsData(news: News) {
+    override suspend fun deleteNewsFromRoom(news: News) {
         newsDao.deleteNews(news)
     }
 
-    override suspend fun deleteNewsList(user: String) {
-        newsDao.deleteNewsList(user)
+    override suspend fun deleteNewsListByUserFromRoom(user: String) {
+        newsDao.deleteNewsListByUser(user)
     }
 
-    override suspend fun fetchNewsDataLocal(user: String): List<News> {
-        return newsDao.fetchNewsList(user)
+    override suspend fun fetchNewsListByUserFromRoom(user: String): List<News> {
+        return newsDao.fetchNewsListByUser(user)
     }
 
-    override suspend fun fetchNewsDataByUUID(uuid: String, user: String): News {
-        return newsDao.fetchNewsByUUID(uuid, user)
+    override suspend fun fetchNewsByUUIDAndUserFromRoom(uuid: String, user: String): News {
+        return newsDao.fetchNewsByUUIDAndUser(uuid, user)
     }
 }

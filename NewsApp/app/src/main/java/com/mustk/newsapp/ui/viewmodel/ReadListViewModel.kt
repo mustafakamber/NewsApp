@@ -111,7 +111,7 @@ class ReadListViewModel @Inject constructor(
 
     fun deleteNewsFromLocal(news: News) {
         viewModelScope.launch {
-            repository.deleteNewsData(news)
+            repository.deleteNewsFromRoom(news)
             deleteNewsFromCloud(news)
         }
     }
@@ -125,7 +125,7 @@ class ReadListViewModel @Inject constructor(
         _readListNews.value?.forEach { newsItem ->
             newsItem.user?.let { user ->
                 viewModelScope.launch {
-                    repository.deleteNewsList(user)
+                    repository.deleteNewsListByUserFromRoom(user)
                 }
             }
         }
@@ -252,7 +252,7 @@ class ReadListViewModel @Inject constructor(
 
     private fun saveNewsListToLocal(newsList: List<News>) {
         viewModelScope.launch {
-            repository.saveNewsListData(newsList)
+            repository.saveNewsListToRoom(newsList)
             fetchNewsListFromLocal()
         }
     }
@@ -263,7 +263,7 @@ class ReadListViewModel @Inject constructor(
         val email = currentUser?.email
         if (email != null) {
             viewModelScope.launch {
-                val newsData = repository.fetchNewsDataLocal(email)
+                val newsData = repository.fetchNewsListByUserFromRoom(email)
                 setReadListNews(newsData)
             }
         }

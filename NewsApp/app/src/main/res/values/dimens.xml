@@ -23,6 +23,7 @@
     <dimen name="small_padding_size">8dp</dimen>
     <dimen name="medium_padding_size">16dp</dimen>
     <!-- RadiusSize -->
+    <dimen name="tiny_radius_size">2dp</dimen>
     <dimen name="small_radius_size">16dp</dimen>
     <dimen name="medium_radius_size">20dp</dimen>
     <dimen name="large_radius_size">32dp</dimen>

@@ -2,13 +2,11 @@ package com.mustk.newsapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.denzcoskun.imageslider.models.SlideModel
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.shared.Constant.CATEGORY_GENERAL
 import com.mustk.newsapp.shared.Constant.HEADLINE_SIZE
 import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
-import com.mustk.newsapp.shared.Constant.NULL_PATH_IMAGE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -29,11 +27,11 @@ class HomeViewModel @Inject constructor(
     val categoryNewsList: LiveData<List<News>>
         get() = _categoryNewsList
 
-    private val _headlineNewsList = MutableLiveData<ArrayList<SlideModel>>()
-    val headlineNewsList: LiveData<ArrayList<SlideModel>>
+    private val _headlineNewsList = MutableLiveData<ArrayList<News>>()
+    val headlineNewsList: LiveData<ArrayList<News>>
         get() = _headlineNewsList
 
-    private val _slideList = ArrayList<SlideModel>()
+    private val _slideList = ArrayList<News>()
 
     private val _headlineLoading = MutableLiveData<Boolean>()
     val headlineLoading: LiveData<Boolean>
@@ -63,18 +61,13 @@ class HomeViewModel @Inject constructor(
     private var selectedCategory = initCategory
     private var selectedLanguage = initLanguage
 
-    init {
-        refreshHomeData()
-        println("SA")
-    }
-
     fun swipeRefreshClicked() {
         setSwipeRefreshLoadingVisibility(true)
         refreshHomeData()
         setSwipeRefreshLoadingVisibility(false)
     }
 
-     private fun refreshHomeData() {
+    fun refreshHomeData() {
         initHeadlineState()
         initCategoryState()
         fetchHeadlineNewsFromAPI()
@@ -101,7 +94,7 @@ class HomeViewModel @Inject constructor(
         _imageSliderView.value = boolean
     }
 
-    private fun setHeadlineNewsList(news: ArrayList<SlideModel>) {
+    private fun setHeadlineNewsList(news: ArrayList<News>) {
         _headlineNewsList.value = news
     }
 
@@ -113,11 +106,11 @@ class HomeViewModel @Inject constructor(
         _categoryNullMessage.value = boolean
     }
 
-    fun setCategoryLastSelectedTabPosition(position: Int) {
+    private fun setCategoryLastSelectedTabPosition(position: Int) {
         _lastSelectedCategoryTabPosition.value = position
     }
 
-    fun setCountryLastSelectedTabPosition(position: Int) {
+    private fun setCountryLastSelectedTabPosition(position: Int) {
         _lastSelectedLanguageTabPosition.value = position
     }
 
@@ -171,14 +164,10 @@ class HomeViewModel @Inject constructor(
         setSlideListClear()
         loadingHeadLineState()
         safeRequest(
-            response = { repository.fetchNewsDataForHeadline(selectedLanguage) },
+            response = { repository.fetchHeadlineNews(selectedLanguage) },
             successStatusData = { newsData ->
                 newsData.data.forEach {
-                    if (it.imageUrl.isNullOrEmpty()) {
-                        _slideList.add(SlideModel(NULL_PATH_IMAGE, it.title))
-                    }else{
-                        _slideList.add(SlideModel(it.imageUrl, it.title))
-                    }
+                    _slideList.add(it)
                     if (_slideList.size == HEADLINE_SIZE){
                         resultHeadlineState()
                         setHeadlineNewsList(_slideList)
@@ -186,13 +175,12 @@ class HomeViewModel @Inject constructor(
                 }
             })
     }
-
-    fun fetchCategoryNewsFromAPI(category: String) {
+    private fun fetchCategoryNewsFromAPI(category: String) {
         setSelectedCategory(category)
         loadingCategoryState()
         safeRequest(
             response = {
-                repository.fetchNewsDataForCategories(
+                repository.fetchNewsListByCategory(
                     selectedLanguage,
                     selectedCategory
                 )
@@ -214,10 +202,14 @@ class HomeViewModel @Inject constructor(
     private fun setSelectedLanguage(language: String) {
         selectedLanguage = language
     }
-    fun onLanguageChanged(language: String){
-        if (selectedLanguage != language){
-            setSelectedLanguage(language)
-            refreshHomeData()
-        }
+    fun onLanguageChange(language: String, position: Int){
+        setSelectedLanguage(language)
+        setCountryLastSelectedTabPosition(position)
+        refreshHomeData()
+    }
+
+    fun onCategoryChange(category: String, position: Int){
+        fetchCategoryNewsFromAPI(category)
+        setCategoryLastSelectedTabPosition(position)
     }
 }

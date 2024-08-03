@@ -6,38 +6,38 @@ import com.mustk.newsapp.shared.Resource
 
 interface NewsDataSource {
 
-    suspend fun fetchNewsDataForCategories(
+    suspend fun fetchNewsListByCategory(
         language: String,
         category: String
     ): Resource<BaseResponse>
 
-    suspend fun fetchNewsDataForHeadline(
+    suspend fun fetchHeadlineNews(
         language: String,
     ): Resource<BaseResponse>
 
-    suspend fun fetchNewsDataForSearch(
+    suspend fun searchNews(
         search : String
     ) : Resource<BaseResponse>
 
-    suspend fun fetchNewsDataDetail(
+    suspend fun fetchNewsDetail(
         uuid: String
     ): Resource<News>
 
-    suspend fun fetchNewsDataForSimilar(
+    suspend fun fetchSimilarNews(
         language: String,
         search: String,
         category: String
     ): Resource<BaseResponse>
 
-    suspend fun saveNewsData(news: News)
+    suspend fun saveNewsToRoom(news: News)
 
-    suspend fun saveNewsListData(newsList : List<News>)
+    suspend fun saveNewsListToRoom(newsList : List<News>)
 
-    suspend fun deleteNewsData(news: News)
+    suspend fun deleteNewsFromRoom(news: News)
 
-    suspend fun deleteNewsList(user: String)
+    suspend fun deleteNewsListByUserFromRoom(user: String)
 
-    suspend fun fetchNewsDataLocal(user: String): List<News>
+    suspend fun fetchNewsListByUserFromRoom(user: String): List<News>
 
-    suspend fun fetchNewsDataByUUID(uuid: String, user : String): News
+    suspend fun fetchNewsByUUIDAndUserFromRoom(uuid: String, user : String): News
 }

@@ -9,8 +9,6 @@ import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.denzcoskun.imageslider.ImageSlider
-import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.tabs.TabLayout
 import com.mustk.newsapp.R
@@ -30,6 +28,7 @@ import com.mustk.newsapp.shared.Constant.LANGUAGE_FR
 import com.mustk.newsapp.shared.Constant.LANGUAGE_IT
 import com.mustk.newsapp.shared.Constant.LANGUAGE_TR
 import com.mustk.newsapp.ui.adapter.NewsAdapter
+import com.mustk.newsapp.ui.adapter.SliderAdapter
 import com.mustk.newsapp.ui.viewmodel.HomeViewModel
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +41,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
     @Inject lateinit var adRequest: AdRequest
+    @Inject lateinit var sliderAdapter: SliderAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +65,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     override fun onResume() {
         super.onResume()
         checkLastTabPosition()
+        viewModel.refreshHomeData()
     }
 
     private fun setupHomeScreen() = with(binding) {
@@ -72,15 +73,19 @@ class HomeFragment @Inject constructor() : Fragment() {
         homeSwipeRefreshLayout.setOnRefreshListener {
             viewModel.swipeRefreshClicked()
         }
+        sliderAdapter.setOnSliderNewsClickListener { uuid ->
+            navigateDetailScreen(uuid)
+        }
+        headLineImageSlider.setSliderAdapter(sliderAdapter)
         newsAdapter.setOnNewsClickListener { uuid ->
             navigateDetailScreen(uuid)
         }
         homeRecyclerView.adapter = newsAdapter
         setupCountryTabLayout()
-        setupTabLayout()
+        setupCategoryTabLayout()
     }
 
-    private fun setupCountryTabLayout() = with(binding.countrySelectSpinner){
+    private fun setupCountryTabLayout() = with(binding.homeCountryTabLayout) {
         val languageItems = listOf(
             R.string.spinner_uk, R.string.spinner_tr,
             R.string.spinner_fr, R.string.spinner_es, R.string.spinner_it,
@@ -97,8 +102,7 @@ class HomeFragment @Inject constructor() : Fragment() {
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    viewModel.onLanguageChanged(newsLanguages[it.position])
-                    viewModel.setCountryLastSelectedTabPosition(it.position)
+                    viewModel.onLanguageChange(newsLanguages[it.position], it.position)
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -106,7 +110,7 @@ class HomeFragment @Inject constructor() : Fragment() {
         })
     }
 
-    private fun setupTabLayout() = with(binding.homeTabLayout) {
+    private fun setupCategoryTabLayout() = with(binding.homeCategoryTabLayout) {
         val tabTitles = listOf(
             R.string.tab_general, R.string.tab_politics, R.string.tab_sport,
             R.string.tab_tech, R.string.tab_economy, R.string.tab_entertainment,
@@ -123,8 +127,7 @@ class HomeFragment @Inject constructor() : Fragment() {
         addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
-                    viewModel.fetchCategoryNewsFromAPI(tabCategories[it.position])
-                    viewModel.setCategoryLastSelectedTabPosition(it.position)
+                    viewModel.onCategoryChange(tabCategories[it.position], it.position)
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -135,10 +138,10 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     private fun checkLastTabPosition() = with(binding) {
         viewModel.lastSelectedTabCategoryPosition.value?.let {
-            homeTabLayout.getTabAt(it)?.select()
+            homeCategoryTabLayout.getTabAt(it)?.select()
         }
         viewModel.lastSelectedTabLanguagePosition.value?.let {
-            countrySelectSpinner.getTabAt(it)?.select()
+            homeCountryTabLayout.getTabAt(it)?.select()
         }
     }
 
@@ -157,7 +160,9 @@ class HomeFragment @Inject constructor() : Fragment() {
             newsAdapter.submitList(news)
         }
         observe(viewModel.headlineNewsList) { news ->
-            headLineImageSlider.setImageList(news, ScaleTypes.FIT)
+            sliderAdapter.reloadSliderNews(news)
+            headLineImageSlider.startAutoCycle()
+            headLineImageSlider.setIndicatorVisibility(true)
         }
         observe(viewModel.headlineLoading) { boolean ->
             homeHeadlineLoadingBar.isInvisible = !boolean
@@ -175,6 +180,7 @@ class HomeFragment @Inject constructor() : Fragment() {
             homeRecyclerView.isInvisible = !boolean
         }
         observe(viewModel.imageSliderView) { boolean ->
+            imageSliderCardView.isInvisible = !boolean
             headLineImageSlider.isInvisible = !boolean
         }
     }

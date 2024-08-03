@@ -21,11 +21,11 @@ interface NewsDao {
     suspend fun deleteNews(news: News)
 
     @Query("SELECT * FROM $NEWS_COLLECTION WHERE $USER_FIELD = :userEmail")
-    suspend fun fetchNewsList(userEmail: String): List<News>
+    suspend fun fetchNewsListByUser(userEmail: String): List<News>
 
     @Query("DELETE FROM $NEWS_COLLECTION WHERE $USER_FIELD = :userEmail")
-    suspend fun deleteNewsList(userEmail: String)
+    suspend fun deleteNewsListByUser(userEmail: String)
 
     @Query("SELECT * FROM $NEWS_COLLECTION WHERE $UUID_FIELD = :newsUUID AND $USER_FIELD = :userEmail")
-    suspend fun fetchNewsByUUID(newsUUID: String, userEmail: String): News
+    suspend fun fetchNewsByUUIDAndUser(newsUUID: String, userEmail: String): News
 }

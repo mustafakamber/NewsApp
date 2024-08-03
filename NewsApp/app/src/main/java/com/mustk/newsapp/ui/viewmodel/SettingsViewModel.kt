@@ -155,7 +155,7 @@ class SettingsViewModel @Inject constructor(
     private fun deleteAllNewsFromLocal() {
         _userEmail.value?.let {
             viewModelScope.launch {
-                repository.deleteNewsList(it)
+                repository.deleteNewsListByUserFromRoom(it)
             }
         }
     }
