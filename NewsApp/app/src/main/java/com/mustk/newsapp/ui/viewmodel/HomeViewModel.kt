@@ -201,14 +201,18 @@ class HomeViewModel @Inject constructor(
         selectedLanguage = language
     }
     fun onLanguageChange(language: String, position: Int){
-        setSelectedLanguage(language)
-        setCountryLastSelectedTabPosition(position)
-        refreshHomeData()
+        if (language != selectedLanguage){
+            setSelectedLanguage(language)
+            setCountryLastSelectedTabPosition(position)
+            refreshHomeData()
+        }
     }
 
     fun onCategoryChange(category: String, position: Int){
-        setSelectedCategory(category)
-        fetchCategoryNewsFromAPI()
-        setCategoryLastSelectedTabPosition(position)
+        if (category != selectedCategory){
+            setSelectedCategory(category)
+            fetchCategoryNewsFromAPI()
+            setCategoryLastSelectedTabPosition(position)
+        }
     }
 }
