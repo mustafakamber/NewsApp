@@ -57,15 +57,9 @@ class HomeFragment @Inject constructor() : Fragment() {
         observeLiveData()
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.setSlideListClear()
-    }
-
     override fun onResume() {
         super.onResume()
         checkLastTabPosition()
-        viewModel.refreshHomeData()
     }
 
     private fun setupHomeScreen() = with(binding) {
@@ -135,7 +129,6 @@ class HomeFragment @Inject constructor() : Fragment() {
         })
     }
 
-
     private fun checkLastTabPosition() = with(binding) {
         viewModel.lastSelectedTabCategoryPosition.value?.let {
             homeCategoryTabLayout.getTabAt(it)?.select()
@@ -162,7 +155,6 @@ class HomeFragment @Inject constructor() : Fragment() {
         observe(viewModel.headlineNewsList) { news ->
             sliderAdapter.reloadSliderNews(news)
             headLineImageSlider.startAutoCycle()
-            headLineImageSlider.setIndicatorVisibility(true)
         }
         observe(viewModel.headlineLoading) { boolean ->
             homeHeadlineLoadingBar.isInvisible = !boolean

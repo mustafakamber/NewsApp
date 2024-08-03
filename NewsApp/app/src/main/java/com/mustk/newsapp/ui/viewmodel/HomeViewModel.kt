@@ -61,17 +61,21 @@ class HomeViewModel @Inject constructor(
     private var selectedCategory = initCategory
     private var selectedLanguage = initLanguage
 
+    init {
+        refreshHomeData()
+    }
+
     fun swipeRefreshClicked() {
         setSwipeRefreshLoadingVisibility(true)
         refreshHomeData()
         setSwipeRefreshLoadingVisibility(false)
     }
 
-    fun refreshHomeData() {
+    private fun refreshHomeData() {
         initHeadlineState()
         initCategoryState()
         fetchHeadlineNewsFromAPI()
-        fetchCategoryNewsFromAPI(selectedCategory)
+        fetchCategoryNewsFromAPI()
     }
 
     private fun setCategoryLoadingVisibility(boolean: Boolean) {
@@ -155,13 +159,8 @@ class HomeViewModel @Inject constructor(
         setCategoryNullMessage(true)
     }
 
-    fun setSlideListClear(){
-        _slideList.clear()
-        setHeadlineNewsList(_slideList)
-    }
-
     private fun fetchHeadlineNewsFromAPI() {
-        setSlideListClear()
+        _slideList.clear()
         loadingHeadLineState()
         safeRequest(
             response = { repository.fetchHeadlineNews(selectedLanguage) },
@@ -175,8 +174,7 @@ class HomeViewModel @Inject constructor(
                 }
             })
     }
-    private fun fetchCategoryNewsFromAPI(category: String) {
-        setSelectedCategory(category)
+    private fun fetchCategoryNewsFromAPI() {
         loadingCategoryState()
         safeRequest(
             response = {
@@ -209,7 +207,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onCategoryChange(category: String, position: Int){
-        fetchCategoryNewsFromAPI(category)
+        setSelectedCategory(category)
+        fetchCategoryNewsFromAPI()
         setCategoryLastSelectedTabPosition(position)
     }
 }
