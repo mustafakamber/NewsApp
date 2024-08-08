@@ -4,6 +4,7 @@
     <dimen name="headline_slider_height_size">240dp</dimen>
     <dimen name="gradient_height_size">32dp</dimen>
     <dimen name="navigation_size">52dp</dimen>
+    <dimen name="home_recyclerview_size">720dp</dimen>
     <!-- TextSize -->
     <dimen name="extra_tiny_text_size">12sp</dimen>
     <dimen name="tiny_text_size">14sp</dimen>
@@ -19,6 +20,7 @@
     <dimen name="medium_spacing_size">24dp</dimen>
     <dimen name="negative_large_spacing_size">-32dp</dimen>
     <dimen name="large_spacing_size">32dp</dimen>
+    <dimen name="extra_large_spacing_size">100dp</dimen>
     <!-- PaddingSize -->
     <dimen name="small_padding_size">8dp</dimen>
     <dimen name="medium_padding_size">16dp</dimen>

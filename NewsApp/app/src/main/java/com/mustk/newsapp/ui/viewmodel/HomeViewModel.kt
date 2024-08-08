@@ -124,8 +124,6 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun loadingHeadLineState() {
-        _headlineNewsList.value?.clear()
-        _slideList.clear()
         setImageSliderVisibility(false)
         setHeadlineLoadingVisibility(true)
     }
@@ -174,6 +172,7 @@ class HomeViewModel @Inject constructor(
                 }
             })
     }
+
     private fun fetchCategoryNewsFromAPI() {
         loadingCategoryState()
         safeRequest(
@@ -197,9 +196,11 @@ class HomeViewModel @Inject constructor(
     private fun setSelectedCategory(category: String) {
         selectedCategory = category
     }
+
     private fun setSelectedLanguage(language: String) {
         selectedLanguage = language
     }
+
     fun onLanguageChange(language: String, position: Int){
         if (language != selectedLanguage){
             setSelectedLanguage(language)
@@ -211,8 +212,8 @@ class HomeViewModel @Inject constructor(
     fun onCategoryChange(category: String, position: Int){
         if (category != selectedCategory){
             setSelectedCategory(category)
-            fetchCategoryNewsFromAPI()
             setCategoryLastSelectedTabPosition(position)
+            fetchCategoryNewsFromAPI()
         }
     }
 }

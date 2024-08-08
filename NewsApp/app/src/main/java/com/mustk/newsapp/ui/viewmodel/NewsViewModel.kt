@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.mustk.newsapp.shared.Constant
-import com.mustk.newsapp.shared.Constant.DARK_THEME_ENABLED
+import com.mustk.newsapp.shared.Constant.DEFAULT_LANGUAGE
+import com.mustk.newsapp.shared.Constant.LANGUAGE_ITEM
 import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
 import com.mustk.newsapp.shared.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,10 +25,6 @@ class NewsViewModel @Inject constructor(
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    private val editor: SharedPreferences.Editor by lazy {
-        sharedPreferences.edit()
-    }
-
     private val _navigateToHome = MutableLiveData<Event<Boolean>>()
     val navigateToHome: LiveData<Event<Boolean>>
         get() = _navigateToHome
@@ -36,16 +32,16 @@ class NewsViewModel @Inject constructor(
     private val _splashLoading = MutableStateFlow(true)
     val splashLoading = _splashLoading.asStateFlow()
 
-    private val _darkThemeEnabled = MutableLiveData<Boolean>()
-    val darkThemeEnabled : LiveData<Boolean>
-        get() = _darkThemeEnabled
+    private val _languageString = MutableLiveData<String>()
+    val languageString: LiveData<String>
+        get() = _languageString
 
     init {
-        loadPreferences()
+        //loadPreferences()
     }
 
     private fun loadPreferences() {
-        _darkThemeEnabled.value = sharedPreferences.getBoolean(DARK_THEME_ENABLED, false)
+        _languageString.value = sharedPreferences.getString(LANGUAGE_ITEM, DEFAULT_LANGUAGE)
     }
 
     private fun setLoadingFalse(){

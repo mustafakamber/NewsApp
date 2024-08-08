@@ -82,5 +82,10 @@ object Constant {
     const val CATEGORY_CONVERT_CHAR = ","
     const val DATABASE_VERSION = 5
     const val TITLE_FIRST_WORD_CHAR = " "
+    const val DARK_THEME = "darkTheme"
+    const val LIGHT_THEME = "lightTheme"
+    const val DEFAULT_THEME = "defaultTheme"
+    const val DEFAULT_LANGUAGE = "defaultLanguage"
+    const val NOTIFTY_THEME_CHANGE_ACTIVITY = "notifyThemeChangeActivity"
     const val INTER_TEST = "ca-app-pub-3940256099942544/1033173712"
 }

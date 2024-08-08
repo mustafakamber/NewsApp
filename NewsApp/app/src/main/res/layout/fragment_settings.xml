@@ -110,12 +110,16 @@
                         android:layout_toEndOf="@id/languageImageView"
                         android:text="@string/settings_item_language" />
 
-                    <Spinner
-                        android:id="@+id/languageSelectSpinner"
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/settingsLanguageTabLayout"
                         android:layout_centerVertical="true"
                         android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="?attr/colorTertiary"
+                        app:tabMode="fixed"
+                        />
+
 
                 </RelativeLayout>
 

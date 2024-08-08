@@ -8,10 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.data.datasource.NewsDataSource
+import com.mustk.newsapp.shared.Constant.DARK_THEME
 import com.mustk.newsapp.shared.Constant.DARK_THEME_ENABLED
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
 import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
 import com.mustk.newsapp.shared.Constant.LANGUAGE_ITEM
+import com.mustk.newsapp.shared.Constant.LIGHT_THEME
 import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
 import com.mustk.newsapp.shared.Constant.NOTIFICATIONS_ENABLED
 import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
@@ -22,6 +24,7 @@ import com.mustk.newsapp.shared.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,28 +55,60 @@ class SettingsViewModel @Inject constructor(
     val navigateToLogin: LiveData<Event<Boolean>>
         get() = _navigateToLogin
 
+    private val _changeLanguage = MutableLiveData<Event<String>>()
+    val changeLanguage: LiveData<Event<String>>
+        get() = _changeLanguage
+
     private val _notificationEnabled = MutableLiveData<Boolean>()
     val notificationEnabled : LiveData<Boolean>
         get() = _notificationEnabled
 
-    private val _darkThemeEnabled = MutableLiveData<Boolean>()
-    val darkThemeEnabled : LiveData<Boolean>
-        get() = _darkThemeEnabled
+    private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
+    val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
 
-    private val _languageItem = MutableLiveData<String>()
-    val languageItem : LiveData<String>
-        get() = _languageItem
+    /*
+    private var initLanguage = sharedPreferences.getString(LANGUAGE_ITEM, DEFAULT_LANGUAGE)
+
+    private var selectedLanguage = if (initLanguage == DEFAULT_LANGUAGE){
+        getCurrentLanguage()
+    }else{
+        initLanguage
+    }
+     */
+
+    private var selectedLanguage = getCurrentLanguage()
 
     init {
+        setLanguageLastSelectedTabPosition(initTabPosition())
         loadPreferences()
         fetchUserInfoFromCloudDatabase()
+    }
+
+    private fun initTabPosition() : Int {
+        return if (selectedLanguage == LANGUAGE_EN){
+            0
+        } else {
+            1
+        }
+    }
+
+    private fun setLanguageLastSelectedTabPosition(position: Int) {
+        _lastSelectedLanguageTabPosition.value = position
+    }
+
+    private fun getCurrentLanguage(): String {
+        val locale: Locale =
+            context.resources.configuration.locales.get(0)
+        return locale.language
+    }
+
+    private fun setSelectedLanguage(language: String) {
+        selectedLanguage = language
     }
 
     private fun loadPreferences() {
         sharedPreferences.apply {
             _notificationEnabled.value = getBoolean(NOTIFICATIONS_ENABLED, true)
-            _darkThemeEnabled.value = getBoolean(DARK_THEME_ENABLED, false)
-            _languageItem.value = getString(LANGUAGE_ITEM, LANGUAGE_EN)
         }
     }
 
@@ -83,13 +118,25 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun saveDarkThemePreference(enabled: Boolean) {
-        _darkThemeEnabled.value = enabled
-        editor.putBoolean(DARK_THEME_ENABLED, enabled).apply()
+        val themeString = if (enabled) {
+            DARK_THEME
+        } else {
+            LIGHT_THEME
+        }
+        editor.putString(DARK_THEME_ENABLED, themeString).apply()
     }
 
-    fun saveLanguagePreference(languageCode: String) {
-        _languageItem.value = languageCode
+    private fun saveLanguagePreference(languageCode: String) {
         editor.putString(LANGUAGE_ITEM, languageCode).apply()
+    }
+
+    fun onLanguageChange(language: String, position: Int) {
+        if (language != selectedLanguage) {
+            setSelectedLanguage(language)
+            setLanguageLastSelectedTabPosition(position)
+            changeAppLanguage(language)
+            saveLanguagePreference(language)
+        }
     }
 
     private fun fetchUserInfoFromCloudDatabase() {
@@ -192,5 +239,9 @@ class SettingsViewModel @Inject constructor(
 
     private fun navigateToLoginScreen() {
         _navigateToLogin.value = Event(true)
+    }
+
+    private fun changeAppLanguage(language: String) {
+        _changeLanguage.value = Event(language)
     }
 }

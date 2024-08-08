@@ -16,10 +16,10 @@ import com.mustk.newsapp.data.service.NewsService
 import com.mustk.newsapp.domain.NewsRepository
 import com.mustk.newsapp.roomdb.NewsDao
 import com.mustk.newsapp.roomdb.NewsDatabase
+import com.mustk.newsapp.services.ThemeService
 import com.mustk.newsapp.shared.Constant.APIKEY_QUERY_PARAM
 import com.mustk.newsapp.shared.Constant.BASE_URL
 import com.mustk.newsapp.shared.Constant.SQLITE_DATABASE_NAME
-import com.mustk.newsapp.ui.adapter.SliderAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -136,6 +136,12 @@ object AppModule {
     @Provides
     fun provideAdRequest(): AdRequest {
         return AdRequest.Builder().build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideThemeService(@ApplicationContext context: Context): ThemeService {
+        return ThemeService(context)
     }
 }
 

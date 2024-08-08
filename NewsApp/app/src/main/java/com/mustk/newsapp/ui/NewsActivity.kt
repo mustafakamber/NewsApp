@@ -1,17 +1,20 @@
 package com.mustk.newsapp.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.ActivityNewsBinding
+import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
+import com.mustk.newsapp.shared.Constant.LANGUAGE_TR
 import com.mustk.newsapp.ui.viewmodel.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class NewsActivity : AppCompatActivity() {
@@ -24,8 +27,8 @@ class NewsActivity : AppCompatActivity() {
         setupSplashScreen()
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //checkUILanguage()
         checkCurrentUser()
-        //checkUITheme()
         setupNavigationBottomView()
     }
 
@@ -40,18 +43,6 @@ class NewsActivity : AppCompatActivity() {
     private fun checkCurrentUser() {
         viewModel.currentUserCheck()
     }
-
-    /*
-    private fun checkUITheme() {
-        viewModel.darkThemeEnabled.value?.let { isEnabled ->
-            if (isEnabled) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-        }
-    }
-     */
 
     private fun setupNavigationBottomView() = with(binding) {
         val navHostFragment =
@@ -74,5 +65,36 @@ class NewsActivity : AppCompatActivity() {
 
     private fun updateBottomNavigationViewVisibility(isVisible: Boolean) {
         binding.navigationBottomView.isVisible = isVisible
+    }
+
+    private fun checkUILanguage() {
+        val languagePref = getLanguagePreferences()
+        if (languagePref == LANGUAGE_TR && currentLanguage() != LANGUAGE_TR) {
+            changeUILanguage(languagePref)
+        } else if (languagePref == LANGUAGE_EN && currentLanguage() != LANGUAGE_EN) {
+            changeUILanguage(languagePref)
+        }
+    }
+
+    private fun currentLanguage(): String {
+        val locale: Locale =
+            this.resources.configuration.locales.get(0)
+        return locale.language
+    }
+
+    private fun getLanguagePreferences() : String? {
+        return viewModel.languageString.value
+    }
+
+    private fun changeUILanguage(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.locale = locale
+        this.resources.updateConfiguration(
+            config,
+            this.resources.displayMetrics
+        )
+        recreate()
     }
 }

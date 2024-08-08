@@ -10,13 +10,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
 import com.mustk.newsapp.R
 import com.mustk.newsapp.broadcastreceiver.NotificationReceiver
 import com.mustk.newsapp.databinding.FragmentSettingsBinding
@@ -43,7 +42,6 @@ class SettingsFragment @Inject constructor() : Fragment() {
     private lateinit var confirmation: ConfirmationFragment
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,24 +56,22 @@ class SettingsFragment @Inject constructor() : Fragment() {
         observeLiveData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkLastTabPosition()
+    }
+
     private fun setupSettingsScreen() = with(binding) {
-
-        setupSpinner()
-
-        viewModel.darkThemeEnabled.value?.let {
-            themeSwitch.isChecked = it
-        }
-
+        setupLanguageTabLayout()
+        themeSwitch.isChecked = isNightTheme()
         viewModel.notificationEnabled.value?.let {
             notificationSwitch.isChecked = it
         }
-
         notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             changeNotificationSwitchState(isChecked)
         }
-
         themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            changeThemeSwitchState(isChecked)
+            changeUITheme(isChecked)
         }
         changePasswordButton.setOnClickListener {
             navigateToPasswordScreen()
@@ -103,35 +99,27 @@ class SettingsFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun setupSpinner() = with(binding) {
+    private fun setupLanguageTabLayout() = with(binding.settingsLanguageTabLayout) {
         val languageItems = listOf(
-            R.string.spinner_english, R.string.spinner_turkish
+            R.string.spinner_uk, R.string.spinner_tr,
         )
         val languageOptions = listOf(
             LANGUAGE_EN, LANGUAGE_TR
         )
-        val languageTitles = languageItems.map { getString(it) }
-        val adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, languageTitles)
-        languageSelectSpinner.adapter = adapter
-        languageSelectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val languageCode = languageOptions[position]
-                viewModel.languageItem.value?.let { currentLanguage ->
-                    if (languageCode != currentLanguage){
-                        viewModel.saveLanguagePreference(languageCode)
-                        changeUILanguage(languageCode)
-                    }
+        languageItems.forEach { titleResId ->
+            addTab(
+                newTab().setText(getString(titleResId))
+            )
+        }
+        addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    viewModel.onLanguageChange(languageOptions[it.position], it.position)
                 }
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
     private fun changeNotificationSwitchState(isChecked: Boolean) {
@@ -141,6 +129,12 @@ class SettingsFragment @Inject constructor() : Fragment() {
         } else {
             cancelNotifications()
         }
+    }
+
+    private fun isNightTheme(): Boolean {
+        val currentTheme =
+            requireContext().resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentTheme == Configuration.UI_MODE_NIGHT_YES
     }
 
     private fun changeUILanguage(languageCode: String) {
@@ -155,19 +149,14 @@ class SettingsFragment @Inject constructor() : Fragment() {
         activity?.recreate()
     }
 
-    private fun changeThemeSwitchState(isChecked: Boolean) {
-        viewModel.saveDarkThemePreference(isChecked)
-        changeUITheme()
-    }
-
-    private fun changeUITheme() {
-        viewModel.darkThemeEnabled.value?.let { isEnabled ->
-            if (isEnabled) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
+    private fun changeUITheme(isChecked: Boolean) {
+        val newTheme = if (isChecked) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
         }
+        AppCompatDelegate.setDefaultNightMode(newTheme)
+        viewModel.saveDarkThemePreference(newTheme == AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun cancelNotifications() {
@@ -235,6 +224,17 @@ class SettingsFragment @Inject constructor() : Fragment() {
             event.getContentIfNotHandled()?.let {
                 navigateToLoginScreen()
             }
+        }
+        observe(viewModel.changeLanguage) { event ->
+            event.getContentIfNotHandled()?.let { languageCode ->
+                changeUILanguage(languageCode)
+            }
+        }
+    }
+
+    private fun checkLastTabPosition() = with(binding) {
+        viewModel.lastSelectedTabLanguagePosition.value?.let {
+            settingsLanguageTabLayout.getTabAt(it)?.select()
         }
     }
 }
