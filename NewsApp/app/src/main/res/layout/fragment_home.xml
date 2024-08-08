@@ -53,9 +53,10 @@
 
                 <ProgressBar
                     android:id="@+id/homeCategoryLoadingBar"
-                    android:layout_marginTop="@dimen/extra_large_spacing_size"
-                    android:layout_marginBottom="@dimen/extra_large_spacing_size"
+                    android:layout_marginTop="@dimen/large_spacing_size"
+                    android:layout_marginBottom="@dimen/large_spacing_size"
                     style="@style/loadingBarStyle"
+                    android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +120,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/homeRecyclerView"
+                    android:visibility="gone"
                     android:nestedScrollingEnabled="false"
                     android:layout_height="@dimen/home_recyclerview_size"
                     style="@style/linearRecyclerViewStyle"
@@ -140,10 +142,10 @@
                     android:id="@+id/homeNotFoundMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/extra_large_spacing_size"
-                    android:layout_marginBottom="@dimen/extra_large_spacing_size"
                     android:layout_marginStart="@dimen/small_spacing_size"
                     android:layout_marginEnd="@dimen/small_spacing_size"
+                    android:layout_marginTop="@dimen/large_spacing_size"
+                    android:layout_marginBottom="@dimen/large_spacing_size"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
