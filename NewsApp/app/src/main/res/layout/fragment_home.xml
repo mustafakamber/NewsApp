@@ -65,7 +65,7 @@
                     android:id="@+id/homeAdView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/little_spacing_size"
+                    android:layout_marginTop="@dimen/extra_small_spacing_size"
                     android:layout_marginStart="@dimen/small_spacing_size"
                     android:layout_marginEnd="@dimen/small_spacing_size"
                     app:adSize="BANNER"
