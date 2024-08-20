@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.mustk.newsapp.shared.Constant.DEFAULT_LANGUAGE
-import com.mustk.newsapp.shared.Constant.LANGUAGE_ITEM
 import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
 import com.mustk.newsapp.shared.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,14 +33,6 @@ class NewsViewModel @Inject constructor(
     private val _languageString = MutableLiveData<String>()
     val languageString: LiveData<String>
         get() = _languageString
-
-    init {
-        //loadPreferences()
-    }
-
-    private fun loadPreferences() {
-        _languageString.value = sharedPreferences.getString(LANGUAGE_ITEM, DEFAULT_LANGUAGE)
-    }
 
     private fun setLoadingFalse(){
         _splashLoading.value = false

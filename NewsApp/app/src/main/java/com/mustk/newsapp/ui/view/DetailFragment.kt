@@ -143,7 +143,7 @@ class DetailFragment @Inject constructor() : Fragment() {
                 showToastMessage(message)
             }
         }
-        observe(viewModel.snackbarMessage) { event ->
+        observe(viewModel.snackBarMessage) { event ->
             event.getContentIfNotHandled()?.let { message ->
                 Snackbar.make(root, getString(message), Snackbar.LENGTH_SHORT).show()
             }

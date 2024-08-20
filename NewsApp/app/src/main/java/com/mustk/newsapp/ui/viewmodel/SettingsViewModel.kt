@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.shared.Constant.DARK_THEME
 import com.mustk.newsapp.shared.Constant.DARK_THEME_ENABLED
@@ -43,10 +45,6 @@ class SettingsViewModel @Inject constructor(
         sharedPreferences.edit()
     }
 
-    private val _userPhoto = MutableLiveData<String>()
-    val userPhoto: LiveData<String>
-        get() = _userPhoto
-
     private val _userEmail = MutableLiveData<String>()
     val userEmail: LiveData<String>
         get() = _userEmail
@@ -62,6 +60,10 @@ class SettingsViewModel @Inject constructor(
     private val _notificationEnabled = MutableLiveData<Boolean>()
     val notificationEnabled : LiveData<Boolean>
         get() = _notificationEnabled
+
+    private val _userPhoto = MutableLiveData<String>()
+    val userPhoto: LiveData<String>
+        get() = _userPhoto
 
     private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
     val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
@@ -80,8 +82,8 @@ class SettingsViewModel @Inject constructor(
 
     init {
         setLanguageLastSelectedTabPosition(initTabPosition())
-        loadPreferences()
         fetchUserInfoFromCloudDatabase()
+        loadPreferences()
     }
 
     private fun initTabPosition() : Int {
@@ -142,18 +144,18 @@ class SettingsViewModel @Inject constructor(
     private fun fetchUserInfoFromCloudDatabase() {
         val currentUser = auth.currentUser
         if (currentUser?.email != null) {
-            database.collection(USERS_COLLECTION)
-                .whereEqualTo(EMAIL_FIELD, currentUser.email)
-                .get()
+            getUserCollection(currentUser.email.toString())
                 .addOnSuccessListener { querySnapshot ->
                     for (document in querySnapshot.documents) {
-                        _userPhoto.value = document.getString(PHOTO_FIELD)
+                        document.getString(PHOTO_FIELD)?.let {
+                            _userPhoto.value = it
+                        }
                         _userEmail.value = document.getString(EMAIL_FIELD)
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -167,23 +169,21 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun deleteAccountFromCloud() {
-        _userEmail.value?.let { email ->
-            val userRef = database.collection(USERS_COLLECTION)
-                .whereEqualTo(EMAIL_FIELD, email)
-            userRef.get()
+        userEmail.value?.let { email ->
+            getUserCollection(email)
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         document.reference.delete()
                             .addOnFailureListener { error ->
                                 error.localizedMessage?.let {
-                                    showToastMessage(it)
+                                    setToastMessage(it)
                                 }
                             }
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -208,10 +208,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun deleteAllNewsFromCloud() {
-        _userEmail.value?.let { email ->
-            database.collection(NEWS_COLLECTION)
-                .whereEqualTo(USER_FIELD, email)
-                .get()
+        userEmail.value?.let { email ->
+            getNewsCollection(email)
                 .addOnSuccessListener { querySnapshot ->
                     val documents = querySnapshot.documents
                     if (documents.isNotEmpty()) {
@@ -219,14 +217,15 @@ class SettingsViewModel @Inject constructor(
                             document.reference.delete()
                                 .addOnFailureListener { error ->
                                     error.localizedMessage?.let {
-                                        showToastMessage(it)
+                                        setToastMessage(it)
                                     }
                                 }
                         }
                     }
-                }.addOnFailureListener { error ->
+                }
+                .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -235,6 +234,20 @@ class SettingsViewModel @Inject constructor(
     fun logOutButtonClicked() {
         auth.signOut()
         navigateToLoginScreen()
+    }
+
+    private fun getUserCollection(email: String): Task<QuerySnapshot> {
+        val userDocRef = database.collection(USERS_COLLECTION)
+            .whereEqualTo(EMAIL_FIELD, email)
+            .get()
+        return userDocRef
+    }
+
+    private fun getNewsCollection(email: String): Task<QuerySnapshot> {
+        val newsDocRef = database.collection(NEWS_COLLECTION)
+            .whereEqualTo(USER_FIELD, email)
+            .get()
+        return newsDocRef
     }
 
     private fun navigateToLoginScreen() {

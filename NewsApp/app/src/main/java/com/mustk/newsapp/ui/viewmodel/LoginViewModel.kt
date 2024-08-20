@@ -12,8 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
+import com.mustk.newsapp.data.model.User
+import com.mustk.newsapp.shared.Constant.DEFAULT_PHOTO_FIELD
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
-import com.mustk.newsapp.shared.Constant.NULL_PHOTO
 import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
 import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
 import com.mustk.newsapp.shared.Event
@@ -79,7 +80,7 @@ class LoginViewModel @Inject constructor(
                 setPasswordErrorText(R.string.enter_password_message)
             }
             else -> {
-                signInWithEmailAndPassword(emailAddress, password)
+                signInEmailPassword(emailAddress, password)
             }
         }
 
@@ -96,103 +97,78 @@ class LoginViewModel @Inject constructor(
         if (task.isSuccessful) {
             val account: GoogleSignInAccount? = task.result
             if (account != null) {
-                signInWithCredential(account)
+                signInGoogleAccount(account)
             }
         } else {
-            showToastMessage(task.exception.toString())
+            setToastMessage(task.exception.toString())
         }
     }
 
-    private fun signInWithCredential(account: GoogleSignInAccount) {
+    private fun signInGoogleAccount(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential)
             .addOnSuccessListener {
-                checkIfEmailExistsForLogin(account.email.toString(), account.photoUrl.toString())
+                isRegisteredGoogleUserInDb(account.email.toString()) { isRegistered ->
+                    if (isRegistered) {
+                        navigateToHomeScreen()
+                    } else {
+                        val newUser = addUserToModel(account)
+                        addUserToDatabase(newUser)
+                    }
+                }
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    showToastMessage(it)
+                    setToastMessage(it)
                 }
             }
     }
 
-    private fun signInWithEmailAndPassword(email: String, password: String) {
+    private fun addUserToModel(account: GoogleSignInAccount): User {
+        val user = User(account.email.toString(), account.photoUrl.toString(), true)
+        return user
+    }
+
+    private fun signInEmailPassword(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                checkIfEmailExistsForLogin(email, NULL_PHOTO)
+                navigateToHomeScreen()
             }.addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    showToastMessage(it)
+                    setToastMessage(it)
                 }
             }
     }
 
-    private fun checkIfEmailExistsForLogin(email: String, photo: String) {
-        checkEmailExistInDatabase(
-            email,
-            onEmailNotFound = {
-                addUserForLogin(email, photo)
-            },
-            onEmailFound = {
-                navigateToHomeScreen()
-            },
-            onErrorMessage = { error ->
-                showToastMessage(error)
-            }
-        )
-    }
-
-    private fun checkEmailExistInDatabase(
-        email: String,
-        onEmailNotFound: () -> Unit,
-        onEmailFound: () -> Unit,
-        onErrorMessage: (String) -> Unit,
-    ) {
+    private fun isRegisteredGoogleUserInDb(email: String, callback: (Boolean) -> Unit) {
         database.collection(USERS_COLLECTION)
             .whereEqualTo(EMAIL_FIELD, email)
             .get()
             .addOnSuccessListener { documents ->
-                if (documents.isEmpty) {
-                    onEmailNotFound()
-                } else {
-                    onEmailFound()
-                }
+                callback(documents.isEmpty.not())
             }
             .addOnFailureListener { error ->
+                callback(false)
                 error.localizedMessage?.let {
-                    onErrorMessage(it)
+                    setToastMessage(it)
                 }
             }
     }
 
-    private fun addUserForLogin(email: String, photo: String) {
-        addUserToDatabase(
-            email,
-            photo,
-            onUserAdded = {
-                navigateToHomeScreen()
-            },
-            onErrorMessage = { error ->
-                showToastMessage(error)
-            }
+    private fun addUserToDatabase(user: User) {
+        val userDoc = hashMapOf(
+            EMAIL_FIELD to user.email,
+            PHOTO_FIELD to user.photoUrl,
+            DEFAULT_PHOTO_FIELD to user.defaultPhoto
         )
-    }
-
-    private fun addUserToDatabase(
-        email: String,
-        photo: String,
-        onUserAdded: () -> Unit,
-        onErrorMessage: (String) -> Unit
-    ) {
-        val user = hashMapOf(EMAIL_FIELD to email, PHOTO_FIELD to photo)
         database.collection(USERS_COLLECTION)
-            .add(user)
+            .add(userDoc)
             .addOnSuccessListener {
-                onUserAdded()
+                navigateToHomeScreen()
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    onErrorMessage(it)
+                    setToastMessage(it)
                 }
             }
     }

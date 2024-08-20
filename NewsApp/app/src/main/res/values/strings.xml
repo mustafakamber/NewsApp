@@ -93,4 +93,9 @@
     <string name="settings_item_share_app">Share this App</string>
     <string name="spinner_english">English</string>
     <string name="spinner_turkish">Turkish</string>
+    <string name="read_external_storage_permission">Your permission is required to access the gallery</string>
+    <string name="allow">Allow</string>
+    <string name="change_profile_title_text">Profile Photo</string>
+    <string name="remove_photo">Remove</string>
+    <string name="gallery_photo">Gallery</string>
 </resources>

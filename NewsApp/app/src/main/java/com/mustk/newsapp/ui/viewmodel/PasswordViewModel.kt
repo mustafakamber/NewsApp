@@ -90,7 +90,7 @@ class PasswordViewModel @Inject constructor(
                 sendPasswordResetEmail(email)
             },
             onErrorMessage = { error ->
-                showToastMessage(error)
+                setToastMessage(error)
             }
         )
     }
@@ -125,7 +125,7 @@ class PasswordViewModel @Inject constructor(
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    showToastMessage(it)
+                    setToastMessage(it)
                 }
             }
     }

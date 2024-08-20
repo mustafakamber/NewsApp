@@ -16,6 +16,12 @@ googleServices = "4.4.2"
 hiltAndroid = "2.50"
 hiltAndroidGradlePlugin = "2.50"
 imageslideshow = "0.1.0"
+insertKoinKoinAndroid = "3.2.0-beta-1"
+koinAndroid = "{latest-version}"
+koinAndroidViewmodel = "{latest-version}"
+koinAndroidxCompose = "3.2.0-beta-1"
+koinAndroidxNavigation = "3.2.0-beta-1"
+koinTestJunit4 = "3.2.0-beta-1"
 kotlin = "1.9.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -68,10 +74,16 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltA
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 imageslideshow = { module = "com.github.denzcoskun:ImageSlideshow", version.ref = "imageslideshow" }
+io-insert-koin-koin-android = { module = "io.insert-koin:koin-android", version.ref = "insertKoinKoinAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+koin-android = { module = "org.koin:koin-android", version.ref = "koinAndroid" }
+koin-android-viewmodel = { module = "org.koin:koin-android-viewmodel", version.ref = "koinAndroidViewmodel" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
+koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koinAndroidxNavigation" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinTestJunit4" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 library = { module = "nl.joery.animatedbottombar:library", version.ref = "library" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }

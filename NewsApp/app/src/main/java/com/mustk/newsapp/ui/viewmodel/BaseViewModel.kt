@@ -18,16 +18,16 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     val errorMessage: LiveData<Event<String>>
         get() = _errorMessage
 
-    private val _snackbarMessage = MutableLiveData<Event<Int>>()
-    val snackbarMessage: LiveData<Event<Int>>
-        get() = _snackbarMessage
+    private val _snackBarMessage = MutableLiveData<Event<Int>>()
+    val snackBarMessage: LiveData<Event<Int>>
+        get() = _snackBarMessage
 
-    fun showToastMessage(message: String) {
+    fun setToastMessage(message: String) {
         _errorMessage.value = Event(message)
     }
 
-    fun showSnackBarMessage(message: Int) {
-        _snackbarMessage.value = Event(message)
+    fun setSnackBarMessage(message: Int) {
+        _snackBarMessage.value = Event(message)
     }
 
     protected fun <T : Any> safeRequest(
@@ -39,8 +39,11 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
             when (response().status) {
                 Status.ERROR -> {
                     response().message?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
+                }
+                Status.LOADING -> {
+
                 }
                 Status.SUCCESS -> {
                     response().data?.let {

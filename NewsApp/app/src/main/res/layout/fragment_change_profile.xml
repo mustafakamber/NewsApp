@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/change_profile_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/bottom_sheet_background">
+
+    <ImageView
+        android:id="@+id/changeProfileSwipeIcon"
+        style="@style/swipeIconStyle"
+        android:layout_marginTop="@dimen/tiny_spacing_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/changeProfileTitleText"
+        style="@style/smallBoldSecondaryTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tiny_spacing_size"
+        android:text="@string/change_profile_title_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changeProfileSwipeIcon" />
+
+    <View
+        android:id="@+id/changeProfileDivider"
+        style="@style/largeDividerStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changeProfileTitleText" />
+
+    <ImageButton
+        android:id="@+id/deleteProfilePhotoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        android:src="@drawable/baseline_remove_profile_24"
+        android:layout_marginTop="@dimen/large_spacing_size"
+        app:layout_constraintEnd_toStartOf="@id/uploadProfilePhotoButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changeProfileDivider" />
+
+    <ImageButton
+        android:id="@+id/uploadProfilePhotoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground"
+        android:src="@drawable/baseline_gallery_24"
+        android:layout_marginTop="@dimen/large_spacing_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/deleteProfilePhotoButton"
+        app:layout_constraintTop_toBottomOf="@id/changeProfileDivider" />
+
+    <TextView
+        android:id="@+id/deleteProfilePhotoTextView"
+        style="@style/changeProfileTextStyle"
+        android:layout_marginTop="@dimen/tiny_spacing_size"
+        android:layout_marginBottom="@dimen/small_spacing_size"
+        android:text="@string/remove_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/uploadProfilePhotoButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/deleteProfilePhotoButton" />
+
+    <TextView
+        android:id="@+id/uploadProfilePhotoTextView"
+        android:layout_marginTop="@dimen/tiny_spacing_size"
+        android:layout_marginBottom="@dimen/small_spacing_size"
+        style="@style/changeProfileTextStyle"
+        android:text="@string/gallery_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/deleteProfilePhotoButton"
+        app:layout_constraintTop_toBottomOf="@id/uploadProfilePhotoButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

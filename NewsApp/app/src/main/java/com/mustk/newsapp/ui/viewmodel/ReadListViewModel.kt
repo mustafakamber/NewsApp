@@ -148,20 +148,20 @@ class ReadListViewModel @Inject constructor(
                                     .addOnSuccessListener {
                                         deletedCount++
                                         if (deletedCount == totalDocuments) {
-                                            showSnackBarMessage(R.string.all_deleted)
+                                            setSnackBarMessage(R.string.all_deleted)
                                             refreshReadListData()
                                         }
                                     }
                                     .addOnFailureListener { error ->
                                         error.localizedMessage?.let {
-                                            showToastMessage(it)
+                                            setToastMessage(it)
                                         }
                                     }
                             }
                         }
                     }.addOnFailureListener { error ->
                         error.localizedMessage?.let {
-                            showToastMessage(it)
+                            setToastMessage(it)
                         }
                     }
             }
@@ -180,19 +180,19 @@ class ReadListViewModel @Inject constructor(
                     for (document in querySnapshot.documents) {
                         document.reference.delete()
                             .addOnSuccessListener {
-                                showSnackBarMessage(R.string.deleted)
+                                setSnackBarMessage(R.string.deleted)
                                 refreshReadListData()
                             }
                             .addOnFailureListener { error ->
                                 error.localizedMessage?.let {
-                                    showToastMessage(it)
+                                    setToastMessage(it)
                                 }
                             }
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -244,7 +244,7 @@ class ReadListViewModel @Inject constructor(
                 }
                 .addOnFailureListener { exception ->
                     exception.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }

@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ import com.mustk.newsapp.shared.Constant.SEND_MESSAGE_EMAIL
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.viewmodel.SettingsViewModel
+import com.mustk.newsapp.ui.viewmodel.SharedViewModel
 import com.mustk.newsapp.util.downloadProfileImageFromURL
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +41,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
     private val viewModel: SettingsViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var confirmation: ConfirmationFragment
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 
@@ -66,6 +69,10 @@ class SettingsFragment @Inject constructor() : Fragment() {
         themeSwitch.isChecked = isNightTheme()
         viewModel.notificationEnabled.value?.let {
             notificationSwitch.isChecked = it
+        }
+        changePhotoButton.setOnClickListener {
+            navigateToChangeProfileScreen()
+            //viewModel.onChangePhotoButtonClicked(requireActivity())
         }
         notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             changeNotificationSwitchState(isChecked)
@@ -189,6 +196,14 @@ class SettingsFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private fun navigateToChangeProfileScreen() {
+        viewModel.userEmail.value?.let {
+            val action =
+                SettingsFragmentDirections.actionSettingsFragmentToChangeProfileFragment(it)
+            findNavController().navigate(action)
+        }
+    }
+
     private fun navigateToPasswordScreen() {
         viewModel.userEmail.value?.let {
             val action = SettingsFragmentDirections.actionSettingsFragmentToPasswordFragment(it)
@@ -215,7 +230,10 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     private fun observeLiveData() = with(binding) {
         observe(viewModel.userPhoto) { photoUrl ->
-            settingsProfileImageView.downloadProfileImageFromURL(photoUrl)
+            sharedViewModel.setChangedUserPhoto(photoUrl)
+        }
+        observe(sharedViewModel.changedUserPhoto) {
+            settingsProfileImageView.downloadProfileImageFromURL(it)
         }
         observe(viewModel.userEmail) { emailAddress ->
             settingsProfileEmailTextView.text = emailAddress

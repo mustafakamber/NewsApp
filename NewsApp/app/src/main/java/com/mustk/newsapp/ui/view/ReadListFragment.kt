@@ -104,7 +104,7 @@ class ReadListFragment @Inject constructor() : Fragment() {
         observe(viewModel.deleteButton) { boolean ->
             readListDeleteButton.isInvisible = !boolean
         }
-        observe(viewModel.snackbarMessage) { event ->
+        observe(viewModel.snackBarMessage) { event ->
             event.getContentIfNotHandled()?.let { message ->
                 Snackbar.make(root, getString(message), Snackbar.LENGTH_SHORT).show()
             }

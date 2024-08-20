@@ -73,4 +73,9 @@
     <string name="settings_item_share_app">Bu Uygulamayı Paylaş</string>
     <string name="spinner_english">İngilizce</string>
     <string name="spinner_turkish">Türkçe</string>
+    <string name="read_external_storage_permission">Galeriye erişmeniz için izniniz gerekiyor!</string>
+    <string name="allow">Izin ver</string>
+    <string name="change_profile_title_text">Profil Fotoğrafı</string>
+    <string name="remove_photo">Kaldır</string>
+    <string name="gallery_photo">Galeri</string>
 </resources>

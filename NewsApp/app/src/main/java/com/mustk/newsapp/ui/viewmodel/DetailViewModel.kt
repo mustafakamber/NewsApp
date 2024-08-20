@@ -149,7 +149,7 @@ class DetailViewModel @Inject constructor(
                     }
                 }.addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -181,7 +181,7 @@ class DetailViewModel @Inject constructor(
                     database.collection(NEWS_COLLECTION).add(newsMap)
                         .addOnFailureListener { error ->
                             error.localizedMessage?.let {
-                                showToastMessage(it)
+                                setToastMessage(it)
                             }
                         }
                 }
@@ -196,7 +196,7 @@ class DetailViewModel @Inject constructor(
             val updatedNews = news.updateUserModel(news, email)
             viewModelScope.launch {
                 repository.saveNewsToRoom(updatedNews)
-                showSnackBarMessage(R.string.saved)
+                setSnackBarMessage(R.string.saved)
                 savedNewsState()
             }
         }
@@ -215,14 +215,14 @@ class DetailViewModel @Inject constructor(
                         document.reference.delete()
                             .addOnFailureListener { error ->
                                 error.localizedMessage?.let {
-                                    showToastMessage(it)
+                                    setToastMessage(it)
                                 }
                             }
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        showToastMessage(it)
+                        setToastMessage(it)
                     }
                 }
         }
@@ -231,7 +231,7 @@ class DetailViewModel @Inject constructor(
     private fun deleteLocalDatabase() = viewModelScope.launch {
         _detailNews.value?.let { news ->
             repository.deleteNewsFromRoom(news)
-            showSnackBarMessage(R.string.deleted)
+            setSnackBarMessage(R.string.deleted)
             unsavedNewsState()
         }
     }
@@ -241,7 +241,7 @@ class DetailViewModel @Inject constructor(
             response = { repository.fetchNewsDetail(uuid) },
             successStatusData = { newsDetail ->
                 detailResultState(uuid, newsDetail)
-                showSnackBarMessage(R.string.fetch_from_api)
+                setSnackBarMessage(R.string.fetch_from_api)
             })
     }
 
@@ -252,7 +252,7 @@ class DetailViewModel @Inject constructor(
             viewModelScope.launch {
                 val newsData = repository.fetchNewsByUUIDAndUserFromRoom(uuid, email)
                 detailResultState(uuid, newsData)
-                showSnackBarMessage(R.string.fetch_from_sqlite)
+                setSnackBarMessage(R.string.fetch_from_sqlite)
             }
         }
     }

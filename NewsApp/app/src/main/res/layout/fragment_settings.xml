@@ -23,7 +23,7 @@
         android:id="@+id/settingsScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/little_spacing_size"
         app:layout_constraintTop_toBottomOf="@id/settingsTextView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,12 +35,23 @@
                 android:layout_width="@dimen/medium_image_size"
                 android:layout_height="@dimen/medium_image_size"
                 android:layout_marginTop="@dimen/small_spacing_size"
-                tools:src="@drawable/default_profile_image"
                 app:civ_border_color="?attr/colorPrimary"
-                app:civ_border_width="@dimen/medium_border_size"
+                app:civ_border_width="@dimen/large_border_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/default_profile_image" />
+
+            <ImageButton
+                android:id="@+id/changePhotoButton"
+                android:padding="@dimen/small_padding_size"
+                android:layout_width="@dimen/tiny_button_size"
+                android:layout_height="@dimen/tiny_button_size"
+                android:background="@drawable/settings_image_background"
+                android:backgroundTint="?attr/colorPrimary"
+                android:src="@drawable/outline_camera_alt_24"
+                app:layout_constraintBottom_toBottomOf="@id/settingsProfileImageView"
+                app:layout_constraintEnd_toEndOf="@id/settingsProfileImageView" />
 
             <TextView
                 android:id="@+id/settingsProfileEmailTextView"
@@ -101,6 +112,8 @@
 
                     <ImageView
                         android:id="@+id/languageImageView"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
                         style="@style/settingsButtonImageStyle"
                         android:src="@drawable/baseline_language_24" />
 

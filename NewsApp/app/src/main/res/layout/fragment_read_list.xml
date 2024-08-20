@@ -40,7 +40,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/readListRecyclerView"
-        android:layout_marginTop="@dimen/extra_small_spacing_size"
+        android:layout_marginTop="@dimen/little_spacing_size"
         style="@style/linearRecyclerViewStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

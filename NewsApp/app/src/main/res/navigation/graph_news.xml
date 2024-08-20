@@ -108,5 +108,18 @@
         <action
             android:id="@+id/action_settingsFragment_to_seeMoreFragment"
             app:destination="@id/seeMoreFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_changeProfileFragment"
+            app:destination="@id/changeProfileFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/changeProfileFragment"
+        android:name="com.mustk.newsapp.ui.view.ChangeProfileFragment"
+        android:label="fragment_change_profile"
+        tools:layout="@layout/fragment_change_profile"
+        >
+        <argument
+            android:name="userEmail"
+            app:argType="string" />
+    </dialog>
 </navigation>

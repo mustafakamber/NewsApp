@@ -7,41 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.HomeFragment">
 
-    <TextView
-        android:id="@+id/headLineTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/mediumBoldPrimaryTextStyle"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
-        android:text="@string/home_headline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/homeCountryTabLayout"
-        android:layout_width="@dimen/large_button_size"
-        android:layout_height="wrap_content"
-        app:tabPadding="0dp"
-        app:tabPaddingEnd="0dp"
-        app:tabPaddingStart="0dp"
-        app:tabMinWidth="10dp"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        android:backgroundTint="?android:attr/colorBackground"
-        app:tabMode="scrollable"
-        app:layout_constraintBottom_toBottomOf="@id/headLineTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/headLineTextView" />
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/homeSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/match_constraint_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headLineTextView">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -50,6 +23,32 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/headLineTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/mediumBoldPrimaryTextStyle"
+                    android:layout_marginStart="@dimen/small_spacing_size"
+                    android:layout_marginTop="@dimen/small_spacing_size"
+                    android:text="@string/home_headline"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/homeCountryTabLayout"
+                    android:layout_width="@dimen/large_button_size"
+                    android:layout_height="wrap_content"
+                    app:tabPadding="0dp"
+                    app:tabPaddingEnd="0dp"
+                    app:tabPaddingStart="0dp"
+                    app:tabMinWidth="10dp"
+                    android:layout_marginEnd="@dimen/small_spacing_size"
+                    android:backgroundTint="?android:attr/colorBackground"
+                    app:tabMode="scrollable"
+                    app:layout_constraintBottom_toBottomOf="@id/headLineTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/headLineTextView" />
 
                 <ProgressBar
                     android:id="@+id/homeCategoryLoadingBar"
@@ -66,20 +65,21 @@
                     android:id="@+id/homeAdView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/little_spacing_size"
                     android:layout_marginStart="@dimen/small_spacing_size"
                     android:layout_marginEnd="@dimen/small_spacing_size"
                     app:adSize="BANNER"
                     app:adUnitId="@string/banner_test_id"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/headLineTextView" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/imageSliderCardView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/large_image_size"
                     android:layout_marginStart="@dimen/small_spacing_size"
-                    android:layout_marginTop="@dimen/tiny_spacing_size"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size"
                     android:layout_marginEnd="@dimen/small_spacing_size"
                     app:cardCornerRadius="@dimen/small_radius_size"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/extra_tiny_spacing_size"
-                    android:layout_marginTop="@dimen/tiny_spacing_size"
+                    android:layout_marginTop="@dimen/extra_tiny_spacing_size"
                     android:layout_marginEnd="@dimen/extra_tiny_spacing_size"
                     android:backgroundTint="?android:attr/colorBackground"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -120,9 +120,8 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/homeRecyclerView"
-                    android:visibility="gone"
-                    android:nestedScrollingEnabled="false"
                     android:layout_height="@dimen/home_recyclerview_size"
+                    android:nestedScrollingEnabled="false"
                     style="@style/linearRecyclerViewStyle"
                     android:layout_marginTop="@dimen/extra_tiny_spacing_size"
                     app:layout_constraintBottom_toBottomOf="parent"

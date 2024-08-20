@@ -22,7 +22,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/searchInputLayout"
         style="@style/textInputLayoutStyle"
-        android:layout_marginTop="@dimen/tiny_spacing_size"
+        android:layout_marginTop="@dimen/extra_tiny_spacing_size"
         android:layout_marginStart="@dimen/small_spacing_size"
         android:layout_marginEnd="@dimen/small_spacing_size"
         app:endIconMode="clear_text"

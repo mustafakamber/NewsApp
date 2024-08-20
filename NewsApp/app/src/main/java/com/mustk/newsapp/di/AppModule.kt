@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.service.NewsService
 import com.mustk.newsapp.domain.NewsRepository
@@ -102,6 +103,12 @@ object AppModule {
     @Provides
     fun provideFirebaseDatabase(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseStorage() : FirebaseStorage {
+        return FirebaseStorage.getInstance()
     }
 
     @Singleton

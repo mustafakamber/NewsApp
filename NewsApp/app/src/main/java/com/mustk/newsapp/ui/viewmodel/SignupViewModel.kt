@@ -7,8 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
+import com.mustk.newsapp.data.model.User
+import com.mustk.newsapp.shared.Constant.DEFAULT_PHOTO_FIELD
+import com.mustk.newsapp.shared.Constant.DEFAULT_PROFILE_IMAGE_URL
 import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
-import com.mustk.newsapp.shared.Constant.NULL_PHOTO
 import com.mustk.newsapp.shared.Constant.PASSWORD_LIMIT
 import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
 import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
@@ -103,57 +105,49 @@ class SignupViewModel @Inject constructor(
                 setConfirmPasswordErrorText(R.string.enter_confirm_password_message)
             }
             isNotEqualPasswords -> {
-                showToastMessage(context.getString(R.string.password_not_match_message))
+                setToastMessage(context.getString(R.string.password_not_match_message))
             }
             isPasswordLimitOver -> {
                 setPasswordErrorText(R.string.password_over_limit_message)
             }
             else -> {
-                createUserWithEmailAndPassword(emailAddress, password)
+                createUser(emailAddress, password)
             }
         }
     }
 
-    private fun createUserWithEmailAndPassword(email: String, password: String) {
+    private fun createUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
-                addUserForSignup(email, NULL_PHOTO)
+                val newUser = addUserToModel(email)
+                addUserToDatabase(newUser)
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    showToastMessage(it)
+                    setToastMessage(it)
                 }
             }
     }
 
-    private fun addUserForSignup(email: String,photo: String) {
-        addUserToDatabase(
-            email,
-            photo,
-            onUserAdded = {
-                navigateToHomeScreen()
-            },
-            onErrorMessage = { error ->
-                showToastMessage(error)
-            }
-        )
+    private fun addUserToModel(email: String): User {
+        val user = User(email, DEFAULT_PROFILE_IMAGE_URL, true)
+        return user
     }
 
-    private fun addUserToDatabase(
-        email: String,
-        photo: String,
-        onUserAdded: () -> Unit,
-        onErrorMessage: (String) -> Unit
-    ) {
-        val user = hashMapOf(EMAIL_FIELD to email, PHOTO_FIELD to photo)
+    private fun addUserToDatabase(user: User) {
+        val userDoc = hashMapOf(
+            EMAIL_FIELD to user.email,
+            PHOTO_FIELD to user.photoUrl,
+            DEFAULT_PHOTO_FIELD to user.defaultPhoto
+        )
         database.collection(USERS_COLLECTION)
-            .add(user)
+            .add(userDoc)
             .addOnSuccessListener {
-                onUserAdded()
+                navigateToHomeScreen()
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    onErrorMessage(it)
+                    setToastMessage(it)
                 }
             }
     }

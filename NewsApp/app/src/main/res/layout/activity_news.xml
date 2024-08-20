@@ -23,6 +23,7 @@
         android:id="@+id/navigationBottomView"
         app:itemIconTint="?attr/colorPrimary"
         app:itemTextColor="?attr/colorPrimary"
+        android:backgroundTint="?attr/colorTertiary"
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_size"
         app:itemIconSize="@dimen/small_image_size"
