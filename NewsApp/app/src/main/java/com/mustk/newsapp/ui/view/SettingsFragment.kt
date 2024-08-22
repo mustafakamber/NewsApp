@@ -29,7 +29,7 @@ import com.mustk.newsapp.shared.Constant.SEND_MESSAGE_EMAIL
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
 import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.viewmodel.SettingsViewModel
-import com.mustk.newsapp.ui.viewmodel.SharedViewModel
+import com.mustk.newsapp.ui.viewmodel.PhotoViewModel
 import com.mustk.newsapp.util.downloadProfileImageFromURL
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +41,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
     private val viewModel: SettingsViewModel by viewModels()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val sharedViewModel: PhotoViewModel by activityViewModels()
     private lateinit var confirmation: ConfirmationFragment
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
 

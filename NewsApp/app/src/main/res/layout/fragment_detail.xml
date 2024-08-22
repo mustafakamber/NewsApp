@@ -80,6 +80,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/detailErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/detailErrorImageView"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:src="@drawable/baseline_http_24"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/detailErrorTextView"
+            style="@style/tinySecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing_size"
+            tools:text="@string/bad_request_message" />
+
+    </LinearLayout>
+
     <ScrollView
         android:id="@+id/detailItemScrollView"
         android:layout_width="match_parent"
@@ -266,6 +297,39 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/detailSeeMoreTextView" />
 
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/detailNetworkErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/small_spacing_size"
+                android:layout_marginBottom="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/similarNewsTextView">
+
+                <ImageView
+                    android:id="@+id/detailNetworkImageView"
+                    android:layout_width="@dimen/medium_image_size"
+                    android:layout_height="@dimen/medium_image_size"
+                    android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/detailNetworkTextView"
+                    style="@style/tinySecondaryTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_spacing_size"
+                    android:text="@string/network_error" />
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detailRecyclerView"
                 style="@style/horizontalRecyclerViewStyle"
@@ -285,6 +349,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/similarNewsTextView" />
 
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/similarErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginTop="@dimen/small_spacing_size"
+                android:layout_marginBottom="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/similarNewsTextView">
+
+                <ImageView
+                    android:id="@+id/similarErrorImageView"
+                    android:layout_width="@dimen/medium_image_size"
+                    android:layout_height="@dimen/medium_image_size"
+                    android:src="@drawable/baseline_http_24"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/similarErrorTextView"
+                    style="@style/tinySecondaryTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_spacing_size"
+                    tools:text="@string/bad_request_message" />
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

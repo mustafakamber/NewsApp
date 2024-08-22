@@ -24,7 +24,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentChangeProfileBinding
 import com.mustk.newsapp.ui.viewmodel.ChangeProfileViewModel
-import com.mustk.newsapp.ui.viewmodel.SharedViewModel
+import com.mustk.newsapp.ui.viewmodel.PhotoViewModel
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class ChangeProfileFragment @Inject constructor() : BottomSheetDialogFragment() 
 
     private lateinit var binding: FragmentChangeProfileBinding
     private val viewModel: ChangeProfileViewModel by viewModels()
-    private val sharedViewModel : SharedViewModel by activityViewModels()
+    private val sharedViewModel : PhotoViewModel by activityViewModels()
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 

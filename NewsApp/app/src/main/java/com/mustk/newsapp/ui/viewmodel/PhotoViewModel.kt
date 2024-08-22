@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedViewModel @Inject constructor(): BaseViewModel(){
+class PhotoViewModel @Inject constructor(): BaseViewModel(){
 
     private val _changedUserPhoto = MutableLiveData<String>()
     val changedUserPhoto: LiveData<String>

@@ -7,12 +7,14 @@ import com.mustk.newsapp.data.service.NewsService
 import com.mustk.newsapp.roomdb.NewsDao
 import com.mustk.newsapp.shared.Constant.NULL_JSON
 import com.mustk.newsapp.shared.Resource
+import com.mustk.newsapp.util.RetrofitErrorHandler
 import retrofit2.Response
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(
     private val newsService: NewsService,
-    private val newsDao: NewsDao
+    private val newsDao: NewsDao,
+    private val retrofitErrorHandler: RetrofitErrorHandler
 ) : NewsDataSource {
 
     private suspend fun <T> performApiCall(apiCall: suspend () -> Response<T>): Resource<T> {
@@ -23,7 +25,9 @@ class NewsRepository @Inject constructor(
                     Resource.success(it)
                 } ?: Resource.error(NULL_JSON, null)
             } else {
-                Resource.error(response.errorBody().toString(), null)
+                val errorCode = response.code().toString()
+                val errorMessage = retrofitErrorHandler.handleRetrofitCode(errorCode)
+                Resource.error(errorMessage, null)
             }
         } catch (e: Exception) {
             Resource.error(e.localizedMessage, null)

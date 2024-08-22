@@ -63,6 +63,7 @@
     <string name="search_message">Hey! Is there a news that interests you?\nSearch and discover now! 📰</string>
     <string name="search_not_found">Sorry, we couldn\'t find any results 😔</string>
     <string name="home_not_found">Sorry, we couldn\'t find any news 😔</string>
+    <string name="network_error">Check your network connection 🌐</string>
     <string name="readlist_message">Your Read List is empty.</string>
     <string name="detail_title">News Detail</string>
     <string name="detail_similar">Similar News 📰</string>
@@ -98,4 +99,14 @@
     <string name="change_profile_title_text">Profile Photo</string>
     <string name="remove_photo">Remove</string>
     <string name="gallery_photo">Gallery</string>
+    <string name="bad_request_message">Bad Request: The server could not understand the request due to invalid syntax.</string>
+    <string name="unauthorized_message">Unauthorized: The client must authenticate itself to get the requested response.</string>
+    <string name="forbidden_message">Forbidden: The client does not have access rights to the content.</string>
+    <string name="not_found_message">Not Found: The server could not find the requested resource.</string>
+    <string name="internal_server_message">Internal Server Error: The server has encountered a situation it doesn\'t know how to handle.</string>
+    <string name="bad_gateway_message">Bad Gateway: The server was acting as a gateway or proxy and received an invalid response.</string>
+    <string name="service_unavailable_message">Service Unavailable: The server is not ready to handle the request.</string>
+    <string name="gateway_timeout_message">Gateway Timeout: The server is acting as a gateway and cannot get a response in time.</string>
+    <string name="unknown_error_message">Unknown Error: An unexpected error occurred.</string>
+    <string name="check_connect">Check connection</string>
 </resources>

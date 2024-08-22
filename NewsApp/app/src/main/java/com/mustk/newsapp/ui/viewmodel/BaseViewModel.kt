@@ -34,8 +34,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         response: suspend () -> Resource<T>,
         successStatusData: (T) -> Unit
     ) {
-        viewModelScope.launch()
-        {
+        viewModelScope.launch() {
             when (response().status) {
                 Status.ERROR -> {
                     response().message?.let {

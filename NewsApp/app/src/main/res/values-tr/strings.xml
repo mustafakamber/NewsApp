@@ -43,6 +43,7 @@
     <string name="search_message">Hey! İlginizi çeken bir haber var mı?\nHemen arayın ve keşfedin! 📰</string>
     <string name="search_not_found">Üzgünüz, hiçbir sonuç bulamadık 😔</string>
     <string name="home_not_found">Üzgünüz, hiçbir haber bulamadık 😔</string>
+    <string name="network_error">Ağ bağlantınızı kontrol edin 🌐</string>
     <string name="readlist_message">Okuma Listeniz boş.</string>
     <string name="detail_title">Haber Detayı</string>
     <string name="detail_similar">Benzer Haberler 📰</string>
@@ -78,4 +79,14 @@
     <string name="change_profile_title_text">Profil Fotoğrafı</string>
     <string name="remove_photo">Kaldır</string>
     <string name="gallery_photo">Galeri</string>
+    <string name="bad_request_message">Kötü İstek: Sunucu, geçersiz sözdizimi nedeniyle isteği anlayamadı.</string>
+    <string name="unauthorized_message">Yetkisiz: İstenen yanıtı almak için istemcinin kimlik doğrulaması yapması gerekiyor.</string>
+    <string name="forbidden_message">Yasak: İstemcinin içeriğe erişim hakkı yok.</string>
+    <string name="not_found_message">Bulunamadı: Sunucu, istenen kaynağı bulamadı.</string>
+    <string name="internal_server_message">Sunucu Hatası: Sunucu, başa çıkamayacağı bir durumla karşılaştı.</string>
+    <string name="bad_gateway_message">Geçersiz Ağ Geçidi: Sunucu, ağ geçidi veya proxy olarak görev yaparken geçersiz bir yanıt aldı.</string>
+    <string name="service_unavailable_message">Hizmet Kullanılamıyor: Sunucu isteği işlemek için hazır değil.</string>
+    <string name="gateway_timeout_message">Ağ Geçidi Zaman Aşımı: Sunucu, bir ağ geçidi olarak görev yaparken zamanında yanıt alamadı.</string>
+    <string name="unknown_error_message">Bilinmeyen Hata: Beklenmedik bir hata oluştu.</string>
+    <string name="check_connect">Bağlantıyı kontrol et</string>
 </resources>

@@ -21,6 +21,8 @@ import com.mustk.newsapp.services.ThemeService
 import com.mustk.newsapp.shared.Constant.APIKEY_QUERY_PARAM
 import com.mustk.newsapp.shared.Constant.BASE_URL
 import com.mustk.newsapp.shared.Constant.SQLITE_DATABASE_NAME
+import com.mustk.newsapp.util.NetworkHelper
+import com.mustk.newsapp.util.RetrofitErrorHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -117,9 +119,11 @@ object AppModule {
         return retrofit.create(NewsService::class.java)
     }
 
+
+
     @Provides
-    fun provideNewsDataSource(newsService: NewsService, newsDao: NewsDao): NewsDataSource {
-        return NewsRepository(newsService, newsDao)
+    fun provideNewsDataSource(newsService: NewsService, newsDao: NewsDao, retrofitErrorHandler: RetrofitErrorHandler): NewsDataSource {
+        return NewsRepository(newsService, newsDao,retrofitErrorHandler)
     }
 
     @Provides
@@ -149,6 +153,18 @@ object AppModule {
     @Provides
     fun provideThemeService(@ApplicationContext context: Context): ThemeService {
         return ThemeService(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNetworkHelper(@ApplicationContext context: Context): NetworkHelper {
+        return NetworkHelper(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofitErrorHandler(@ApplicationContext context: Context): RetrofitErrorHandler {
+        return RetrofitErrorHandler(context)
     }
 }
 

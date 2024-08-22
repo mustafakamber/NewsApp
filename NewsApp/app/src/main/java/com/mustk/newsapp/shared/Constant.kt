@@ -92,4 +92,13 @@ object Constant {
     const val DEFAULT_LANGUAGE = "defaultLanguage"
     const val NOTIFTY_THEME_CHANGE_ACTIVITY = "notifyThemeChangeActivity"
     const val INTER_TEST = "ca-app-pub-3940256099942544/1033173712"
+    const val STATUS_CODE_400 = "400"
+    const val STATUS_CODE_401 = "401"
+    const val STATUS_CODE_403 = "403"
+    const val STATUS_CODE_404 = "404"
+    const val STATUS_CODE_500 = "500"
+    const val STATUS_CODE_502 = "502"
+    const val STATUS_CODE_503 = "503"
+    const val STATUS_CODE_504 = "504"
+    const val STATUS_CODE_UNK = "unknown"
 }

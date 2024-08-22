@@ -7,6 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.HomeFragment">
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/homeNetworkErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginTop="@dimen/large_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/homeNetworkImageView"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:src="@drawable/baseline_signal_wifi_connected_no_internet_4_24"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/homeNetworkTextView"
+            style="@style/tinySecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing_size"
+            android:text="@string/network_error" />
+
+    </LinearLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/homeSwipeRefreshLayout"
         android:layout_width="match_parent"
@@ -79,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/large_image_size"
                     android:layout_marginStart="@dimen/small_spacing_size"
-                    android:layout_marginTop="@dimen/extra_tiny_spacing_size"
+                    android:layout_marginTop="@dimen/tiny_spacing_size"
                     android:layout_marginEnd="@dimen/small_spacing_size"
                     app:cardCornerRadius="@dimen/small_radius_size"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -129,6 +161,38 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/homeCategoryTabLayout" />
 
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/homeCategoryErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing_size"
+                    android:layout_marginTop="@dimen/large_spacing_size"
+                    android:layout_marginEnd="@dimen/small_spacing_size"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/homeCategoryTabLayout">
+
+                    <ImageView
+                        android:id="@+id/homeCategoryErrorImageView"
+                        android:layout_width="@dimen/medium_image_size"
+                        android:layout_height="@dimen/medium_image_size"
+                        android:src="@drawable/baseline_http_24"
+                        app:tint="?attr/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/homeCategoryErrorTextView"
+                        style="@style/tinySecondaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_spacing_size"
+                        tools:text="@string/bad_request_message" />
+
+                </LinearLayout>
+
                 <ProgressBar
                     android:id="@+id/homeHeadlineLoadingBar"
                     style="@style/loadingBarStyle"
@@ -136,6 +200,38 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/homeAdView" />
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/homeHeadlineErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/small_spacing_size"
+                    android:layout_marginEnd="@dimen/small_spacing_size"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/homeCategoryTabLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/homeAdView">
+
+                    <ImageView
+                        android:id="@+id/homeHeadlineErrorImageView"
+                        android:layout_width="@dimen/medium_image_size"
+                        android:layout_height="@dimen/medium_image_size"
+                        android:src="@drawable/baseline_http_24"
+                        app:tint="?attr/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/homeHeadlineErrorTextView"
+                        style="@style/tinySecondaryTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/small_spacing_size"
+                        tools:text="@string/bad_request_message" />
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/homeNotFoundMessage"
