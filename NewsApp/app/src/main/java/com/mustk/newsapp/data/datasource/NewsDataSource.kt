@@ -2,22 +2,23 @@ package com.mustk.newsapp.data.datasource
 
 import com.mustk.newsapp.data.model.BaseResponse
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Resource
+import com.mustk.newsapp.util.Resource
+import retrofit2.Response
 
 interface NewsDataSource {
 
     suspend fun fetchNewsListByCategory(
         language: String,
         category: String
-    ): Resource<BaseResponse>
+    ): Response<BaseResponse>
 
     suspend fun fetchHeadlineNews(
         language: String,
-    ): Resource<BaseResponse>
+    ): Response<BaseResponse>
 
     suspend fun searchNews(
         search : String
-    ) : Resource<BaseResponse>
+    ) : Response<BaseResponse>
 
     suspend fun fetchNewsDetail(
         uuid: String

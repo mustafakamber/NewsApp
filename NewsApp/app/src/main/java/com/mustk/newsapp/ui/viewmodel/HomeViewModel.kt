@@ -2,217 +2,141 @@ package com.mustk.newsapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.CATEGORY_GENERAL
-import com.mustk.newsapp.shared.Constant.HEADLINE_SIZE
-import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
+import com.mustk.newsapp.util.Constant.CATEGORY_GENERAL
+import com.mustk.newsapp.util.Constant.HEADLINE_SIZE
+import com.mustk.newsapp.util.Constant.LANGUAGE_GL
+import com.mustk.newsapp.util.Constant.NO_CONNECTION
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.NetworkHelper
+import com.mustk.newsapp.util.Resource
+import com.mustk.newsapp.util.RetrofitErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: NewsDataSource
-) : BaseViewModel() {
+    private val repository: NewsDataSource,
+    private val networkHelper: NetworkHelper,
+    private val retrofitErrorHandler: RetrofitErrorHandler
+) : ViewModel() {
 
-    private val _categoryLoading = MutableLiveData<Boolean>()
-    val categoryLoading: LiveData<Boolean>
-        get() = _categoryLoading
-
-    private val _categoryNullMessage = MutableLiveData<Boolean>()
-    val categoryNullMessage: LiveData<Boolean>
-        get() = _categoryNullMessage
-
-    private val _categoryNewsList = MutableLiveData<List<News>>()
-    val categoryNewsList: LiveData<List<News>>
+    private val _categoryNewsList = MutableLiveData<Resource<List<News>>>()
+    val categoryNewsList: LiveData<Resource<List<News>>>
         get() = _categoryNewsList
 
-    private val _headlineNewsList = MutableLiveData<ArrayList<News>>()
-    val headlineNewsList: LiveData<ArrayList<News>>
+    private val _headlineNewsList = MutableLiveData<Resource<ArrayList<News>>>()
+    val headlineNewsList: LiveData<Resource<ArrayList<News>>>
         get() = _headlineNewsList
 
-    private val _slideList = ArrayList<News>()
-
-    private val _headlineLoading = MutableLiveData<Boolean>()
-    val headlineLoading: LiveData<Boolean>
-        get() = _headlineLoading
-
-    private val _swipeRefreshLoading = MutableLiveData<Boolean>()
-    val swipeRefreshLoading: LiveData<Boolean>
-        get() = _swipeRefreshLoading
-
-    private val _recyclerView = MutableLiveData<Boolean>()
-    val recyclerView: LiveData<Boolean>
-        get() = _recyclerView
-
-    private val _imageSliderView = MutableLiveData<Boolean>()
-    val imageSliderView: LiveData<Boolean>
-        get() = _imageSliderView
+    private val slideHeadlineList = ArrayList<News>()
 
     private val _lastSelectedCategoryTabPosition = MutableLiveData<Int>()
-    val lastSelectedTabCategoryPosition: LiveData<Int> get() = _lastSelectedCategoryTabPosition
+    val lastSelectedTabCategoryPosition: LiveData<Int>
+        get() = _lastSelectedCategoryTabPosition
 
     private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
-    val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
+    val lastSelectedTabLanguagePosition: LiveData<Int>
+        get() = _lastSelectedLanguageTabPosition
 
     private val initCategory = CATEGORY_GENERAL
-    private val initLanguage = LANGUAGE_EN
-
+    private val initLanguage = LANGUAGE_GL
     private var selectedCategory = initCategory
     private var selectedLanguage = initLanguage
 
+    val isConnectedNetwork: Boolean
+        get() = networkHelper.isNetworkConnected()
+
     init {
-        refreshHomeData()
+        refreshData()
     }
 
-    fun swipeRefreshClicked() {
-        setSwipeRefreshLoadingVisibility(true)
-        refreshHomeData()
-        setSwipeRefreshLoadingVisibility(false)
+    fun refreshScreen() {
+        refreshData()
     }
 
-    private fun refreshHomeData() {
-        initHeadlineState()
-        initCategoryState()
+    fun refreshData() {
         fetchHeadlineNewsFromAPI()
         fetchCategoryNewsFromAPI()
     }
 
-    private fun setCategoryLoadingVisibility(boolean: Boolean) {
-        _categoryLoading.value = boolean
-    }
-
-    private fun setHeadlineLoadingVisibility(boolean: Boolean) {
-        _headlineLoading.value = boolean
-    }
-
-    private fun setSwipeRefreshLoadingVisibility(boolean: Boolean) {
-        _swipeRefreshLoading.value = boolean
-    }
-
-    private fun setRecyclerViewVisibility(boolean: Boolean) {
-        _recyclerView.value = boolean
-    }
-
-    private fun setImageSliderVisibility(boolean: Boolean) {
-        _imageSliderView.value = boolean
-    }
-
-    private fun setHeadlineNewsList(news: ArrayList<News>) {
-        _headlineNewsList.value = news
-    }
-
-    private fun setCategoryNewsList(news: List<News>) {
-        _categoryNewsList.value = news
-    }
-
-    private fun setCategoryNullMessage(boolean: Boolean) {
-        _categoryNullMessage.value = boolean
-    }
-
-    private fun setCategoryLastSelectedTabPosition(position: Int) {
-        _lastSelectedCategoryTabPosition.value = position
-    }
-
-    private fun setCountryLastSelectedTabPosition(position: Int) {
-        _lastSelectedLanguageTabPosition.value = position
-    }
-
-    private fun initHeadlineState() {
-        setImageSliderVisibility(false)
-        setHeadlineLoadingVisibility(false)
-    }
-
-    private fun loadingHeadLineState() {
-        setImageSliderVisibility(false)
-        setHeadlineLoadingVisibility(true)
-    }
-
-    private fun resultHeadlineState() {
-        setImageSliderVisibility(true)
-        setHeadlineLoadingVisibility(false)
-    }
-
-    private fun initCategoryState() {
-        setCategoryNullMessage(false)
-        setRecyclerViewVisibility(false)
-        setCategoryLoadingVisibility(false)
-    }
-
-    private fun loadingCategoryState() {
-        setCategoryNullMessage(false)
-        setRecyclerViewVisibility(false)
-        setCategoryLoadingVisibility(true)
-    }
-
-    private fun resultCategoryState(){
-        setRecyclerViewVisibility(true)
-        setCategoryNullMessage(false)
-        setCategoryLoadingVisibility(false)
-    }
-
-    private fun nullCategoryState() {
-        setRecyclerViewVisibility(false)
-        setCategoryLoadingVisibility(false)
-        setCategoryNullMessage(true)
-    }
-
     private fun fetchHeadlineNewsFromAPI() {
-        _slideList.clear()
-        loadingHeadLineState()
-        safeRequest(
-            response = { repository.fetchHeadlineNews(selectedLanguage) },
-            successStatusData = { newsData ->
-                newsData.data.forEach {
-                    _slideList.add(it)
-                    if (_slideList.size == HEADLINE_SIZE){
-                        resultHeadlineState()
-                        setHeadlineNewsList(_slideList)
+        slideHeadlineList.clear()
+        viewModelScope.launch {
+            _headlineNewsList.postValue(Resource.loading(null))
+            if (isConnectedNetwork) {
+                try {
+                    val response = repository.fetchHeadlineNews(selectedLanguage)
+                    if (response.isSuccessful) {
+                        response.body()?.let { baseResponse ->
+                            val headlineList = baseResponse.data
+                            headlineList.forEach {
+                                slideHeadlineList.add(it)
+                                if (slideHeadlineList.size == HEADLINE_SIZE) {
+                                    _headlineNewsList.postValue(Resource.success(slideHeadlineList))
+                                }
+                            }
+                        }
+                    } else {
+                        val errorCode = response.code().toString()
+                        val errorMessage = retrofitErrorHandler.handleRetrofitCode(errorCode)
+                        _headlineNewsList.postValue(Resource.error(errorMessage, null))
                     }
+                } catch (e: Exception) {
+                    _headlineNewsList.postValue(Resource.error(e.localizedMessage, null))
                 }
-            })
+            } else {
+                _headlineNewsList.postValue(Resource.error(NO_CONNECTION, null))
+            }
+        }
     }
 
     private fun fetchCategoryNewsFromAPI() {
-        loadingCategoryState()
-        safeRequest(
-            response = {
-                repository.fetchNewsListByCategory(
-                    selectedLanguage,
-                    selectedCategory
-                )
-            },
-            successStatusData = { newsData ->
-                if (newsData.data.isEmpty()) {
-                    nullCategoryState()
-                } else {
-                    resultCategoryState()
-                    setCategoryNewsList(newsData.data)
+        viewModelScope.launch {
+            _categoryNewsList.postValue(Resource.loading(null))
+            if (isConnectedNetwork) {
+                try {
+                    val response =
+                        repository.fetchNewsListByCategory(selectedLanguage, selectedCategory)
+                    if (response.isSuccessful) {
+                        response.body()?.let { baseResponse ->
+                            val categoryNews = baseResponse.data
+                            if (categoryNews.isEmpty()) {
+                                _categoryNewsList.postValue(Resource.error(NULL_JSON, null))
+                            } else {
+                                _categoryNewsList.postValue(Resource.success(categoryNews))
+                            }
+                        }
+                    } else {
+                        val errorCode = response.code().toString()
+                        val errorMessage = retrofitErrorHandler.handleRetrofitCode(errorCode)
+                        _categoryNewsList.postValue(Resource.error(errorMessage, null))
+                    }
+                } catch (e: Exception) {
+                    _categoryNewsList.postValue(Resource.error(e.localizedMessage, null))
                 }
+            } else {
+                _categoryNewsList.postValue(Resource.error(NO_CONNECTION, null))
             }
-        )
-    }
-
-    private fun setSelectedCategory(category: String) {
-        selectedCategory = category
-    }
-
-    private fun setSelectedLanguage(language: String) {
-        selectedLanguage = language
+        }
     }
 
     fun onLanguageChange(language: String, position: Int){
         if (language != selectedLanguage){
-            setSelectedLanguage(language)
-            setCountryLastSelectedTabPosition(position)
-            refreshHomeData()
+            selectedLanguage = language
+            _lastSelectedLanguageTabPosition.value = position
+            refreshData()
         }
     }
 
     fun onCategoryChange(category: String, position: Int){
         if (category != selectedCategory){
-            setSelectedCategory(category)
-            setCategoryLastSelectedTabPosition(position)
+            selectedCategory = category
+            _lastSelectedCategoryTabPosition.value = position
             fetchCategoryNewsFromAPI()
         }
     }

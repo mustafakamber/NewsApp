@@ -1,10 +1,10 @@
 package com.mustk.newsapp.ui.viewmodel
 
 import android.app.Activity
-import android.text.TextUtils
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -13,94 +13,116 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.data.model.User
-import com.mustk.newsapp.shared.Constant.DEFAULT_PHOTO_FIELD
-import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
-import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
-import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
-import com.mustk.newsapp.shared.Event
+import com.mustk.newsapp.util.Constant.DEFAULT_PHOTO_FIELD
+import com.mustk.newsapp.util.Constant.EMAIL_FIELD
+import com.mustk.newsapp.util.Constant.PHOTO_FIELD
+import com.mustk.newsapp.util.Constant.USERS_COLLECTION
+import com.mustk.newsapp.util.Event
+import com.mustk.newsapp.util.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val auth: FirebaseAuth,
-    private val database: FirebaseFirestore
-) : BaseViewModel() {
+    private val database: FirebaseFirestore,
+    private val networkHelper: NetworkHelper
+) : ViewModel() {
 
-    private val _navigateToHome = MutableLiveData<Event<Boolean>>()
-    val navigateToHome: LiveData<Event<Boolean>>
-        get() = _navigateToHome
+    private val _currentUserActive = MutableLiveData<Event<Boolean>>()
+    val currentUserActive: LiveData<Event<Boolean>>
+        get() = _currentUserActive
 
-    private val _emailErrorText = MutableLiveData<Event<Int>>()
-    val emailErrorText: LiveData<Event<Int>>
-        get() = _emailErrorText
+    private val _checkNetworkConnection = MutableLiveData<Event<Boolean>>()
+    val checkNetworkConnection: LiveData<Event<Boolean>>
+        get() = _checkNetworkConnection
 
-    private val _emailEndIconVisibility = MutableLiveData<Boolean>()
-    val emailEndIconVisibility: LiveData<Boolean>
-        get() = _emailEndIconVisibility
+    private val _emailError = MutableLiveData<Int>()
+    val emailError: LiveData<Int>
+        get() = _emailError
 
-    private val _passwordErrorText = MutableLiveData<Event<Int>>()
-    val passwordErrorText: LiveData<Event<Int>>
-        get() = _passwordErrorText
+    private val _passwordError = MutableLiveData<Int>()
+    val passwordError: LiveData<Int>
+        get() = _passwordError
 
-    private val _passwordEndIconVisibility = MutableLiveData<Boolean>()
-    val passwordEndIconVisibility: LiveData<Boolean>
-        get() = _passwordEndIconVisibility
+    private val _authError = MutableLiveData<String>()
+    val authError: LiveData<String>
+        get() = _authError
 
-    fun setEmailEndIcon(boolean: Boolean) {
-        _emailEndIconVisibility.value = boolean
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private val _success = MutableLiveData<Event<Boolean>>()
+    val success: LiveData<Event<Boolean>>
+        get() = _success
+
+    private fun setCurrentUserActive() {
+        _currentUserActive.value = Event(true)
     }
 
-    fun setPasswordEndIcon(boolean: Boolean) {
-        _passwordEndIconVisibility.value = boolean
+    private fun setSuccess() {
+        _success.value = Event(true)
     }
 
-    private fun setEmailErrorText(int: Int) {
-        _emailErrorText.value = Event(int)
+    private fun setLoading(isLoading: Boolean) {
+        _loading.value = isLoading
     }
 
-    private fun setPasswordErrorText(int: Int) {
-        _passwordErrorText.value = Event(int)
+    private fun setAuthError(error: String) {
+        _authError.value = error
     }
 
-    private fun navigateToHomeScreen() {
-        _navigateToHome.value = Event(true)
+    private fun setCheckConnection() {
+        _checkNetworkConnection.value = Event(true)
     }
 
-    fun inputCheckForLogin(emailAddress: String, password: String) {
-        val isEmailEmpty = TextUtils.isEmpty(emailAddress)
-        val isPasswordEmpty = TextUtils.isEmpty(password)
-        when {
-            isEmailEmpty -> {
-                setEmailEndIcon(false)
-                setEmailErrorText(R.string.enter_email_message)
-            }
-            isPasswordEmpty -> {
-                setPasswordEndIcon(false)
-                setPasswordErrorText(R.string.enter_password_message)
-            }
-            else -> {
-                signInEmailPassword(emailAddress, password)
-            }
+    fun checkCurrentUser() {
+        val isActiveUser = currentUserActivated()
+        if (isActiveUser) setCurrentUserActive()
+    }
+
+    private fun currentUserActivated(): Boolean {
+        return auth.currentUser != null
+    }
+
+    fun isConnectedNetwork(): Boolean {
+        return networkHelper.isNetworkConnected()
+    }
+
+    fun inputValidate(emailAddress: String, password: String) {
+        if (emailAddress.isBlank()) {
+            _emailError.value = R.string.enter_email_message
         }
-
+        if (password.isBlank()) {
+            _passwordError.value = R.string.enter_password_message
+        }
+        if (emailAddress.isNotBlank() && password.isNotBlank()) {
+            signInEmailPassword(emailAddress, password)
+        }
     }
 
     fun handleSignInGoogleRequest(result: ActivityResult) {
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            handleResults(task)
+        if (isConnectedNetwork()){
+            if (result.resultCode == Activity.RESULT_OK) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleResults(task)
+            }
+        }else{
+            setCheckConnection()
         }
     }
 
     private fun handleResults(task: Task<GoogleSignInAccount>) {
+        setLoading(true)
         if (task.isSuccessful) {
             val account: GoogleSignInAccount? = task.result
             if (account != null) {
                 signInGoogleAccount(account)
             }
         } else {
-            setToastMessage(task.exception.toString())
+            setLoading(false)
+            setAuthError(task.exception.toString())
         }
     }
 
@@ -110,7 +132,8 @@ class LoginViewModel @Inject constructor(
             .addOnSuccessListener {
                 isRegisteredGoogleUserInDb(account.email.toString()) { isRegistered ->
                     if (isRegistered) {
-                        navigateToHomeScreen()
+                        setLoading(false)
+                        setSuccess()
                     } else {
                         val newUser = addUserToModel(account)
                         addUserToDatabase(newUser)
@@ -119,7 +142,8 @@ class LoginViewModel @Inject constructor(
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    setToastMessage(it)
+                    setLoading(false)
+                    setAuthError(it)
                 }
             }
     }
@@ -130,14 +154,21 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun signInEmailPassword(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                navigateToHomeScreen()
-            }.addOnFailureListener { error ->
-                error.localizedMessage?.let {
-                    setToastMessage(it)
+        if (isConnectedNetwork()){
+            setLoading(true)
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
+                    setLoading(false)
+                    setSuccess()
+                }.addOnFailureListener { error ->
+                    error.localizedMessage?.let {
+                        setLoading(false)
+                        setAuthError(it)
+                    }
                 }
-            }
+        }else{
+            setCheckConnection()
+        }
     }
 
     private fun isRegisteredGoogleUserInDb(email: String, callback: (Boolean) -> Unit) {
@@ -145,12 +176,14 @@ class LoginViewModel @Inject constructor(
             .whereEqualTo(EMAIL_FIELD, email)
             .get()
             .addOnSuccessListener { documents ->
-                callback(documents.isEmpty.not())
+                val isUserRegistered = documents.isEmpty.not()
+                callback(isUserRegistered)
             }
             .addOnFailureListener { error ->
                 callback(false)
                 error.localizedMessage?.let {
-                    setToastMessage(it)
+                    setLoading(false)
+                    setAuthError(it)
                 }
             }
     }
@@ -164,11 +197,13 @@ class LoginViewModel @Inject constructor(
         database.collection(USERS_COLLECTION)
             .add(userDoc)
             .addOnSuccessListener {
-                navigateToHomeScreen()
+                setLoading(false)
+                setSuccess()
             }
             .addOnFailureListener { error ->
                 error.localizedMessage?.let {
-                    setToastMessage(it)
+                    setLoading(false)
+                    setAuthError(it)
                 }
             }
     }

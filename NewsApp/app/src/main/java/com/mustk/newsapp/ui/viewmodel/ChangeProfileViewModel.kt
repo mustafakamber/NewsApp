@@ -3,6 +3,7 @@ package com.mustk.newsapp.ui.viewmodel
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -10,13 +11,14 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.mustk.newsapp.data.model.ActionSnackBarMessage
 import com.mustk.newsapp.data.model.User
-import com.mustk.newsapp.shared.Constant.DEFAULT_PHOTO_FIELD
-import com.mustk.newsapp.shared.Constant.DEFAULT_PROFILE_IMAGE_URL
-import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
-import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
-import com.mustk.newsapp.shared.Constant.STORAGE_REFERENCE
-import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
-import com.mustk.newsapp.shared.Event
+import com.mustk.newsapp.util.Constant.DEFAULT_PHOTO_FIELD
+import com.mustk.newsapp.util.Constant.DEFAULT_PROFILE_IMAGE_URL
+import com.mustk.newsapp.util.Constant.EMAIL_FIELD
+import com.mustk.newsapp.util.Constant.PHOTO_FIELD
+import com.mustk.newsapp.util.Constant.STORAGE_REFERENCE
+import com.mustk.newsapp.util.Constant.USERS_COLLECTION
+import com.mustk.newsapp.util.Constant.USER_EMAIL_ARG
+import com.mustk.newsapp.util.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class ChangeProfileViewModel @Inject constructor(
     private val database: FirebaseFirestore,
     private val storage: FirebaseStorage,
+    stateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val userEmail = MutableLiveData<String>()
@@ -44,11 +47,11 @@ class ChangeProfileViewModel @Inject constructor(
     val actionSnackBarMessage: LiveData<Event<ActionSnackBarMessage>>
         get() = _actionSnackBarMessage
 
-    fun setUserEmail(string: String) {
-        userEmail.value = string
+    init {
+        userEmail.value = stateHandle.get<String>(USER_EMAIL_ARG) ?: ""
     }
 
-    private fun backToSettings(){
+    private fun backToSettingsScreen() {
         _backToSettings.value = Event(true)
     }
 
@@ -181,7 +184,7 @@ class ChangeProfileViewModel @Inject constructor(
             documentReference.update(updatedUserDoc)
                 .addOnSuccessListener {
                     _userPhoto.value = user.photoUrl
-                    backToSettings()
+                    backToSettingsScreen()
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?android:attr/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,7 +14,7 @@
         android:layout_marginTop="@dimen/large_spacing_size"
         android:layout_marginEnd="@dimen/medium_spacing_size"
         android:textAlignment="center"
-        android:textSize="@dimen/medium_text_size"
+        android:textSize="@dimen/small_text_size"
         android:text="@string/network_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

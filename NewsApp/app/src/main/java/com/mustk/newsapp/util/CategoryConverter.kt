@@ -1,7 +1,7 @@
 package com.mustk.newsapp.util
 
 import androidx.room.TypeConverter
-import com.mustk.newsapp.shared.Constant.CATEGORY_CONVERT_CHAR
+import com.mustk.newsapp.util.Constant.CATEGORY_CONVERT_CHAR
 
 class CategoryConverter {
     @TypeConverter

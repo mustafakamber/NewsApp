@@ -5,8 +5,8 @@ import com.mustk.newsapp.data.model.BaseResponse
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.data.service.NewsService
 import com.mustk.newsapp.roomdb.NewsDao
-import com.mustk.newsapp.shared.Constant.NULL_JSON
-import com.mustk.newsapp.shared.Resource
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Resource
 import com.mustk.newsapp.util.RetrofitErrorHandler
 import retrofit2.Response
 import javax.inject.Inject
@@ -37,21 +37,15 @@ class NewsRepository @Inject constructor(
     override suspend fun fetchNewsListByCategory(
         language: String,
         category: String
-    ): Resource<BaseResponse> {
-        return performApiCall { newsService.fetchNewsDataForCategories(language, category) }
-    }
+    ) = newsService.fetchNewsDataForCategories(language, category)
 
     override suspend fun fetchHeadlineNews(
         language: String
-    ): Resource<BaseResponse> {
-        return performApiCall { newsService.fetchNewsDataForHeadline(language) }
-    }
+    ) = newsService.fetchNewsDataForHeadline(language)
 
     override suspend fun searchNews(
         search: String
-    ): Resource<BaseResponse> {
-        return performApiCall { newsService.fetchNewsDataForSearch(search) }
-    }
+    ) = newsService.fetchNewsDataForSearch(search)
 
     override suspend fun fetchNewsDetail(uuid: String): Resource<News> {
         return performApiCall { newsService.fetchNewsDataForDetail(uuid) }

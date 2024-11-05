@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.mustk.newsapp.R
-import com.mustk.newsapp.shared.Constant.CHANNEL_ID
-import com.mustk.newsapp.shared.Constant.NOTIFICATIONS_ENABLED
-import com.mustk.newsapp.shared.Constant.NOTIFICATION_REQUEST_CODE
-import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
+import com.mustk.newsapp.util.Constant.CHANNEL_ID
+import com.mustk.newsapp.util.Constant.NOTIFICATIONS_ENABLED
+import com.mustk.newsapp.util.Constant.NOTIFICATION_REQUEST_CODE
+import com.mustk.newsapp.util.Constant.SHARED_PREFS_NAME
 import com.mustk.newsapp.ui.NewsActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +16,8 @@ import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentReadListBinding
 import com.mustk.newsapp.ui.adapter.NewsAdapter
 import com.mustk.newsapp.ui.viewmodel.ReadListViewModel
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Status
 import com.mustk.newsapp.util.SwipeDecorator
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,8 @@ class ReadListFragment @Inject constructor() : Fragment() {
     private val viewModel : ReadListViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
     private lateinit var confirmation: ConfirmationFragment
+    private lateinit var checkConnection: CheckConnectionFragment
+    private var loading: LoadingFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,16 +43,17 @@ class ReadListFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupReadListScreen()
+        setupUI()
         observeLiveData()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.refreshReadListData()
+        viewModel.refreshScreen()
     }
 
-    private fun setupReadListScreen() = with(binding){
+    private fun setupUI() = with(binding){
+        loading = LoadingFragment(requireContext())
         newsAdapter.setOnNewsClickListener { uuid ->
             navigateDetailScreen(uuid)
         }
@@ -56,7 +61,7 @@ class ReadListFragment @Inject constructor() : Fragment() {
         readListDeleteButton.setOnClickListener {
             confirmation = ConfirmationFragment(requireContext(), R.string.readlist_alert)
             confirmation.showConfirmationDialog {
-                viewModel.deleteAllReadListNews()
+                viewModel.deleteAllNews()
             }
         }
         setupSwipeItem()
@@ -74,7 +79,7 @@ class ReadListFragment @Inject constructor() : Fragment() {
                 val news = newsAdapter.currentList[position]
                 when (direction) {
                     ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT -> {
-                        viewModel.deleteNewsFromLocal(news)
+                        viewModel.deleteNews(news)
                     }
                 }
             }
@@ -83,30 +88,91 @@ class ReadListFragment @Inject constructor() : Fragment() {
         touchHelper.attachToRecyclerView(binding.readListRecyclerView)
     }
 
-    private fun observeLiveData () = with(binding) {
-        observe(viewModel.errorMessage) { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun setLoading(boolean: Boolean) = with(binding) {
+        readListLoadingBar.isVisible = boolean
+    }
+
+    private fun setEmptyMessage(boolean: Boolean) = with(binding) {
+        readListEmptyMessage.isVisible = boolean
+    }
+
+    private fun setErrorMessage(boolean: Boolean) = with(binding) {
+        readListErrorMessage.isVisible = boolean
+    }
+
+    private fun setRecyclerView(boolean: Boolean) = with(binding) {
+        readListRecyclerView.isVisible = boolean
+    }
+
+    private fun setDeleteButton(boolean: Boolean) = with(binding) {
+        readListDeleteButton.isVisible = boolean
+    }
+
+    private fun navigateToCheckConnectionScreen() {
+        checkConnection = CheckConnectionFragment(requireContext())
+        checkConnection.showCheckConnectionDialog {
+            if (viewModel.isConnectedNetwork) {
+                checkConnection.dismissDialog()
             }
         }
-        observe(viewModel.readListNews) { news ->
-            newsAdapter.submitList(news)
-        }
-        observe(viewModel.recyclerViewVisibility) { boolean ->
-            readListRecyclerView.isInvisible = !boolean
-        }
-        observe(viewModel.loading) { boolean ->
-            readListLoadingBar.isInvisible = !boolean
-        }
-        observe(viewModel.emptyMessage) { boolean ->
-            readListMessage.isInvisible = !boolean
-        }
-        observe(viewModel.deleteButton) { boolean ->
-            readListDeleteButton.isInvisible = !boolean
+    }
+
+    private fun observeLiveData () = with(binding) {
+        observe(viewModel.readListNews) {
+            when (it.status) {
+                Status.LOADING -> {
+                    setDeleteButton(false)
+                    setEmptyMessage(false)
+                    setErrorMessage(false)
+                    setRecyclerView(false)
+                    setLoading(true)
+                }
+                Status.ERROR -> {
+                    when (val errorMessage = it.message) {
+                        NULL_JSON -> {
+                            setDeleteButton(false)
+                            setErrorMessage(false)
+                            setRecyclerView(false)
+                            setLoading(false)
+                            setEmptyMessage(true)
+                        }
+                        else -> {
+                            setDeleteButton(false)
+                            setErrorMessage(true)
+                            setRecyclerView(false)
+                            setLoading(false)
+                            setEmptyMessage(false)
+                            readListErrorTextView.text = errorMessage
+                        }
+                    }
+                }
+                Status.SUCCESS -> {
+                    setLoading(false)
+                    setEmptyMessage(false)
+                    setErrorMessage(false)
+                    setRecyclerView(true)
+                    setDeleteButton(true)
+                    it.data?.let { readListNews ->
+                        newsAdapter.submitList(readListNews)
+                    }
+                }
+            }
         }
         observe(viewModel.snackBarMessage) { event ->
-            event.getContentIfNotHandled()?.let { message ->
+            event.getContentIfNotHandled()?.let {
+                    message ->
                 Snackbar.make(root, getString(message), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        observe(viewModel.toastError) { error ->
+            Toast.makeText(requireContext(),error,Toast.LENGTH_SHORT)
+                .show()
+        }
+        observe(viewModel.checkConnection) { event ->
+            event.getContentIfNotHandled()?.let {
+                if (it){
+                    navigateToCheckConnectionScreen()
+                }
             }
         }
     }

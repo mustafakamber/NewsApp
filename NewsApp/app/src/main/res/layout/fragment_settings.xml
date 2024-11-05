@@ -12,8 +12,8 @@
         style="@style/mediumBoldPrimaryTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginStart="@dimen/little_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:layout_marginBottom="@dimen/large_spacing_size"
         android:text="@string/settings_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +67,7 @@
             <TextView
                 android:id="@+id/settingsPreferencesTextView"
                 style="@style/settingsItemCategoryTextStyle"
-                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginStart="@dimen/medium_spacing_size"
                 android:layout_marginTop="@dimen/large_spacing_size"
                 android:text="@string/settings_preferences"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,9 +76,9 @@
             <LinearLayout
                 android:id="@+id/settingsPreferencesLinear"
                 style="@style/settingsButtonLinearStyle"
-                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginStart="@dimen/little_spacing_size"
                 android:layout_marginTop="@dimen/little_spacing_size"
-                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/little_spacing_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settingsPreferencesTextView">
@@ -164,7 +164,7 @@
             <TextView
                 android:id="@+id/settingsAccountTextView"
                 style="@style/settingsItemCategoryTextStyle"
-                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginStart="@dimen/medium_spacing_size"
                 android:layout_marginTop="@dimen/small_spacing_size"
                 android:text="@string/settings_account"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,9 +173,9 @@
             <LinearLayout
                 android:id="@+id/settingsAccountLinear"
                 style="@style/settingsButtonLinearStyle"
-                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginStart="@dimen/little_spacing_size"
                 android:layout_marginTop="@dimen/little_spacing_size"
-                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/little_spacing_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settingsAccountTextView">
@@ -246,7 +246,7 @@
             <TextView
                 android:id="@+id/settingExtraTextView"
                 style="@style/settingsItemCategoryTextStyle"
-                android:layout_marginStart="@dimen/large_spacing_size"
+                android:layout_marginStart="@dimen/medium_spacing_size"
                 android:layout_marginTop="@dimen/small_spacing_size"
                 android:text="@string/settings_extra"
                 app:layout_constraintStart_toStartOf="parent"
@@ -255,9 +255,9 @@
             <LinearLayout
                 android:id="@+id/settingsExtraLinear"
                 style="@style/settingsButtonLinearStyle"
-                android:layout_marginStart="@dimen/small_spacing_size"
+                android:layout_marginStart="@dimen/little_spacing_size"
                 android:layout_marginTop="@dimen/little_spacing_size"
-                android:layout_marginEnd="@dimen/small_spacing_size"
+                android:layout_marginEnd="@dimen/little_spacing_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settingExtraTextView">
@@ -329,7 +329,6 @@
                 android:id="@+id/settingsPlaceHolderLinear"
                 style="@style/settingsButtonLinearStyle"
                 android:layout_marginStart="@dimen/small_spacing_size"
-                android:layout_marginTop="@dimen/tiny_spacing_size"
                 android:layout_marginEnd="@dimen/small_spacing_size"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"

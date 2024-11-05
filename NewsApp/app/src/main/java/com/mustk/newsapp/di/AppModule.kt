@@ -18,9 +18,9 @@ import com.mustk.newsapp.domain.NewsRepository
 import com.mustk.newsapp.roomdb.NewsDao
 import com.mustk.newsapp.roomdb.NewsDatabase
 import com.mustk.newsapp.services.ThemeService
-import com.mustk.newsapp.shared.Constant.APIKEY_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.BASE_URL
-import com.mustk.newsapp.shared.Constant.SQLITE_DATABASE_NAME
+import com.mustk.newsapp.util.Constant.APIKEY_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.BASE_URL
+import com.mustk.newsapp.util.Constant.SQLITE_DATABASE_NAME
 import com.mustk.newsapp.util.NetworkHelper
 import com.mustk.newsapp.util.RetrofitErrorHandler
 import dagger.Module
@@ -118,8 +118,6 @@ object AppModule {
     fun provideNewsService(retrofit: Retrofit): NewsService {
         return retrofit.create(NewsService::class.java)
     }
-
-
 
     @Provides
     fun provideNewsDataSource(newsService: NewsService, newsDao: NewsDao, retrofitErrorHandler: RetrofitErrorHandler): NewsDataSource {

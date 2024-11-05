@@ -13,20 +13,26 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/match_constraint_size"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/navigationBottomView"
+        app:layout_constraintBottom_toTopOf="@id/navigationDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/graph_news" />
 
+    <View
+        android:id="@+id/navigationDivider"
+        style="@style/largeDividerStyle"
+        app:layout_constraintBottom_toTopOf="@id/navigationBottomView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationBottomView"
-        app:itemIconTint="?attr/colorPrimary"
-        app:itemTextColor="?attr/colorPrimary"
-        android:backgroundTint="?attr/colorTertiary"
+        android:background="?android:attr/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="@dimen/navigation_size"
-        app:itemIconSize="@dimen/small_image_size"
+        app:itemIconSize="@dimen/little_image_size"
+        app:itemActiveIndicatorStyle="@style/Theme.BottomNavigationView.ActiveIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

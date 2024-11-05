@@ -77,7 +77,6 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.androidx.cardview)
-    implementation(libs.autoimageslider)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -87,4 +86,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(files("libs/autoimageslider-1.4.0.aar"))
 }

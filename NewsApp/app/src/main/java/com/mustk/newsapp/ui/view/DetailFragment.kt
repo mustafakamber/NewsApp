@@ -17,9 +17,9 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
 import com.mustk.newsapp.databinding.FragmentDetailBinding
-import com.mustk.newsapp.shared.Constant.INTER_TEST
-import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
-import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
+import com.mustk.newsapp.util.Constant.INTER_TEST
+import com.mustk.newsapp.util.Constant.SHARE_SCREEN_TITLE
+import com.mustk.newsapp.util.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.adapter.NewsAdapter
 import com.mustk.newsapp.ui.viewmodel.DetailViewModel
 import com.mustk.newsapp.util.downloadNewsImageFromURL
@@ -47,18 +47,8 @@ class DetailFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sendInfoToViewModel()
         setupDetailScreen()
         observeLiveData()
-    }
-
-    private fun sendInfoToViewModel() {
-        arguments?.apply {
-            val args = DetailFragmentArgs.fromBundle(this)
-            val newsUUID = args.newsUUID
-            val isFromReadList = args.isFromReadList
-            viewModel.fetchDetailNews(newsUUID,isFromReadList)
-        }
     }
 
     private fun setupDetailScreen() = with(binding) {

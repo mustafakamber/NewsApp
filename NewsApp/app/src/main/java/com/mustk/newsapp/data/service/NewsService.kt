@@ -2,12 +2,12 @@ package com.mustk.newsapp.data.service
 
 import com.mustk.newsapp.data.model.BaseResponse
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.ALL_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.CATEGORIES_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.LANGUAGE_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.SEARCH_QUERY_PARAM
-import com.mustk.newsapp.shared.Constant.UUID_FIELD
-import com.mustk.newsapp.shared.Constant.UUID_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.ALL_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.CATEGORIES_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.LANGUAGE_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.SEARCH_QUERY_PARAM
+import com.mustk.newsapp.util.Constant.UUID_FIELD
+import com.mustk.newsapp.util.Constant.UUID_QUERY_PARAM
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

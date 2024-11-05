@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -14,6 +13,9 @@ import com.google.android.gms.ads.AdRequest
 import com.mustk.newsapp.databinding.FragmentSearchBinding
 import com.mustk.newsapp.ui.adapter.NewsAdapter
 import com.mustk.newsapp.ui.viewmodel.SearchViewModel
+import com.mustk.newsapp.util.Constant.NO_CONNECTION
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Status
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -25,6 +27,7 @@ class SearchFragment  @Inject constructor() : Fragment() {
     private val viewModel: SearchViewModel by viewModels()
     @Inject lateinit var newsAdapter: NewsAdapter
     @Inject lateinit var adRequest: AdRequest
+    private lateinit var checkConnection: CheckConnectionFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,19 +39,30 @@ class SearchFragment  @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSearchScreen()
+        setupUI()
         observeLiveData()
     }
 
-    private fun setupSearchScreen() = with(binding){
+    private fun setupUI() = with(binding) {
         searchAdView.loadAd(adRequest)
         newsAdapter.setOnNewsClickListener { uuid ->
             navigateDetailScreen(uuid)
         }
         searchRecyclerView.adapter = newsAdapter
         searchEditText.addTextChangedListener {
-            val query = it.toString()
+            val query = it.toString().trim()
             viewModel.onSearchTextChange(query)
+        }
+    }
+
+    private fun navigateToCheckConnectionScreen() {
+        checkConnection = CheckConnectionFragment(requireContext())
+        checkConnection.showCheckConnectionDialog {
+            if (viewModel.isConnectedNetwork) {
+                checkConnection.dismissDialog()
+                val previousQuery = binding.searchEditText.text.toString().trim()
+                viewModel.fetchSearchNewsListFromAPI(previousQuery)
+            }
         }
     }
 
@@ -57,25 +71,91 @@ class SearchFragment  @Inject constructor() : Fragment() {
         findNavController().navigate(action)
     }
 
+    private fun setSearchInit(boolean: Boolean) = with(binding) {
+        searchInitMessage.isVisible = boolean
+    }
+
+    private fun setSearchLoading(boolean: Boolean) = with(binding) {
+        searchLoadingBar.isVisible = boolean
+    }
+
+    private fun setSearchNetwork(boolean: Boolean) = with(binding) {
+        searchNetworkMessage.isVisible = boolean
+    }
+
+    private fun setSearchError(boolean: Boolean) = with(binding) {
+        searchErrorMessage.isVisible = boolean
+    }
+
+    private fun setSearchNotFound(boolean: Boolean) = with(binding) {
+        searchNotFoundMessage.isVisible = boolean
+    }
+
+    private fun setRecyclerView(boolean: Boolean) = with(binding) {
+        searchRecyclerView.isVisible = boolean
+    }
+    
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.initMessage) { boolean ->
-            searchInitMessage.isVisible = boolean
+        observe(viewModel.initStatus) {
+            if (it) {
+                setSearchLoading(false)
+                setSearchNotFound(false)
+                setSearchError(false)
+                setRecyclerView(false)
+                setSearchNetwork(false)
+                setSearchInit(true)
+            }
         }
-        observe(viewModel.notFoundMessage) { boolean ->
-            searchNotFoundMessage.isVisible = boolean
-        }
-        observe(viewModel.recyclerView){ boolean ->
-            searchRecyclerView.isVisible = boolean
-        }
-        observe(viewModel.loading) { boolean ->
-            searchLoadingBar.isVisible = boolean
-        }
-        observe(viewModel.newsList){ news ->
-            newsAdapter.submitList(news)
-        }
-        observe(viewModel.errorMessage) { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        observe(viewModel.newsList) {
+            when (it.status) {
+                Status.LOADING -> {
+                    setSearchInit(false)
+                    setRecyclerView(false)
+                    setSearchError(false)
+                    setSearchNotFound(false)
+                    setSearchNetwork(false)
+                    setSearchLoading(true)
+                }
+                Status.ERROR -> {
+                    when (val errorMessage = it.message) {
+                        NO_CONNECTION -> {
+                            setSearchInit(false)
+                            setSearchLoading(false)
+                            setSearchNotFound(false)
+                            setSearchError(false)
+                            setRecyclerView(false)
+                            setSearchNetwork(true)
+                            navigateToCheckConnectionScreen()
+                        }
+                        NULL_JSON -> {
+                            setSearchInit(false)
+                            setSearchError(false)
+                            setRecyclerView(false)
+                            setSearchNetwork(false)
+                            setSearchLoading(false)
+                            setSearchNotFound(true)
+                        }
+                        else -> {
+                            setSearchInit(false)
+                            setSearchNotFound(false)
+                            setRecyclerView(false)
+                            setSearchNetwork(false)
+                            setSearchLoading(false)
+                            setSearchError(true)
+                            searchErrorTextView.text = errorMessage
+                        }
+                    }
+                }
+                Status.SUCCESS -> {
+                    setSearchLoading(false)
+                    setSearchNotFound(false)
+                    setSearchError(false)
+                    setSearchNetwork(false)
+                    setRecyclerView(true)
+                    it.data?.let { searchNews ->
+                        newsAdapter.submitList(searchNews)
+                    }
+                }
             }
         }
     }

@@ -57,6 +57,8 @@
     <string name="deleted">1 Haber Okuma Listesinden silindi</string>
     <string name="all_deleted">Okuma Listesindeki tüm haberler silindi.</string>
     <string name="saved">1 Haber Okuma Listesine kaydedildi</string>
+    <string name="fetch_readlist_cloud">Haberler Firestore\'dan alındı.</string>
+    <string name="fetch_readlist_local">Haberler SQLite\'dan alındı.</string>
     <string name="fetch_from_api">Haber detayları API\'dan alındı.</string>
     <string name="fetch_from_sqlite">Haber detayları SQLite\'dan alındı.</string>
     <string name="settings_title">Ayarlar</string>
@@ -89,4 +91,5 @@
     <string name="gateway_timeout_message">Ağ Geçidi Zaman Aşımı: Sunucu, bir ağ geçidi olarak görev yaparken zamanında yanıt alamadı.</string>
     <string name="unknown_error_message">Bilinmeyen Hata: Beklenmedik bir hata oluştu.</string>
     <string name="check_connect">Bağlantıyı kontrol et</string>
+    <string name="no_connection">Bağlantı yok</string>
 </resources>

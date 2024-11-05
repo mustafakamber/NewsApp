@@ -12,8 +12,8 @@
         style="@style/mediumBoldPrimaryTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/small_spacing_size"
+        android:layout_marginStart="@dimen/little_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         android:layout_marginBottom="@dimen/large_spacing_size"
         android:text="@string/readlist_title"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,9 +22,6 @@
     <ImageButton
         android:id="@+id/readListDeleteButton"
         style="@style/smallButtonStyle"
-        android:layout_marginTop="@dimen/extra_tiny_spacing_size"
-        android:layout_marginEnd="@dimen/extra_tiny_spacing_size"
-        android:layout_marginBottom="@dimen/extra_tiny_spacing_size"
         android:src="@drawable/baseline_delete_24"
         app:layout_constraintBottom_toTopOf="@id/readListRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +37,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/readListRecyclerView"
-        android:layout_marginTop="@dimen/little_spacing_size"
+        android:layout_marginTop="@dimen/extra_small_spacing_size"
         style="@style/linearRecyclerViewStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +45,38 @@
         app:layout_constraintTop_toBottomOf="@id/readListTextView" />
 
     <LinearLayout
-        android:id="@+id/readListMessage"
+        android:visibility="gone"
+        android:id="@+id/readListErrorMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_spacing_size"
+        android:layout_marginEnd="@dimen/small_spacing_size"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/readListTextView">
+
+        <ImageView
+            android:id="@+id/readListErrorImageView"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:src="@drawable/baseline_http_24"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/readListErrorTextView"
+            style="@style/tinySecondaryTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing_size"
+            tools:text="@string/bad_request_message" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/read_list_empty_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_spacing_size"

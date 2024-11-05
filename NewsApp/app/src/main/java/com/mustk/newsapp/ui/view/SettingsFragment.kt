@@ -10,26 +10,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.mustk.newsapp.R
 import com.mustk.newsapp.broadcastreceiver.NotificationReceiver
 import com.mustk.newsapp.databinding.FragmentSettingsBinding
-import com.mustk.newsapp.shared.Constant.ABOUT_ME_URL
-import com.mustk.newsapp.shared.Constant.APP_URL
-import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
-import com.mustk.newsapp.shared.Constant.LANGUAGE_TR
-import com.mustk.newsapp.shared.Constant.PENDING_INTENT_REQUEST_CODE
-import com.mustk.newsapp.shared.Constant.SEND_MESSAGE_EMAIL
-import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TITLE
-import com.mustk.newsapp.shared.Constant.SHARE_SCREEN_TYPE
-import com.mustk.newsapp.ui.viewmodel.SettingsViewModel
+import com.mustk.newsapp.util.Constant.ABOUT_ME_URL
+import com.mustk.newsapp.util.Constant.APP_URL
+import com.mustk.newsapp.util.Constant.LANGUAGE_EN
+import com.mustk.newsapp.util.Constant.LANGUAGE_TR
+import com.mustk.newsapp.util.Constant.PENDING_INTENT_REQUEST_CODE
+import com.mustk.newsapp.util.Constant.SEND_MESSAGE_EMAIL
+import com.mustk.newsapp.util.Constant.SHARE_SCREEN_TITLE
+import com.mustk.newsapp.util.Constant.SHARE_SCREEN_TYPE
 import com.mustk.newsapp.ui.viewmodel.PhotoViewModel
+import com.mustk.newsapp.ui.viewmodel.SettingsViewModel
 import com.mustk.newsapp.util.downloadProfileImageFromURL
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +46,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
     private val sharedViewModel: PhotoViewModel by activityViewModels()
     private lateinit var confirmation: ConfirmationFragment
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
+    private lateinit var checkConnection: CheckConnectionFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +75,6 @@ class SettingsFragment @Inject constructor() : Fragment() {
         }
         changePhotoButton.setOnClickListener {
             navigateToChangeProfileScreen()
-            //viewModel.onChangePhotoButtonClicked(requireActivity())
         }
         notificationSwitch.setOnCheckedChangeListener { _, isChecked ->
             changeNotificationSwitchState(isChecked)
@@ -108,7 +110,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     private fun setupLanguageTabLayout() = with(binding.settingsLanguageTabLayout) {
         val languageItems = listOf(
-            R.string.spinner_uk, R.string.spinner_tr,
+            R.string.language_gb, R.string.language_tr,
         )
         val languageOptions = listOf(
             LANGUAGE_EN, LANGUAGE_TR
@@ -228,6 +230,15 @@ class SettingsFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private fun navigateToCheckConnectionScreen() {
+        checkConnection = CheckConnectionFragment(requireContext())
+        checkConnection.showCheckConnectionDialog {
+            if(viewModel.isConnectedNetwork){
+                checkConnection.dismissDialog()
+            }
+        }
+    }
+
     private fun observeLiveData() = with(binding) {
         observe(viewModel.userPhoto) { photoUrl ->
             sharedViewModel.setChangedUserPhoto(photoUrl)
@@ -241,6 +252,21 @@ class SettingsFragment @Inject constructor() : Fragment() {
         observe(viewModel.navigateToLogin) { event ->
             event.getContentIfNotHandled()?.let {
                 navigateToLoginScreen()
+            }
+        }
+        observe(viewModel.toastError) { error ->
+            Toast.makeText(requireContext(),error, Toast.LENGTH_SHORT)
+                .show()
+        }
+        observe(viewModel.snackBarError) { event ->
+            event.getContentIfNotHandled()?.let {
+                    message ->
+                Snackbar.make(root, getString(message), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        observe(viewModel.navigateToCheckConnection) { event ->
+            event.getContentIfNotHandled()?.let {
+                navigateToCheckConnectionScreen()
             }
         }
         observe(viewModel.changeLanguage) { event ->

@@ -30,11 +30,11 @@ class SeeMoreFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSeeMoreScreen()
+        setupUI()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun setupSeeMoreScreen() = with(binding){
+    private fun setupUI() = with(binding){
         seeMoreAdView.loadAd(adRequest)
         arguments?.let { bundle ->
             val args = SeeMoreFragmentArgs.fromBundle(bundle)

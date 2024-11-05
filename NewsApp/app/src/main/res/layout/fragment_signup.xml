@@ -11,7 +11,6 @@
         android:id="@+id/signupTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -41,108 +40,122 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signupEmailInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/little_spacing_size"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        app:endIconMode="clear_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/signupScreen"
+        android:background="@drawable/auth_inside_background"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/match_constraint_size"
+        android:layout_marginTop="@dimen/negative_large_spacing_size"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signupTitleLayout"
-        app:startIconDrawable="@drawable/ic_email">
+        >
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/signupEmailEditText"
-            style="@style/textInputEditTextStyle"
-            android:hint="@string/email_hint_text"
-            android:inputType="textWebEmailAddress" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/signupEmailInputLayout"
+            style="@style/textInputLayoutStyle"
+            android:layout_marginStart="@dimen/small_spacing_size"
+            android:layout_marginTop="@dimen/medium_spacing_size"
+            android:layout_marginEnd="@dimen/small_spacing_size"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/signupScreen"
+            app:startIconDrawable="@drawable/ic_email">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signupEmailEditText"
+                style="@style/textInputEditTextStyle"
+                android:hint="@string/email_hint_text"
+                android:inputType="textWebEmailAddress" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signupPasswordInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/tiny_spacing_size"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        app:boxStrokeErrorColor="@color/red"
-        app:counterEnabled="true"
-        app:counterMaxLength="12"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupEmailInputLayout"
-        app:startIconDrawable="@drawable/ic_lock">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/signupPasswordEditText"
-            style="@style/textInputEditTextStyle"
-            android:hint="@string/password_hint_text"
-            android:inputType="textPassword" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/signupPasswordInputLayout"
+            style="@style/textInputLayoutStyle"
+            android:layout_marginStart="@dimen/small_spacing_size"
+            android:layout_marginTop="@dimen/tiny_spacing_size"
+            android:layout_marginEnd="@dimen/small_spacing_size"
+            app:boxStrokeErrorColor="@color/red"
+            app:counterEnabled="true"
+            app:counterMaxLength="12"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signupEmailInputLayout"
+            app:startIconDrawable="@drawable/ic_lock">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signupPasswordEditText"
+                style="@style/textInputEditTextStyle"
+                android:hint="@string/password_hint_text"
+                android:inputType="textPassword" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signupConfirmPasswordInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/tiny_spacing_size"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        app:boxStrokeErrorColor="@color/red"
-        app:counterEnabled="true"
-        app:counterMaxLength="12"
-        app:endIconMode="password_toggle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupPasswordInputLayout"
-        app:startIconDrawable="@drawable/ic_lock">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/signupConfirmPasswordEditText"
-            style="@style/textInputEditTextStyle"
-            android:hint="@string/confirm_password_hint_text"
-            android:inputType="textPassword" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/signupConfirmPasswordInputLayout"
+            style="@style/textInputLayoutStyle"
+            android:layout_marginStart="@dimen/small_spacing_size"
+            android:layout_marginTop="@dimen/tiny_spacing_size"
+            android:layout_marginEnd="@dimen/small_spacing_size"
+            app:boxStrokeErrorColor="@color/red"
+            app:counterEnabled="true"
+            app:counterMaxLength="12"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signupPasswordInputLayout"
+            app:startIconDrawable="@drawable/ic_lock">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/signupConfirmPasswordEditText"
+                style="@style/textInputEditTextStyle"
+                android:hint="@string/confirm_password_hint_text"
+                android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/signupButton"
-        style="@style/largeButtonStyle"
-        android:layout_marginStart="@dimen/small_spacing_size"
-        android:layout_marginTop="@dimen/extra_small_spacing_size"
-        android:layout_marginEnd="@dimen/small_spacing_size"
-        android:text="@string/signup_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupConfirmPasswordInputLayout" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/alreadyAccountText"
-        style="@style/smallNormalTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/extra_small_spacing_size"
-        android:text="@string/already_account_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.25"
-        app:layout_constraintTop_toBottomOf="@id/signupButton" />
+        <Button
+            android:id="@+id/signupButton"
+            style="@style/largeButtonStyle"
+            android:layout_marginStart="@dimen/small_spacing_size"
+            android:layout_marginTop="@dimen/extra_small_spacing_size"
+            android:layout_marginEnd="@dimen/small_spacing_size"
+            android:text="@string/signup_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signupConfirmPasswordInputLayout" />
 
-    <TextView
-        android:id="@+id/loginText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/smallBoldPrimaryTextStyle"
-        android:layout_marginStart="@dimen/tiny_spacing_size"
-        android:text="@string/login_text"
-        app:layout_constraintBottom_toBottomOf="@id/alreadyAccountText"
-        app:layout_constraintStart_toEndOf="@id/alreadyAccountText"
-        app:layout_constraintTop_toTopOf="@id/alreadyAccountText" />
+        <TextView
+            android:id="@+id/alreadyAccountText"
+            style="@style/smallNormalTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extra_small_spacing_size"
+            android:text="@string/already_account_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintTop_toBottomOf="@id/signupButton" />
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/smallBoldPrimaryTextStyle"
+            android:layout_marginStart="@dimen/tiny_spacing_size"
+            android:text="@string/login_text"
+            app:layout_constraintBottom_toBottomOf="@id/alreadyAccountText"
+            app:layout_constraintStart_toEndOf="@id/alreadyAccountText"
+            app:layout_constraintTop_toTopOf="@id/alreadyAccountText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

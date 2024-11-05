@@ -12,13 +12,26 @@
     <string name="channel_name" translatable="false">Channel Name</string>
     <string name="channel_description" translatable="false">Channel Description</string>
     <string name="sample_categories" translatable="false">General, Sport, Entertainment, Science</string>
-    <string name="spinner_uk" translatable="false">🇬🇧</string>
-    <string name="spinner_tr" translatable="false">🇹🇷</string>
-    <string name="spinner_fr" translatable="false">🇫🇷</string>
-    <string name="spinner_es" translatable="false">🇪🇸</string>
-    <string name="spinner_it" translatable="false">🇮🇹</string>
-    <string name="spinner_de" translatable="false">🇩🇪</string>
-    <string name="spinner_ar" translatable="false">🇸🇦</string>
+    <string name="language_gb" translatable="false">🇬🇧</string>
+    <string name="language_tr" translatable="false">🇹🇷</string>
+    <string name="spinner_gl" translatable="false">🌎 | GL</string>
+    <string name="spinner_gb" translatable="false">🇬🇧 | GB</string>
+    <string name="spinner_tr" translatable="false">🇹🇷 | TR</string>
+    <string name="spinner_fr" translatable="false">🇫🇷 | FR</string>
+    <string name="spinner_es" translatable="false">🇪🇸 | ES</string>
+    <string name="spinner_it" translatable="false">🇮🇹 | IT</string>
+    <string name="spinner_de" translatable="false">🇩🇪 | DE</string>
+    <string name="spinner_ar" translatable="false">🇸🇦 | SA</string>
+    <string name="spinner_pt" translatable="false">🇵🇹 | PT</string>
+    <string name="spinner_nl" translatable="false">🇳🇱 | NL</string>
+    <string name="spinner_ru" translatable="false">🇷🇺 | RU</string>
+    <string name="spinner_kr" translatable="false">🇰🇷 | KO</string>
+    <string name="spinner_bg" translatable="false">🇧🇬 | BG</string>
+    <string name="spinner_zh" translatable="false">🇨🇳 | CN</string>
+    <string name="spinner_jp" translatable="false">🇯🇵 | JP</string>
+    <string name="spinner_gr" translatable="false">🇬🇷 | GR</string>
+    <string name="spinner_ro" translatable="false">🇷🇴 | RO</string>
+    <string name="spinner_uk" translatable="false">🇺🇦 | UK</string>
     <string name="login_title_text">Hello,\nWelcome to \nthe News\nWorld!</string>
     <string name="email_hint_text">Email address</string>
     <string name="password_hint_text">Password</string>
@@ -74,6 +87,8 @@
     <string name="readlist_alert">Are you sure you want to delete all read list news?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="fetch_readlist_cloud">News fetched from Firestore.</string>
+    <string name="fetch_readlist_local">News fetched from SQLite.</string>
     <string name="deleted">1 News deleted from Read List</string>
     <string name="all_deleted">All news items have been deleted from the Read List.</string>
     <string name="saved">1 News saved to Read List</string>
@@ -109,4 +124,5 @@
     <string name="gateway_timeout_message">Gateway Timeout: The server is acting as a gateway and cannot get a response in time.</string>
     <string name="unknown_error_message">Unknown Error: An unexpected error occurred.</string>
     <string name="check_connect">Check connection</string>
+    <string name="no_connection">No connection</string>
 </resources>

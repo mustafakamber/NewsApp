@@ -35,6 +35,10 @@
 
     <style name="Theme.NewsApp" parent="Base.Theme.NewsApp" />
 
+    <style name="Theme.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">?attr/colorTertiary</item>
+    </style>
+
     <!-- ImageView -->
     <style name="largeImageViewStyle">
         <item name="android:layout_width">match_parent</item>
@@ -173,8 +177,8 @@
         <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/match_constraint_size</item>
-        <item name="android:layout_marginStart">@dimen/extra_small_spacing_size</item>
-        <item name="android:layout_marginEnd">@dimen/extra_small_spacing_size</item>
+        <item name="android:layout_marginStart">@dimen/tiny_spacing_size</item>
+        <item name="android:layout_marginEnd">@dimen/tiny_spacing_size</item>
     </style>
 
     <style name="horizontalRecyclerViewStyle">

@@ -2,15 +2,16 @@ package com.mustk.newsapp.util
 
 import android.content.Context
 import com.mustk.newsapp.R
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_400
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_401
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_403
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_404
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_500
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_502
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_503
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_504
-import com.mustk.newsapp.shared.Constant.STATUS_CODE_UNK
+import com.mustk.newsapp.util.Constant.STATUS_CODE_400
+import com.mustk.newsapp.util.Constant.STATUS_CODE_401
+import com.mustk.newsapp.util.Constant.STATUS_CODE_403
+import com.mustk.newsapp.util.Constant.STATUS_CODE_404
+import com.mustk.newsapp.util.Constant.STATUS_CODE_500
+import com.mustk.newsapp.util.Constant.STATUS_CODE_502
+import com.mustk.newsapp.util.Constant.STATUS_CODE_503
+import com.mustk.newsapp.util.Constant.STATUS_CODE_504
+import com.mustk.newsapp.util.Constant.STATUS_CODE_UNK
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 enum class RetrofitStatusCode(val code: String, val messageResId: Int) {
@@ -25,13 +26,13 @@ enum class RetrofitStatusCode(val code: String, val messageResId: Int) {
     UNKNOWN(STATUS_CODE_UNK, R.string.unknown_error_message)
 }
 
-class RetrofitErrorHandler @Inject constructor(private val context: Context) {
+class RetrofitErrorHandler @Inject constructor(@ApplicationContext private val applicationContext: Context) {
 
-    fun handleRetrofitCode(code: String): String {
-        val statusCode = RetrofitStatusCode.values().find {
+    fun handleRetrofitCode(code: String, context: Context? = null): String {
+        val currentContext = context ?: applicationContext
+        val statusCode = RetrofitStatusCode.entries.find {
             it.code == code
-        }
-            ?: RetrofitStatusCode.UNKNOWN
-        return context.applicationContext.getString(statusCode.messageResId)
+        } ?: RetrofitStatusCode.UNKNOWN
+        return currentContext.getString(statusCode.messageResId)
     }
 }

@@ -3,11 +3,11 @@ package com.mustk.newsapp.services
 import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.mustk.newsapp.shared.Constant.DARK_THEME
-import com.mustk.newsapp.shared.Constant.DARK_THEME_ENABLED
-import com.mustk.newsapp.shared.Constant.DEFAULT_THEME
-import com.mustk.newsapp.shared.Constant.LIGHT_THEME
-import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
+import com.mustk.newsapp.util.Constant.DARK_THEME
+import com.mustk.newsapp.util.Constant.DARK_THEME_ENABLED
+import com.mustk.newsapp.util.Constant.DEFAULT_THEME
+import com.mustk.newsapp.util.Constant.LIGHT_THEME
+import com.mustk.newsapp.util.Constant.SHARED_PREFS_NAME
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

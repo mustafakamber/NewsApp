@@ -10,9 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.ActivityNewsBinding
-import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
-import com.mustk.newsapp.shared.Constant.LANGUAGE_TR
-import com.mustk.newsapp.ui.viewmodel.NewsViewModel
+import com.mustk.newsapp.ui.viewmodel.SplashViewModel
+import com.mustk.newsapp.util.Constant.LANGUAGE_EN
+import com.mustk.newsapp.util.Constant.LANGUAGE_TR
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -20,7 +20,7 @@ import java.util.Locale
 class NewsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNewsBinding
-    private val viewModel: NewsViewModel by viewModels()
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,6 @@ class NewsActivity : AppCompatActivity() {
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //checkUILanguage()
-        checkCurrentUser()
         setupNavigationBottomView()
     }
 
@@ -40,10 +39,6 @@ class NewsActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkCurrentUser() {
-        viewModel.currentUserCheck()
-    }
-
     private fun setupNavigationBottomView() = with(binding) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.newsFragmentContainerView) as NavHostFragment
@@ -52,7 +47,7 @@ class NewsActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginFragment, R.id.passwordFragment, R.id.signupFragment,
-                R.id.detailFragment, R.id.seeMoreFragment -> {
+                R.id.detailFragment, R.id.seeMoreFragment, R.id.networkConnectionFragment -> {
                     updateBottomNavigationViewVisibility(false)
                 }
                 R.id.homeFragment, R.id.searchFragment, R.id.readListFragment,
@@ -63,8 +58,9 @@ class NewsActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateBottomNavigationViewVisibility(isVisible: Boolean) {
-        binding.navigationBottomView.isVisible = isVisible
+    private fun updateBottomNavigationViewVisibility(boolean: Boolean) = with(binding) {
+        navigationBottomView.isVisible = boolean
+        navigationDivider.isVisible = boolean
     }
 
     private fun checkUILanguage() {

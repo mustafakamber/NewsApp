@@ -1,4 +1,4 @@
-package com.mustk.newsapp.shared
+package com.mustk.newsapp.util
 
 open class Event<out T>(private val content: T) {
 

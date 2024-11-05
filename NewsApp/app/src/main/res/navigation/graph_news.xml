@@ -73,6 +73,9 @@
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_networkConnectionFragment"
+            app:destination="@id/networkConnectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
@@ -122,4 +125,16 @@
             android:name="userEmail"
             app:argType="string" />
     </dialog>
+    <fragment
+        android:id="@+id/networkConnectionFragment"
+        android:name="com.mustk.newsapp.ui.view.NetworkConnectionFragment"
+        android:label="fragment_network_connection"
+        tools:layout="@layout/fragment_network_connection" >
+        <action
+            android:id="@+id/action_networkConnectionFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_networkConnectionFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

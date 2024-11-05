@@ -2,11 +2,17 @@ package com.mustk.newsapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.SEARCH_THRESHOLD_LENGTH
-import com.mustk.newsapp.shared.Constant.TIME_OUT_MILLIS
+import com.mustk.newsapp.util.Constant.NO_CONNECTION
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Constant.SEARCH_THRESHOLD_LENGTH
+import com.mustk.newsapp.util.Constant.TIME_OUT_MILLIS
+import com.mustk.newsapp.util.NetworkHelper
+import com.mustk.newsapp.util.Resource
+import com.mustk.newsapp.util.RetrofitErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,94 +25,36 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val repository: NewsDataSource) :
-    BaseViewModel() {
+class SearchViewModel @Inject constructor(
+    private val repository: NewsDataSource,
+    private val networkHelper: NetworkHelper,
+    private val retrofitErrorHandler: RetrofitErrorHandler
+) : ViewModel() {
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
+    private val _initStatus = MutableLiveData<Boolean>()
+    val initStatus: LiveData<Boolean>
+        get() = _initStatus
 
-    private val _initMessage = MutableLiveData<Boolean>()
-    val initMessage: LiveData<Boolean>
-        get() = _initMessage
-
-    private val _notFoundMessage = MutableLiveData<Boolean>()
-    val notFoundMessage: LiveData<Boolean>
-        get() = _notFoundMessage
-
-    private val _recyclerView = MutableLiveData<Boolean>()
-    val recyclerView: LiveData<Boolean>
-        get() = _recyclerView
-
-    private val _newsList = MutableLiveData<List<News>>()
-    val newsList: LiveData<List<News>>
+    private val _newsList = MutableLiveData<Resource<List<News>>>()
+    val newsList: LiveData<Resource<List<News>>>
         get() = _newsList
 
     private val _searchText = MutableStateFlow("")
     private val searchText = _searchText.asStateFlow()
 
+    val isConnectedNetwork: Boolean
+        get() = networkHelper.isNetworkConnected()
+
     init {
-        initState()
+        _initStatus.value = true
         observeSearchTextChanges()
     }
 
-    private fun setInitMessageVisibility(boolean: Boolean) {
-        _initMessage.value = boolean
-    }
-
-    private fun setNotFoundMessageVisibility(boolean: Boolean) {
-        _notFoundMessage.value = boolean
-    }
-
-    private fun setRecyclerViewVisibility(boolean: Boolean) {
-        _recyclerView.value = boolean
-    }
-
-    private fun setSearchLoadingBarVisibility(boolean: Boolean) {
-        _loading.value = boolean
-    }
-
-    private fun setNewsList(news: List<News>) {
-        _newsList.value = news
-    }
-
     fun onSearchTextChange(text: String) {
-        checkEmptyQuery(text)
-    }
-
-    private fun initState() {
-        setRecyclerViewVisibility(false)
-        setNotFoundMessageVisibility(false)
-        setSearchLoadingBarVisibility(false)
-        setInitMessageVisibility(true)
-    }
-
-    private fun loadingState() {
-        setRecyclerViewVisibility(false)
-        setNotFoundMessageVisibility(false)
-        setInitMessageVisibility(false)
-        setSearchLoadingBarVisibility(true)
-    }
-
-    private fun resultFoundState() {
-        setNotFoundMessageVisibility(false)
-        setInitMessageVisibility(false)
-        setSearchLoadingBarVisibility(false)
-        setRecyclerViewVisibility(true)
-    }
-
-    private fun resultNotFoundState() {
-        setInitMessageVisibility(false)
-        setSearchLoadingBarVisibility(false)
-        setRecyclerViewVisibility(false)
-        setNotFoundMessageVisibility(true)
-    }
-
-    private fun checkEmptyQuery(text: String) {
-        if (text.trim().isEmpty()) {
-            initState()
-        } else {
+        if (text.trim().isNotBlank()) {
             _searchText.value = text.lowercase()
+        } else {
+            _initStatus.value = true
         }
     }
 
@@ -125,17 +73,33 @@ class SearchViewModel @Inject constructor(private val repository: NewsDataSource
         }
     }
 
-    private fun fetchSearchNewsListFromAPI(newsKey: String) {
-        loadingState()
-        safeRequest(
-            response = { repository.searchNews(newsKey) },
-            successStatusData = { searchData ->
-                if (searchData.data.isEmpty()) {
-                    resultNotFoundState()
-                } else {
-                    resultFoundState()
-                    setNewsList(searchData.data)
+    fun fetchSearchNewsListFromAPI(newsKey: String) {
+        viewModelScope.launch {
+            _newsList.postValue(Resource.loading(null))
+            if (isConnectedNetwork) {
+                try {
+                    val response =
+                        repository.searchNews(newsKey)
+                    if (response.isSuccessful) {
+                        response.body()?.let { baseResponse ->
+                            val categoryNews = baseResponse.data
+                            if (categoryNews.isEmpty()) {
+                                _newsList.postValue(Resource.error(NULL_JSON, null))
+                            } else {
+                                _newsList.postValue(Resource.success(categoryNews))
+                            }
+                        }
+                    } else {
+                        val errorCode = response.code().toString()
+                        val errorMessage = retrofitErrorHandler.handleRetrofitCode(errorCode)
+                        _newsList.postValue(Resource.error(errorMessage, null))
+                    }
+                } catch (e: Exception) {
+                    _newsList.postValue(Resource.error(e.localizedMessage, null))
                 }
-            })
+            } else {
+                _newsList.postValue(Resource.error(NO_CONNECTION, null))
+            }
+        }
     }
 }

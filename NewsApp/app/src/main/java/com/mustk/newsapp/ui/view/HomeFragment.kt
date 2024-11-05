@@ -4,35 +4,51 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.isGone
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.tabs.TabLayout
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentHomeBinding
-import com.mustk.newsapp.shared.Constant.CATEGORY_BUSINESS
-import com.mustk.newsapp.shared.Constant.CATEGORY_ENTERTAINMENT
-import com.mustk.newsapp.shared.Constant.CATEGORY_GENERAL
-import com.mustk.newsapp.shared.Constant.CATEGORY_POLITIC
-import com.mustk.newsapp.shared.Constant.CATEGORY_SCIENCE
-import com.mustk.newsapp.shared.Constant.CATEGORY_SPORT
-import com.mustk.newsapp.shared.Constant.CATEGORY_TECH
-import com.mustk.newsapp.shared.Constant.LANGUAGE_AR
-import com.mustk.newsapp.shared.Constant.LANGUAGE_DE
-import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
-import com.mustk.newsapp.shared.Constant.LANGUAGE_ES
-import com.mustk.newsapp.shared.Constant.LANGUAGE_FR
-import com.mustk.newsapp.shared.Constant.LANGUAGE_IT
-import com.mustk.newsapp.shared.Constant.LANGUAGE_TR
 import com.mustk.newsapp.ui.adapter.NewsAdapter
 import com.mustk.newsapp.ui.adapter.SliderAdapter
 import com.mustk.newsapp.ui.viewmodel.HomeViewModel
+import com.mustk.newsapp.util.Constant.CATEGORY_BUSINESS
+import com.mustk.newsapp.util.Constant.CATEGORY_ENTERTAINMENT
+import com.mustk.newsapp.util.Constant.CATEGORY_GENERAL
+import com.mustk.newsapp.util.Constant.CATEGORY_POLITIC
+import com.mustk.newsapp.util.Constant.CATEGORY_SCIENCE
+import com.mustk.newsapp.util.Constant.CATEGORY_SPORT
+import com.mustk.newsapp.util.Constant.CATEGORY_TECH
+import com.mustk.newsapp.util.Constant.LANGUAGE_AR
+import com.mustk.newsapp.util.Constant.LANGUAGE_BG
+import com.mustk.newsapp.util.Constant.LANGUAGE_DE
+import com.mustk.newsapp.util.Constant.LANGUAGE_EN
+import com.mustk.newsapp.util.Constant.LANGUAGE_ES
+import com.mustk.newsapp.util.Constant.LANGUAGE_FR
+import com.mustk.newsapp.util.Constant.LANGUAGE_GL
+import com.mustk.newsapp.util.Constant.LANGUAGE_GR
+import com.mustk.newsapp.util.Constant.LANGUAGE_IT
+import com.mustk.newsapp.util.Constant.LANGUAGE_JP
+import com.mustk.newsapp.util.Constant.LANGUAGE_KO
+import com.mustk.newsapp.util.Constant.LANGUAGE_NL
+import com.mustk.newsapp.util.Constant.LANGUAGE_PT
+import com.mustk.newsapp.util.Constant.LANGUAGE_RO
+import com.mustk.newsapp.util.Constant.LANGUAGE_RU
+import com.mustk.newsapp.util.Constant.LANGUAGE_TR
+import com.mustk.newsapp.util.Constant.LANGUAGE_UK
+import com.mustk.newsapp.util.Constant.LANGUAGE_ZH
+import com.mustk.newsapp.util.Constant.NO_CONNECTION
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Status
 import com.mustk.newsapp.util.observe
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,6 +59,7 @@ class HomeFragment @Inject constructor() : Fragment() {
     @Inject lateinit var newsAdapter: NewsAdapter
     @Inject lateinit var adRequest: AdRequest
     @Inject lateinit var sliderAdapter: SliderAdapter
+    private lateinit var checkConnection: CheckConnectionFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +71,7 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupHomeScreen()
+        setupUI()
         observeLiveData()
     }
 
@@ -63,10 +80,15 @@ class HomeFragment @Inject constructor() : Fragment() {
         checkLastTabPosition()
     }
 
-    private fun setupHomeScreen() = with(binding) {
+    private fun setupUI() = with(binding) {
         homeAdView.loadAd(adRequest)
         homeSwipeRefreshLayout.setOnRefreshListener {
-            viewModel.swipeRefreshClicked()
+            setSwipeRefreshing(true)
+            viewModel.refreshScreen()
+            lifecycleScope.launch {
+                delay(500)
+                setSwipeRefreshing(false)
+            }
         }
         sliderAdapter.setOnSliderNewsClickListener { uuid ->
             navigateDetailScreen(uuid)
@@ -82,14 +104,22 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     private fun setupCountryTabLayout() = with(binding.homeCountryTabLayout) {
         val languageItems = listOf(
-            R.string.spinner_uk, R.string.spinner_tr,
-            R.string.spinner_fr, R.string.spinner_es, R.string.spinner_it,
-            R.string.spinner_de, R.string.spinner_ar
+            R.string.spinner_gl,
+            R.string.spinner_gb, R.string.spinner_tr,
+            R.string.spinner_fr, R.string.spinner_nl, R.string.spinner_de,
+            R.string.spinner_es, R.string.spinner_pt, R.string.spinner_it,
+            R.string.spinner_gr, R.string.spinner_ro,
+            R.string.spinner_uk, R.string.spinner_ar,
+            R.string.spinner_ru, R.string.spinner_bg, R.string.spinner_kr,
+            R.string.spinner_zh, R.string.spinner_jp
         )
         val newsLanguages = listOf(
-            LANGUAGE_EN, LANGUAGE_TR, LANGUAGE_FR,
-            LANGUAGE_ES, LANGUAGE_IT, LANGUAGE_DE,
-            LANGUAGE_AR
+            LANGUAGE_GL, LANGUAGE_EN, LANGUAGE_TR,
+            LANGUAGE_FR, LANGUAGE_NL, LANGUAGE_DE,
+            LANGUAGE_ES, LANGUAGE_PT, LANGUAGE_IT,
+            LANGUAGE_GR, LANGUAGE_RO, LANGUAGE_UK,
+            LANGUAGE_AR, LANGUAGE_RU, LANGUAGE_BG,
+            LANGUAGE_KO, LANGUAGE_ZH, LANGUAGE_JP
         )
         languageItems.forEach { titleResId ->
             addTab(newTab().setText(getString(titleResId)))
@@ -144,37 +174,147 @@ class HomeFragment @Inject constructor() : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun observeLiveData() = with(binding) {
-        observe(viewModel.errorMessage) { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun navigateToCheckConnectionScreen() {
+        checkConnection = CheckConnectionFragment(requireContext())
+        checkConnection.showCheckConnectionDialog {
+            if (viewModel.isConnectedNetwork) {
+                checkConnection.dismissDialog()
+                viewModel.refreshData()
             }
         }
-        observe(viewModel.categoryNewsList) { news ->
-            newsAdapter.submitList(news)
+    }
+
+    private fun observeLiveData() = with(binding) {
+        observe(viewModel.headlineNewsList) {
+            when (it.status) {
+                Status.LOADING -> {
+                    setImageSlider(false)
+                    setHeadlineNetwork(false)
+                    setHeadlineError(false)
+                    setHeadlineLoading(true)
+                }
+
+                Status.ERROR -> {
+                    val errorMessage = it.message
+                    if (errorMessage == NO_CONNECTION) {
+                        setHeadlineLoading(false)
+                        setImageSlider(false)
+                        setHeadlineError(false)
+                        setHeadlineNetwork(true)
+                        navigateToCheckConnectionScreen()
+                    } else {
+                        setImageSlider(false)
+                        setHeadlineNetwork(false)
+                        setHeadlineLoading(false)
+                        setHeadlineError(true)
+                        binding.homeHeadlineErrorTextView.text = errorMessage
+                    }
+                }
+
+                Status.SUCCESS -> {
+                    setHeadlineNetwork(false)
+                    setHeadlineLoading(false)
+                    setHeadlineError(false)
+                    setImageSlider(true)
+                    it.data?.let { headlineNews ->
+                        sliderAdapter.reloadSliderNews(headlineNews)
+                        headLineImageSlider.startAutoCycle()
+                    }
+                }
+            }
         }
-        observe(viewModel.headlineNewsList) { news ->
-            sliderAdapter.reloadSliderNews(news)
-            headLineImageSlider.startAutoCycle()
+        observe(viewModel.categoryNewsList) {
+            when (it.status) {
+                Status.LOADING -> {
+                    setCategoryNotFound(false)
+                    setCategoryError(false)
+                    setRecyclerView(false)
+                    setCategoryNetwork(false)
+                    setCategoryLoading(true)
+                }
+
+                Status.ERROR -> {
+                    when (val errorMessage = it.message) {
+                        NO_CONNECTION -> {
+                            setCategoryLoading(false)
+                            setCategoryNotFound(false)
+                            setCategoryError(false)
+                            setRecyclerView(false)
+                            setCategoryNetwork(true)
+                        }
+
+                        NULL_JSON -> {
+                            setCategoryError(false)
+                            setRecyclerView(false)
+                            setCategoryNetwork(false)
+                            setCategoryLoading(false)
+                            setCategoryNotFound(true)
+                        }
+
+                        else -> {
+                            setCategoryNotFound(false)
+                            setRecyclerView(false)
+                            setCategoryNetwork(false)
+                            setCategoryLoading(false)
+                            setCategoryError(true)
+                            homeCategoryErrorTextView.text = errorMessage
+                        }
+                    }
+                }
+
+                Status.SUCCESS -> {
+                    setCategoryLoading(false)
+                    setCategoryNotFound(false)
+                    setCategoryError(false)
+                    setCategoryNetwork(false)
+                    setRecyclerView(true)
+
+                    it.data.let { categoryNews ->
+                        newsAdapter.submitList(categoryNews)
+                    }
+                }
+            }
         }
-        observe(viewModel.headlineLoading) { boolean ->
-            homeHeadlineLoadingBar.isInvisible = !boolean
-        }
-        observe(viewModel.categoryLoading) { boolean ->
-            homeCategoryLoadingBar.isInvisible = !boolean
-        }
-        observe(viewModel.categoryNullMessage) { boolean ->
-            homeNotFoundMessage.isInvisible = !boolean
-        }
-        observe(viewModel.swipeRefreshLoading) { boolean ->
-            homeSwipeRefreshLayout.isRefreshing = boolean
-        }
-        observe(viewModel.recyclerView) { boolean ->
-            homeRecyclerView.isVisible = boolean
-        }
-        observe(viewModel.imageSliderView) { boolean ->
-            imageSliderCardView.isInvisible = !boolean
-            headLineImageSlider.isInvisible = !boolean
-        }
+    }
+
+    private fun setSwipeRefreshing(boolean: Boolean) = with(binding) {
+        homeSwipeRefreshLayout.isRefreshing = boolean
+    }
+
+    private fun setHeadlineLoading(boolean: Boolean) = with(binding) {
+        homeHeadlineLoadingBar.isInvisible = !boolean
+    }
+
+    private fun setHeadlineNetwork(boolean: Boolean) = with(binding) {
+        homeHeadlineNetworkMessage.isInvisible = !boolean
+    }
+
+    private fun setHeadlineError(boolean: Boolean) = with(binding) {
+        homeHeadlineErrorMessage.isInvisible = !boolean
+    }
+
+    private fun setImageSlider(boolean: Boolean) = with(binding) {
+        imageSliderCardView.isInvisible = !boolean
+        headLineImageSlider.isInvisible = !boolean
+    }
+
+    private fun setCategoryLoading(boolean: Boolean) = with(binding) {
+        homeCategoryLoadingBar.isInvisible = !boolean
+    }
+
+    private fun setCategoryNetwork(boolean: Boolean) = with(binding) {
+        homeCategoryNetworkMessage.isInvisible = !boolean
+    }
+
+    private fun setCategoryError(boolean: Boolean) = with(binding) {
+        homeCategoryErrorMessage.isInvisible = !boolean
+    }
+
+    private fun setCategoryNotFound(boolean: Boolean) = with(binding) {
+        homeNotFoundMessage.isInvisible = !boolean
+    }
+
+    private fun setRecyclerView(boolean: Boolean) = with(binding) {
+        homeRecyclerView.isGone = !boolean
     }
 }

@@ -2,25 +2,28 @@ package com.mustk.newsapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.CATEGORIES_FIELD
-import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
-import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
-import com.mustk.newsapp.shared.Constant.LANGUAGE_FIELD
-import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
-import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
-import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_FIELD
-import com.mustk.newsapp.shared.Constant.SNIPPET_FIELD
-import com.mustk.newsapp.shared.Constant.SOURCE_FIELD
-import com.mustk.newsapp.shared.Constant.TITLE_FIELD
-import com.mustk.newsapp.shared.Constant.TITLE_FIRST_WORD_CHAR
-import com.mustk.newsapp.shared.Constant.USER_FIELD
-import com.mustk.newsapp.shared.Constant.UUID_FIELD
+import com.mustk.newsapp.util.Constant.CATEGORIES_FIELD
+import com.mustk.newsapp.util.Constant.DESCRIPTION_FIELD
+import com.mustk.newsapp.util.Constant.IMAGE_URL_FIELD
+import com.mustk.newsapp.util.Constant.LANGUAGE_FIELD
+import com.mustk.newsapp.util.Constant.NEWS_COLLECTION
+import com.mustk.newsapp.util.Constant.NEWS_URL_FIELD
+import com.mustk.newsapp.util.Constant.NEWS_UUID_ARG
+import com.mustk.newsapp.util.Constant.PUBLISHED_AT_FIELD
+import com.mustk.newsapp.util.Constant.READLIST_ARG
+import com.mustk.newsapp.util.Constant.SNIPPET_FIELD
+import com.mustk.newsapp.util.Constant.SOURCE_FIELD
+import com.mustk.newsapp.util.Constant.TITLE_FIELD
+import com.mustk.newsapp.util.Constant.TITLE_FIRST_WORD_CHAR
+import com.mustk.newsapp.util.Constant.USER_FIELD
+import com.mustk.newsapp.util.Constant.UUID_FIELD
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,7 +32,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val repository: NewsDataSource,
     private val auth: FirebaseAuth,
-    private val database: FirebaseFirestore
+    private val database: FirebaseFirestore,
+    stateHandle : SavedStateHandle
 ) : BaseViewModel() {
 
     private val _detailLoading = MutableLiveData<Boolean>()
@@ -62,6 +66,9 @@ class DetailViewModel @Inject constructor(
 
     init {
         initState()
+        val newsUUID = stateHandle.get<String>(NEWS_UUID_ARG) ?: ""
+        val isFromReadList = stateHandle.get<Boolean>(READLIST_ARG) ?: false
+        fetchDetailNews(newsUUID, isFromReadList)
     }
 
     private fun initState() {

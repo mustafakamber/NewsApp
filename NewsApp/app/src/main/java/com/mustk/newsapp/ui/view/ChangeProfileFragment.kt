@@ -51,16 +51,8 @@ class ChangeProfileFragment @Inject constructor() : BottomSheetDialogFragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerLauncher()
-        initViewModel()
         setupChangeProfileScreen()
         observeLiveData()
-    }
-
-    private fun initViewModel() {
-        arguments?.apply {
-            val args = ChangeProfileFragmentArgs.fromBundle(this)
-            viewModel.setUserEmail(args.userEmail)
-        }
     }
 
     private fun registerLauncher() {

@@ -1,4 +1,4 @@
-package com.mustk.newsapp.shared
+package com.mustk.newsapp.util
 
 object Constant {
     const val SHARED_PREFS_NAME = "app_preferences"
@@ -15,6 +15,7 @@ object Constant {
     const val UUID_QUERY_PARAM = "uuid/"
     const val SEARCH_QUERY_PARAM = "search"
     const val CATEGORIES_QUERY_PARAM = "categories"
+    const val LANGUAGE_GL = ""
     const val LANGUAGE_EN = "en"
     const val LANGUAGE_TR = "tr"
     const val LANGUAGE_FR = "fr"
@@ -22,6 +23,16 @@ object Constant {
     const val LANGUAGE_IT = "it"
     const val LANGUAGE_DE = "de"
     const val LANGUAGE_AR = "ar"
+    const val LANGUAGE_PT = "pt"
+    const val LANGUAGE_NL = "nl"
+    const val LANGUAGE_RU = "ru"
+    const val LANGUAGE_KO = "ko"
+    const val LANGUAGE_BG = "bg"
+    const val LANGUAGE_ZH = "zh"
+    const val LANGUAGE_JP = "ja"
+    const val LANGUAGE_GR = "el"
+    const val LANGUAGE_RO = "ro"
+    const val LANGUAGE_UK = "uk"
     const val BASE_URL = "https://api.thenewsapi.com/v1/news/"
     const val DEFAULT_PROFILE_IMAGE_URL =
         "https://i.ibb.co/8rQCRDP/default-avatar-profile-icon-of-social-media-user-vector-removebg-preview.png"
@@ -72,6 +83,7 @@ object Constant {
     const val NOTIFICATION_REQUEST_CODE = 1001
     const val PENDING_INTENT_REQUEST_CODE = 0
     const val SQLITE_DATABASE_NAME = "NewsDB"
+    const val PASSWORD_FRAGMENT_CLOSE_DELAY = 1500
     const val PUBLISHED_AT_DATE_MIN = 0
     const val PUBLISHED_AT_DATE_MAX = 10
     const val PUBLISHED_AT_TIME_MIN = 11
@@ -86,9 +98,13 @@ object Constant {
     const val CATEGORY_CONVERT_CHAR = ","
     const val DATABASE_VERSION = 5
     const val TITLE_FIRST_WORD_CHAR = " "
+    const val NEWS_UUID_ARG = "newsUUID"
+    const val READLIST_ARG = "isFromReadList"
+    const val USER_EMAIL_ARG = "userEmail"
     const val DARK_THEME = "darkTheme"
     const val LIGHT_THEME = "lightTheme"
     const val DEFAULT_THEME = "defaultTheme"
+    const val NO_CONNECTION = "No internet connection"
     const val DEFAULT_LANGUAGE = "defaultLanguage"
     const val NOTIFTY_THEME_CHANGE_ACTIVITY = "notifyThemeChangeActivity"
     const val INTER_TEST = "ca-app-pub-3940256099942544/1033173712"

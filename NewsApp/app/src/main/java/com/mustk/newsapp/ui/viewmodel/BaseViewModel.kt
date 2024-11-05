@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mustk.newsapp.shared.Event
-import com.mustk.newsapp.shared.Resource
-import com.mustk.newsapp.shared.Status
+import com.mustk.newsapp.util.Event
+import com.mustk.newsapp.util.Resource
+import com.mustk.newsapp.util.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -3,12 +3,13 @@
     <dimen name="match_constraint_size">0dp</dimen>
     <dimen name="headline_slider_height_size">240dp</dimen>
     <dimen name="gradient_height_size">32dp</dimen>
-    <dimen name="navigation_size">56dp</dimen>
+    <dimen name="navigation_size">52dp</dimen>
     <dimen name="home_recyclerview_size">720dp</dimen>
     <!-- TextSize -->
     <dimen name="extra_tiny_text_size">12sp</dimen>
     <dimen name="tiny_text_size">14sp</dimen>
     <dimen name="small_text_size">16sp</dimen>
+    <dimen name="normal_text_size">20sp</dimen>
     <dimen name="medium_text_size">24sp</dimen>
     <dimen name="large_text_size">36sp</dimen>
     <!-- MarginSize -->
@@ -29,7 +30,9 @@
     <dimen name="small_radius_size">16dp</dimen>
     <dimen name="medium_radius_size">20dp</dimen>
     <dimen name="large_radius_size">32dp</dimen>
+    <dimen name="huge_radius_size">36dp</dimen>
     <!-- ImageSize -->
+    <dimen name="extra_tiny_image_size">20dp</dimen>
     <dimen name="tiny_image_size">24dp</dimen>
     <dimen name="little_image_size">28dp</dimen>
     <dimen name="small_image_size">32dp</dimen>

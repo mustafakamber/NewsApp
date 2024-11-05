@@ -4,25 +4,27 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.mustk.newsapp.data.datasource.NewsDataSource
-import com.mustk.newsapp.shared.Constant.DARK_THEME
-import com.mustk.newsapp.shared.Constant.DARK_THEME_ENABLED
-import com.mustk.newsapp.shared.Constant.EMAIL_FIELD
-import com.mustk.newsapp.shared.Constant.LANGUAGE_EN
-import com.mustk.newsapp.shared.Constant.LANGUAGE_ITEM
-import com.mustk.newsapp.shared.Constant.LIGHT_THEME
-import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
-import com.mustk.newsapp.shared.Constant.NOTIFICATIONS_ENABLED
-import com.mustk.newsapp.shared.Constant.PHOTO_FIELD
-import com.mustk.newsapp.shared.Constant.SHARED_PREFS_NAME
-import com.mustk.newsapp.shared.Constant.USERS_COLLECTION
-import com.mustk.newsapp.shared.Constant.USER_FIELD
-import com.mustk.newsapp.shared.Event
+import com.mustk.newsapp.util.Constant.DARK_THEME
+import com.mustk.newsapp.util.Constant.DARK_THEME_ENABLED
+import com.mustk.newsapp.util.Constant.EMAIL_FIELD
+import com.mustk.newsapp.util.Constant.LANGUAGE_EN
+import com.mustk.newsapp.util.Constant.LANGUAGE_ITEM
+import com.mustk.newsapp.util.Constant.LIGHT_THEME
+import com.mustk.newsapp.util.Constant.NEWS_COLLECTION
+import com.mustk.newsapp.util.Constant.NOTIFICATIONS_ENABLED
+import com.mustk.newsapp.util.Constant.PHOTO_FIELD
+import com.mustk.newsapp.util.Constant.SHARED_PREFS_NAME
+import com.mustk.newsapp.util.Constant.USERS_COLLECTION
+import com.mustk.newsapp.util.Constant.USER_FIELD
+import com.mustk.newsapp.util.Event
+import com.mustk.newsapp.util.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -34,8 +36,9 @@ class SettingsViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val database: FirebaseFirestore,
     private val repository: NewsDataSource,
+    private val networkHelper: NetworkHelper,
     @ApplicationContext private val context: Context
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val sharedPreferences: SharedPreferences by lazy {
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
@@ -65,8 +68,23 @@ class SettingsViewModel @Inject constructor(
     val userPhoto: LiveData<String>
         get() = _userPhoto
 
+    private val _toastError = MutableLiveData<String>()
+    val toastError: LiveData<String>
+        get() = _toastError
+
+    private val _snackBarError = MutableLiveData<Event<Int>>()
+    val snackBarError: LiveData<Event<Int>>
+        get() = _snackBarError
+
+    private val _navigateToCheckConnection = MutableLiveData<Event<Boolean>>()
+    val navigateToCheckConnection: LiveData<Event<Boolean>>
+        get() = _navigateToCheckConnection
+
     private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
     val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
+
+    val isConnectedNetwork: Boolean
+        get() = networkHelper.isNetworkConnected()
 
     /*
     private var initLanguage = sharedPreferences.getString(LANGUAGE_ITEM, DEFAULT_LANGUAGE)
@@ -81,9 +99,13 @@ class SettingsViewModel @Inject constructor(
     private var selectedLanguage = getCurrentLanguage()
 
     init {
-        setLanguageLastSelectedTabPosition(initTabPosition())
-        fetchUserInfoFromCloudDatabase()
+        checkNetworkConnection()
+        _lastSelectedLanguageTabPosition.value = initTabPosition()
         loadPreferences()
+    }
+
+    private fun navigateToCheckConnectionScreen() {
+        _navigateToCheckConnection.value = Event(true)
     }
 
     private fun initTabPosition() : Int {
@@ -94,18 +116,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun setLanguageLastSelectedTabPosition(position: Int) {
-        _lastSelectedLanguageTabPosition.value = position
+    private fun checkNetworkConnection() {
+        if (!networkHelper.isNetworkConnected()) {
+            navigateToCheckConnectionScreen()
+        } else {
+            fetchUserInfoFromCloudDatabase()
+        }
     }
 
     private fun getCurrentLanguage(): String {
         val locale: Locale =
             context.resources.configuration.locales.get(0)
         return locale.language
-    }
-
-    private fun setSelectedLanguage(language: String) {
-        selectedLanguage = language
     }
 
     private fun loadPreferences() {
@@ -134,9 +156,9 @@ class SettingsViewModel @Inject constructor(
 
     fun onLanguageChange(language: String, position: Int) {
         if (language != selectedLanguage) {
-            setSelectedLanguage(language)
-            setLanguageLastSelectedTabPosition(position)
-            changeAppLanguage(language)
+            selectedLanguage = language
+            _lastSelectedLanguageTabPosition.value = position
+            _changeLanguage.value = Event(language)
             saveLanguagePreference(language)
         }
     }
@@ -155,17 +177,21 @@ class SettingsViewModel @Inject constructor(
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        setToastMessage(it)
+                        _toastError.value = it
                     }
                 }
         }
     }
 
     fun deleteAccountButtonClicked() {
-        deleteAllNewsFromLocal()
-        deleteAllNewsFromCloud()
-        deleteAccountFromCloud()
-        deleteAccountFromAuth()
+        if (isConnectedNetwork) {
+            deleteAllNewsFromLocal()
+            deleteAllNewsFromCloud()
+            deleteAccountFromCloud()
+            deleteAccountFromAuth()
+        } else {
+            navigateToCheckConnectionScreen()
+        }
     }
 
     private fun deleteAccountFromCloud() {
@@ -176,14 +202,14 @@ class SettingsViewModel @Inject constructor(
                         document.reference.delete()
                             .addOnFailureListener { error ->
                                 error.localizedMessage?.let {
-                                    setToastMessage(it)
+                                    _toastError.value = it
                                 }
                             }
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        setToastMessage(it)
+                        _toastError.value = it
                     }
                 }
         }
@@ -194,7 +220,7 @@ class SettingsViewModel @Inject constructor(
         currentUser?.let { firebaseUser ->
             firebaseUser.delete()
                 .addOnSuccessListener {
-                    navigateToLoginScreen()
+                    _navigateToLogin.value = Event(true)
                 }
         }
     }
@@ -217,7 +243,7 @@ class SettingsViewModel @Inject constructor(
                             document.reference.delete()
                                 .addOnFailureListener { error ->
                                     error.localizedMessage?.let {
-                                        setToastMessage(it)
+                                        _toastError.value = it
                                     }
                                 }
                         }
@@ -225,15 +251,19 @@ class SettingsViewModel @Inject constructor(
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        setToastMessage(it)
+                        _toastError.value = it
                     }
                 }
         }
     }
 
     fun logOutButtonClicked() {
-        auth.signOut()
-        navigateToLoginScreen()
+        if (isConnectedNetwork) {
+            auth.signOut()
+            _navigateToLogin.value = Event(true)
+        } else {
+            navigateToCheckConnectionScreen()
+        }
     }
 
     private fun getUserCollection(email: String): Task<QuerySnapshot> {
@@ -248,13 +278,5 @@ class SettingsViewModel @Inject constructor(
             .whereEqualTo(USER_FIELD, email)
             .get()
         return newsDocRef
-    }
-
-    private fun navigateToLoginScreen() {
-        _navigateToLogin.value = Event(true)
-    }
-
-    private fun changeAppLanguage(language: String) {
-        _changeLanguage.value = Event(language)
     }
 }

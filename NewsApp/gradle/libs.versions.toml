@@ -1,11 +1,8 @@
 [versions]
-agp = "8.4.0"
 autoimageslider = "1.4.0"
-autoimagesliderVersion = "1.4.0-appcompat"
+autoimagesliderVersion = "1.4.0"
 cardview = "1.0.0"
 carUiLib = "2.6.0"
-ccp = "X.Y.Z"
-chipNavigationBar = "1.4.0"
 circleimageview = "3.1.0"
 coreSplashscreen = "1.0.1"
 firebaseBom = "33.1.0"
@@ -15,21 +12,12 @@ glide = "4.16.0"
 googleServices = "4.4.2"
 hiltAndroid = "2.50"
 hiltAndroidGradlePlugin = "2.50"
-imageslideshow = "0.1.0"
-insertKoinKoinAndroid = "3.2.0-beta-1"
-koinAndroid = "{latest-version}"
-koinAndroidViewmodel = "{latest-version}"
-koinAndroidxCompose = "3.2.0-beta-1"
-koinAndroidxNavigation = "3.2.0-beta-1"
-koinTestJunit4 = "3.2.0-beta-1"
-kotlin = "1.9.0"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
 kotlinxCoroutinesAndroid = "1.7.1"
-library = "1.1.0"
 lifecycleViewmodelKtx = "2.8.0"
 material = "1.10.0"
 activity = "1.8.0"
@@ -57,11 +45,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
-autoimageslider = { module = "com.github.smarteist:autoimageslider", version.ref = "autoimageslider" }
-autoimageslider-v140appcompat = { module = "com.github.smarteist:autoimageslider", version.ref = "autoimagesliderVersion" }
 car-ui-lib = { module = "com.android.car.ui:car-ui-lib", version.ref = "carUiLib" }
-ccp = { module = "com.hbb20:ccp", version.ref = "ccp" }
-chip-navigation-bar = { module = "com.github.ismaeldivita:chip-navigation-bar", version.ref = "chipNavigationBar" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
@@ -73,19 +57,11 @@ google-services = { module = "com.google.gms:google-services", version.ref = "go
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
-imageslideshow = { module = "com.github.denzcoskun:ImageSlideshow", version.ref = "imageslideshow" }
-io-insert-koin-koin-android = { module = "io.insert-koin:koin-android", version.ref = "insertKoinKoinAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-koin-android = { module = "org.koin:koin-android", version.ref = "koinAndroid" }
-koin-android-viewmodel = { module = "org.koin:koin-android-viewmodel", version.ref = "koinAndroidViewmodel" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinAndroidxCompose" }
-koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation", version.ref = "koinAndroidxNavigation" }
-koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4", version.ref = "koinTestJunit4" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-library = { module = "nl.joery.animatedbottombar:library", version.ref = "library" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -94,8 +70,5 @@ play-services-auth = { module = "com.google.android.gms:play-services-auth", ver
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-lifecycle-viewmodel-android = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-android", version.ref = "lifecycleViewmodelAndroid" }
 androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
-
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

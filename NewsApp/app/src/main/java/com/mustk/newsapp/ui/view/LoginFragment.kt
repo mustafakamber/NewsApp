@@ -10,16 +10,19 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.mustk.newsapp.R
 import com.mustk.newsapp.databinding.FragmentLoginBinding
-import com.mustk.newsapp.ui.viewmodel.NewsViewModel
 import com.mustk.newsapp.ui.viewmodel.LoginViewModel
+import com.mustk.newsapp.ui.viewmodel.SplashViewModel
 import com.mustk.newsapp.util.observe
 import com.mustk.newsapp.util.slideDown
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -27,9 +30,10 @@ class LoginFragment @Inject constructor() : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private val viewModel : LoginViewModel by viewModels()
-    private val authViewModel : NewsViewModel by activityViewModels()
+    private val splashViewModel: SplashViewModel by activityViewModels()
     @Inject lateinit var googleSignInClient: GoogleSignInClient
     @Inject lateinit var navOptionsBuilder: NavOptions.Builder
+    private lateinit var checkConnection: CheckConnectionFragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,22 +45,22 @@ class LoginFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupLoginScreen()
+        setupUI()
         observeLiveData()
     }
-    
-    private fun setupLoginScreen() = with(binding) {
+
+    private fun setupUI() = with(binding) {
         loginTitleText.slideDown()
         loginEmailEditText.addTextChangedListener {
-            viewModel.setEmailEndIcon(true)
+            setEmailEndIcon(true)
         }
         loginPasswordEditText.addTextChangedListener {
-            viewModel.setPasswordEndIcon(true)
+            setPasswordEndIcon(true)
         }
         loginButton.setOnClickListener {
-            val emailAddress = loginEmailEditText.text.toString().trim()
+            val email = loginEmailEditText.text.toString().trim()
             val password = loginPasswordEditText.text.toString().trim()
-            viewModel.inputCheckForLogin(emailAddress, password)
+            viewModel.inputValidate(email, password)
         }
         signupText.setOnClickListener {
             navigateToSignupScreen()
@@ -67,6 +71,14 @@ class LoginFragment @Inject constructor() : Fragment() {
         googleButton.setOnClickListener {
             navigateToGoogleSignInScreen()
         }
+    }
+
+    private fun setEmailEndIcon(isVisible: Boolean) = with(binding) {
+        loginEmailInputLayout.isEndIconVisible = isVisible
+    }
+
+    private fun setPasswordEndIcon(isVisible: Boolean) = with(binding) {
+        loginPasswordInputLayout.isEndIconVisible = isVisible
     }
 
     private fun navigateToGoogleSignInScreen() {
@@ -82,6 +94,17 @@ class LoginFragment @Inject constructor() : Fragment() {
     private fun navigateToPasswordScreen() {
         val action = LoginFragmentDirections.actionLoginFragmentToPasswordFragment(null)
         findNavController().navigate(action)
+    }
+
+    private fun navigateToNetworkConnectionScreen() {
+        val action = LoginFragmentDirections.actionLoginFragmentToNetworkConnectionFragment()
+        val navOptions = navOptionsBuilder
+            .setPopUpTo(R.id.loginFragment, true)
+            .build()
+        findNavController().apply {
+            graph.setStartDestination(R.id.networkConnectionFragment)
+            navigate(action, navOptions)
+        }
     }
 
     private fun navigateToSignupScreen() {
@@ -100,36 +123,60 @@ class LoginFragment @Inject constructor() : Fragment() {
         }
     }
 
+    private fun navigateToCheckConnectionScreen() {
+        checkConnection = CheckConnectionFragment(requireContext())
+        checkConnection.showCheckConnectionDialog {
+            if (viewModel.isConnectedNetwork()) {
+                checkConnection.dismissDialog()
+                viewModel.checkCurrentUser()
+            }
+        }
+    }
+
     private fun observeLiveData() = with(binding) {
-        observe(viewModel.emailErrorText) { event ->
-            event.getContentIfNotHandled()?.let { emailError ->
-                loginEmailEditText.error = getString(emailError)
-            }
-        }
-        observe(viewModel.emailEndIconVisibility) { boolean ->
-            loginEmailInputLayout.isEndIconVisible = boolean
-        }
-        observe(viewModel.passwordErrorText) { event ->
-            event.getContentIfNotHandled()?.let { passwordError ->
-                loginPasswordEditText.error = getString(passwordError)
-            }
-        }
-        observe(viewModel.passwordEndIconVisibility) { boolean ->
-            loginPasswordInputLayout.isEndIconVisible = boolean
-        }
-        observe(viewModel.errorMessage) { event ->
-            event.getContentIfNotHandled()?.let { toastMessage ->
-                Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
-            }
-        }
-        observe(viewModel.navigateToHome) { event ->
-            event.getContentIfNotHandled()?.let {
-               navigateToHomeScreen()
-            }
-        }
-        observe(authViewModel.navigateToHome) { event ->
+        observe(viewModel.currentUserActive) { event ->
             event.getContentIfNotHandled()?.let {
                 navigateToHomeScreen()
+            }
+        }
+        observe(viewModel.emailError) { error ->
+            error.let {
+                loginEmailEditText.error = getString(it)
+                setEmailEndIcon(false)
+            }
+        }
+        observe(viewModel.passwordError) { error ->
+            error.let {
+                loginPasswordEditText.error = getString(it)
+                setPasswordEndIcon(false)
+            }
+        }
+        observe(viewModel.authError) { message ->
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+        observe(viewModel.success) { event ->
+            event.getContentIfNotHandled()?.let { boolean ->
+                if (boolean){
+                    lifecycleScope.launch {
+                        delay(500)
+                        navigateToHomeScreen()
+                    }
+                }
+            }
+        }
+        observe(viewModel.checkNetworkConnection) { event ->
+            event.getContentIfNotHandled()?.let {
+                navigateToCheckConnectionScreen()
+            }
+        }
+        observe(splashViewModel.userAuthenticated) { event ->
+            event.getContentIfNotHandled()?.let {
+                navigateToHomeScreen()
+            }
+        }
+        observe(splashViewModel.checkNetworkConnection) { event ->
+            event.getContentIfNotHandled()?.let {
+                navigateToNetworkConnectionScreen()
             }
         }
     }

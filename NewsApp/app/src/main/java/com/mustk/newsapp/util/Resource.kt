@@ -1,4 +1,4 @@
-package com.mustk.newsapp.shared
+package com.mustk.newsapp.util
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {

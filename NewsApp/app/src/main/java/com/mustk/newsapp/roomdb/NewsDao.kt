@@ -5,9 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
-import com.mustk.newsapp.shared.Constant.USER_FIELD
-import com.mustk.newsapp.shared.Constant.UUID_FIELD
+import com.mustk.newsapp.util.Constant.NEWS_COLLECTION
+import com.mustk.newsapp.util.Constant.USER_FIELD
+import com.mustk.newsapp.util.Constant.UUID_FIELD
 
 @Dao
 interface NewsDao {

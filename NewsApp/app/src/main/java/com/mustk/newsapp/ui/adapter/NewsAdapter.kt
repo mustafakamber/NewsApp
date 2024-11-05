@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.databinding.RecyclerNewsRowBinding
-import com.mustk.newsapp.shared.Constant.SHORT_TITLE_MAX_SIZE
+import com.mustk.newsapp.util.Constant.SHORT_TITLE_MAX_SIZE
 import com.mustk.newsapp.util.downloadNewsImageFromURL
 import com.mustk.newsapp.util.truncateString
 import javax.inject.Inject

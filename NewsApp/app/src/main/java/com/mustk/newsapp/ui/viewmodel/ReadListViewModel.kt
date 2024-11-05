@@ -2,24 +2,29 @@ package com.mustk.newsapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mustk.newsapp.R
 import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
-import com.mustk.newsapp.shared.Constant.CATEGORIES_FIELD
-import com.mustk.newsapp.shared.Constant.DESCRIPTION_FIELD
-import com.mustk.newsapp.shared.Constant.IMAGE_URL_FIELD
-import com.mustk.newsapp.shared.Constant.LANGUAGE_FIELD
-import com.mustk.newsapp.shared.Constant.NEWS_COLLECTION
-import com.mustk.newsapp.shared.Constant.NEWS_URL_FIELD
-import com.mustk.newsapp.shared.Constant.PUBLISHED_AT_FIELD
-import com.mustk.newsapp.shared.Constant.SNIPPET_FIELD
-import com.mustk.newsapp.shared.Constant.SOURCE_FIELD
-import com.mustk.newsapp.shared.Constant.TITLE_FIELD
-import com.mustk.newsapp.shared.Constant.USER_FIELD
-import com.mustk.newsapp.shared.Constant.UUID_FIELD
+import com.mustk.newsapp.util.Constant.CATEGORIES_FIELD
+import com.mustk.newsapp.util.Constant.DESCRIPTION_FIELD
+import com.mustk.newsapp.util.Constant.IMAGE_URL_FIELD
+import com.mustk.newsapp.util.Constant.LANGUAGE_FIELD
+import com.mustk.newsapp.util.Constant.NEWS_COLLECTION
+import com.mustk.newsapp.util.Constant.NEWS_URL_FIELD
+import com.mustk.newsapp.util.Constant.NULL_JSON
+import com.mustk.newsapp.util.Constant.PUBLISHED_AT_FIELD
+import com.mustk.newsapp.util.Constant.SNIPPET_FIELD
+import com.mustk.newsapp.util.Constant.SOURCE_FIELD
+import com.mustk.newsapp.util.Constant.TITLE_FIELD
+import com.mustk.newsapp.util.Constant.USER_FIELD
+import com.mustk.newsapp.util.Constant.UUID_FIELD
+import com.mustk.newsapp.util.Event
+import com.mustk.newsapp.util.NetworkHelper
+import com.mustk.newsapp.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,111 +33,86 @@ import javax.inject.Inject
 class ReadListViewModel @Inject constructor(
     private val repository: NewsDataSource,
     private val auth: FirebaseAuth,
-    private val database: FirebaseFirestore
-) : BaseViewModel() {
+    private val database: FirebaseFirestore,
+    private val networkHelper: NetworkHelper,
+) : ViewModel() {
 
-    private val _loading = MutableLiveData<Boolean>()
-    val loading: LiveData<Boolean>
-        get() = _loading
-
-    private val _readListNews = MutableLiveData<List<News>>()
-    val readListNews: LiveData<List<News>>
+    private val _readListNews = MutableLiveData<Resource<List<News>>>()
+    val readListNews: LiveData<Resource<List<News>>>
         get() = _readListNews
 
-    private val _recyclerViewVisibility = MutableLiveData<Boolean>()
-    val recyclerViewVisibility: LiveData<Boolean>
-        get() = _recyclerViewVisibility
+    private val _checkConnection = MutableLiveData<Event<Boolean>>()
+    val checkConnection: LiveData<Event<Boolean>>
+        get() = _checkConnection
 
-    private val _emptyMessage = MutableLiveData<Boolean>()
-    val emptyMessage: LiveData<Boolean>
-        get() = _emptyMessage
+    private val _snackBarMessage = MutableLiveData<Event<Int>>()
+    val snackBarMessage: LiveData<Event<Int>>
+        get() = _snackBarMessage
 
-    private val _deleteButton = MutableLiveData<Boolean>()
-    val deleteButton: LiveData<Boolean>
-        get() = _deleteButton
+    private val _toastError = MutableLiveData<String>()
+    val toastError: LiveData<String>
+        get() = _toastError
 
-    fun refreshReadListData() {
-        initState()
-        fetchNewsListFromLocal()
+    val isConnectedNetwork: Boolean
+        get() = networkHelper.isNetworkConnected()
+
+    init {
+        refreshScreen()
     }
 
-    private fun setReadListEmptyMessageVisibility(boolean: Boolean) {
-        _emptyMessage.value = boolean
-    }
-
-    private fun setDeleteButtonVisibility(boolean: Boolean) {
-        _deleteButton.value = boolean
-    }
-
-    private fun initState() {
-        setDeleteButtonVisibility(false)
-        setReadListEmptyMessageVisibility(false)
-        setReadListLoading(false)
-        setRecyclerViewVisibility(false)
-    }
-
-    private fun loadingState() {
-        setDeleteButtonVisibility(false)
-        setReadListEmptyMessageVisibility(false)
-        setReadListLoading(true)
-        setRecyclerViewVisibility(false)
-    }
-
-    private fun resultDataState() {
-        setDeleteButtonVisibility(true)
-        setReadListLoading(false)
-        setRecyclerViewVisibility(true)
-        setReadListEmptyMessageVisibility(false)
-    }
-
-    private fun resultNoDataState() {
-        setDeleteButtonVisibility(false)
-        setReadListLoading(false)
-        setRecyclerViewVisibility(false)
-        setReadListEmptyMessageVisibility(true)
-    }
-
-    private fun setReadListNews(newsList: List<News>) {
-        if (newsList.isEmpty()) {
+    fun refreshScreen() {
+        if (isConnectedNetwork) {
             fetchNewsListFromCloud()
         } else {
-            resultDataState()
-            _readListNews.value = newsList
+            fetchNewsListFromLocal()
         }
     }
 
-    private fun setReadListLoading(boolean: Boolean) {
-        _loading.value = boolean
-    }
-
-    private fun setRecyclerViewVisibility(boolean: Boolean) {
-        _recyclerViewVisibility.value = boolean
-    }
-
-    fun deleteNewsFromLocal(news: News) {
-        viewModelScope.launch {
-            repository.deleteNewsFromRoom(news)
+    fun deleteNews(news: News) {
+        if (isConnectedNetwork) {
+            deleteNewsFromLocal(news)
             deleteNewsFromCloud(news)
+        } else {
+            _checkConnection.value = Event(true)
+            refreshScreen()
         }
     }
 
-    fun deleteAllReadListNews() {
-        deleteAllNewsFromLocal()
-        deleteAllNewsFromCloud()
+    private fun deleteNewsFromLocal(news: News) {
+        try {
+            viewModelScope.launch {
+                repository.deleteNewsFromRoom(news)
+            }
+        } catch (e: Exception) {
+            _toastError.postValue(e.localizedMessage)
+        }
+    }
+
+    fun deleteAllNews() {
+        if (isConnectedNetwork) {
+            deleteAllNewsFromLocal()
+            deleteAllNewsFromCloud()
+        } else {
+            _checkConnection.value = Event(true)
+        }
     }
 
     private fun deleteAllNewsFromLocal() {
-        _readListNews.value?.forEach { newsItem ->
+        _readListNews.value?.data?.forEach { newsItem ->
             newsItem.user?.let { user ->
-                viewModelScope.launch {
-                    repository.deleteNewsListByUserFromRoom(user)
+                try {
+                    viewModelScope.launch {
+                        repository.deleteNewsListByUserFromRoom(user)
+                    }
+                } catch (e: Exception) {
+                    _toastError.postValue(e.localizedMessage)
                 }
             }
         }
     }
 
     private fun deleteAllNewsFromCloud() {
-        _readListNews.value?.let {
+        _readListNews.value?.data?.let {
             val currentUser = auth.currentUser
             if (currentUser?.email != null) {
                 database.collection(NEWS_COLLECTION)
@@ -148,20 +128,20 @@ class ReadListViewModel @Inject constructor(
                                     .addOnSuccessListener {
                                         deletedCount++
                                         if (deletedCount == totalDocuments) {
-                                            setSnackBarMessage(R.string.all_deleted)
-                                            refreshReadListData()
+                                            _snackBarMessage.value = Event(R.string.all_deleted)
+                                            refreshScreen()
                                         }
                                     }
                                     .addOnFailureListener { error ->
                                         error.localizedMessage?.let {
-                                            setToastMessage(it)
+                                            _readListNews.value = Resource.error(it, null)
                                         }
                                     }
                             }
                         }
                     }.addOnFailureListener { error ->
                         error.localizedMessage?.let {
-                            setToastMessage(it)
+                            _readListNews.value = Resource.error(it, null)
                         }
                     }
             }
@@ -180,25 +160,26 @@ class ReadListViewModel @Inject constructor(
                     for (document in querySnapshot.documents) {
                         document.reference.delete()
                             .addOnSuccessListener {
-                                setSnackBarMessage(R.string.deleted)
-                                refreshReadListData()
+                                _snackBarMessage.value = Event(R.string.deleted)
+                                refreshScreen()
                             }
                             .addOnFailureListener { error ->
                                 error.localizedMessage?.let {
-                                    setToastMessage(it)
+                                    _readListNews.value = Resource.error(it, null)
                                 }
                             }
                     }
                 }
                 .addOnFailureListener { error ->
                     error.localizedMessage?.let {
-                        setToastMessage(it)
+                        _readListNews.value = Resource.error(it, null)
                     }
                 }
         }
     }
 
     private fun fetchNewsListFromCloud() {
+        _readListNews.value = Resource.loading(null)
         val currentUser = auth.currentUser
         val email = currentUser?.email
         if (email != null) {
@@ -222,49 +203,44 @@ class ReadListViewModel @Inject constructor(
                             val newsSnippet = newsData[SNIPPET_FIELD] as String
                             val newsLanguage = newsData[LANGUAGE_FIELD] as String
                             val news = News(
-                                null,
-                                newsUUID,
-                                newsUser,
-                                newsTitle,
-                                newsDescription,
-                                newsImageUrl,
-                                newsUrl,
-                                newsPublishedAt,
-                                newsSource,
-                                newsCategories,
-                                newsSnippet,
-                                newsLanguage
+                                null, newsUUID, newsUser,
+                                newsTitle, newsDescription, newsImageUrl,
+                                newsUrl, newsPublishedAt, newsSource,
+                                newsCategories, newsSnippet, newsLanguage
                             )
                             newsListFromCloud.add(news)
                         }
-                        saveNewsListToLocal(newsListFromCloud)
+                        _snackBarMessage.value = Event(R.string.fetch_readlist_cloud)
+                        _readListNews.value = Resource.success(newsListFromCloud)
                     } else {
-                        resultNoDataState()
+                        _readListNews.value = Resource.error(NULL_JSON, null)
                     }
                 }
                 .addOnFailureListener { exception ->
                     exception.localizedMessage?.let {
-                        setToastMessage(it)
+                        _readListNews.value = Resource.error(it, null)
                     }
                 }
         }
     }
 
-    private fun saveNewsListToLocal(newsList: List<News>) {
-        viewModelScope.launch {
-            repository.saveNewsListToRoom(newsList)
-            fetchNewsListFromLocal()
-        }
-    }
-
     private fun fetchNewsListFromLocal() {
-        loadingState()
         val currentUser = auth.currentUser
         val email = currentUser?.email
         if (email != null) {
             viewModelScope.launch {
-                val newsData = repository.fetchNewsListByUserFromRoom(email)
-                setReadListNews(newsData)
+                _readListNews.postValue(Resource.loading(null))
+                try {
+                    val newsData = repository.fetchNewsListByUserFromRoom(email)
+                    if (newsData.isEmpty()) {
+                        _readListNews.postValue(Resource.error(NULL_JSON, null))
+                    } else {
+                        _snackBarMessage.value = Event(R.string.fetch_readlist_local)
+                        _readListNews.postValue(Resource.success(newsData))
+                    }
+                } catch (e: Exception) {
+                    _readListNews.postValue(Resource.error(e.localizedMessage, null))
+                }
             }
         }
     }
