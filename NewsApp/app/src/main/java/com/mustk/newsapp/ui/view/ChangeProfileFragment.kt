@@ -51,7 +51,7 @@ class ChangeProfileFragment @Inject constructor() : BottomSheetDialogFragment() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerLauncher()
-        setupChangeProfileScreen()
+        setupUI()
         observeLiveData()
     }
 
@@ -109,7 +109,7 @@ class ChangeProfileFragment @Inject constructor() : BottomSheetDialogFragment() 
         )
     }
 
-    private fun setupChangeProfileScreen() = with(binding) {
+    private fun setupUI() = with(binding) {
         deleteProfilePhotoButton.setOnClickListener {
             viewModel.deleteProfilePhoto()
         }

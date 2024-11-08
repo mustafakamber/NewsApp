@@ -58,7 +58,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSettingsScreen()
+        setupUI()
         observeLiveData()
     }
 
@@ -67,7 +67,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
         checkLastTabPosition()
     }
 
-    private fun setupSettingsScreen() = with(binding) {
+    private fun setupUI() = with(binding) {
         setupLanguageTabLayout()
         themeSwitch.isChecked = isNightTheme()
         viewModel.notificationEnabled.value?.let {
@@ -98,7 +98,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
             }
         }
         sendMessageButton.setOnClickListener {
-            navigateMailScreen()
+            navigateToMailScreen()
         }
         aboutMeButton.setOnClickListener {
             navigateToSeeMoreScreen()
@@ -183,7 +183,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
         }
     }
 
-    private fun navigateMailScreen() {
+    private fun navigateToMailScreen() {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:$SEND_MESSAGE_EMAIL")
         startActivity(intent)
@@ -264,7 +264,7 @@ class SettingsFragment @Inject constructor() : Fragment() {
                 Snackbar.make(root, getString(message), Snackbar.LENGTH_SHORT).show()
             }
         }
-        observe(viewModel.navigateToCheckConnection) { event ->
+        observe(viewModel.checkConnection) { event ->
             event.getContentIfNotHandled()?.let {
                 navigateToCheckConnectionScreen()
             }

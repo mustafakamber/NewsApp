@@ -138,10 +138,10 @@ class ReadListFragment @Inject constructor() : Fragment() {
                         }
                         else -> {
                             setDeleteButton(false)
-                            setErrorMessage(true)
                             setRecyclerView(false)
                             setLoading(false)
                             setEmptyMessage(false)
+                            setErrorMessage(true)
                             readListErrorTextView.text = errorMessage
                         }
                     }

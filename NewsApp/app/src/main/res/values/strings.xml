@@ -14,7 +14,6 @@
     <string name="sample_categories" translatable="false">General, Sport, Entertainment, Science</string>
     <string name="language_gb" translatable="false">🇬🇧</string>
     <string name="language_tr" translatable="false">🇹🇷</string>
-    <string name="spinner_gl" translatable="false">🌎 | GL</string>
     <string name="spinner_gb" translatable="false">🇬🇧 | GB</string>
     <string name="spinner_tr" translatable="false">🇹🇷 | TR</string>
     <string name="spinner_fr" translatable="false">🇫🇷 | FR</string>
@@ -32,6 +31,8 @@
     <string name="spinner_gr" translatable="false">🇬🇷 | GR</string>
     <string name="spinner_ro" translatable="false">🇷🇴 | RO</string>
     <string name="spinner_uk" translatable="false">🇺🇦 | UK</string>
+    <string name="spinner_in" translatable="false">🇮🇳 | IN</string>
+    <string name="spinner_id" translatable="false">🇮🇩 | ID</string>
     <string name="login_title_text">Hello,\nWelcome to \nthe News\nWorld!</string>
     <string name="email_hint_text">Email address</string>
     <string name="password_hint_text">Password</string>

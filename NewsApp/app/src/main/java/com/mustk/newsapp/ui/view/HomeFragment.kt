@@ -30,8 +30,9 @@ import com.mustk.newsapp.util.Constant.LANGUAGE_DE
 import com.mustk.newsapp.util.Constant.LANGUAGE_EN
 import com.mustk.newsapp.util.Constant.LANGUAGE_ES
 import com.mustk.newsapp.util.Constant.LANGUAGE_FR
-import com.mustk.newsapp.util.Constant.LANGUAGE_GL
 import com.mustk.newsapp.util.Constant.LANGUAGE_GR
+import com.mustk.newsapp.util.Constant.LANGUAGE_ID
+import com.mustk.newsapp.util.Constant.LANGUAGE_IN
 import com.mustk.newsapp.util.Constant.LANGUAGE_IT
 import com.mustk.newsapp.util.Constant.LANGUAGE_JP
 import com.mustk.newsapp.util.Constant.LANGUAGE_KO
@@ -104,22 +105,22 @@ class HomeFragment @Inject constructor() : Fragment() {
 
     private fun setupCountryTabLayout() = with(binding.homeCountryTabLayout) {
         val languageItems = listOf(
-            R.string.spinner_gl,
             R.string.spinner_gb, R.string.spinner_tr,
             R.string.spinner_fr, R.string.spinner_nl, R.string.spinner_de,
             R.string.spinner_es, R.string.spinner_pt, R.string.spinner_it,
-            R.string.spinner_gr, R.string.spinner_ro,
-            R.string.spinner_uk, R.string.spinner_ar,
-            R.string.spinner_ru, R.string.spinner_bg, R.string.spinner_kr,
+            R.string.spinner_gr, R.string.spinner_ro, R.string.spinner_uk,
+            R.string.spinner_bg, R.string.spinner_ar, R.string.spinner_in,
+            R.string.spinner_id, R.string.spinner_ru, R.string.spinner_kr,
             R.string.spinner_zh, R.string.spinner_jp
         )
         val newsLanguages = listOf(
-            LANGUAGE_GL, LANGUAGE_EN, LANGUAGE_TR,
+            LANGUAGE_EN, LANGUAGE_TR,
             LANGUAGE_FR, LANGUAGE_NL, LANGUAGE_DE,
             LANGUAGE_ES, LANGUAGE_PT, LANGUAGE_IT,
             LANGUAGE_GR, LANGUAGE_RO, LANGUAGE_UK,
-            LANGUAGE_AR, LANGUAGE_RU, LANGUAGE_BG,
-            LANGUAGE_KO, LANGUAGE_ZH, LANGUAGE_JP
+            LANGUAGE_BG, LANGUAGE_AR, LANGUAGE_IN,
+            LANGUAGE_ID, LANGUAGE_RU, LANGUAGE_KO,
+            LANGUAGE_ZH, LANGUAGE_JP
         )
         languageItems.forEach { titleResId ->
             addTab(newTab().setText(getString(titleResId)))

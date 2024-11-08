@@ -76,9 +76,9 @@ class SettingsViewModel @Inject constructor(
     val snackBarError: LiveData<Event<Int>>
         get() = _snackBarError
 
-    private val _navigateToCheckConnection = MutableLiveData<Event<Boolean>>()
-    val navigateToCheckConnection: LiveData<Event<Boolean>>
-        get() = _navigateToCheckConnection
+    private val _checkConnection = MutableLiveData<Event<Boolean>>()
+    val checkConnection: LiveData<Event<Boolean>>
+        get() = _checkConnection
 
     private val _lastSelectedLanguageTabPosition = MutableLiveData<Int>()
     val lastSelectedTabLanguagePosition: LiveData<Int> get() = _lastSelectedLanguageTabPosition
@@ -99,13 +99,9 @@ class SettingsViewModel @Inject constructor(
     private var selectedLanguage = getCurrentLanguage()
 
     init {
-        checkNetworkConnection()
         _lastSelectedLanguageTabPosition.value = initTabPosition()
+        fetchUserInfoFromCloudDatabase()
         loadPreferences()
-    }
-
-    private fun navigateToCheckConnectionScreen() {
-        _navigateToCheckConnection.value = Event(true)
     }
 
     private fun initTabPosition() : Int {
@@ -113,14 +109,6 @@ class SettingsViewModel @Inject constructor(
             0
         } else {
             1
-        }
-    }
-
-    private fun checkNetworkConnection() {
-        if (!networkHelper.isNetworkConnected()) {
-            navigateToCheckConnectionScreen()
-        } else {
-            fetchUserInfoFromCloudDatabase()
         }
     }
 
@@ -164,22 +152,26 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun fetchUserInfoFromCloudDatabase() {
-        val currentUser = auth.currentUser
-        if (currentUser?.email != null) {
-            getUserCollection(currentUser.email.toString())
-                .addOnSuccessListener { querySnapshot ->
-                    for (document in querySnapshot.documents) {
-                        document.getString(PHOTO_FIELD)?.let {
-                            _userPhoto.value = it
+        if (!isConnectedNetwork) {
+            _checkConnection.value = Event(true)
+        } else {
+            val currentUser = auth.currentUser
+            if (currentUser?.email != null) {
+                getUserCollection(currentUser.email.toString())
+                    .addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot.documents) {
+                            document.getString(PHOTO_FIELD)?.let {
+                                _userPhoto.value = it
+                            }
+                            _userEmail.value = document.getString(EMAIL_FIELD)
                         }
-                        _userEmail.value = document.getString(EMAIL_FIELD)
                     }
-                }
-                .addOnFailureListener { error ->
-                    error.localizedMessage?.let {
-                        _toastError.value = it
+                    .addOnFailureListener { error ->
+                        error.localizedMessage?.let {
+                            _toastError.value = it
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -190,7 +182,7 @@ class SettingsViewModel @Inject constructor(
             deleteAccountFromCloud()
             deleteAccountFromAuth()
         } else {
-            navigateToCheckConnectionScreen()
+            _checkConnection.value = Event(true)
         }
     }
 
@@ -262,7 +254,7 @@ class SettingsViewModel @Inject constructor(
             auth.signOut()
             _navigateToLogin.value = Event(true)
         } else {
-            navigateToCheckConnectionScreen()
+            _checkConnection.value = Event(true)
         }
     }
 

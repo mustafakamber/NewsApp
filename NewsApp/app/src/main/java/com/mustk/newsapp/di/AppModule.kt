@@ -59,6 +59,7 @@ object AppModule {
             original = original.newBuilder()
                 .url(url)
                 .build()
+            println("Request URL: ${original.url()}")
             chain.proceed(original)
         }
     }

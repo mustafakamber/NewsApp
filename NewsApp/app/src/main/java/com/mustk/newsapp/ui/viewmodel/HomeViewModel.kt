@@ -8,7 +8,7 @@ import com.mustk.newsapp.data.datasource.NewsDataSource
 import com.mustk.newsapp.data.model.News
 import com.mustk.newsapp.util.Constant.CATEGORY_GENERAL
 import com.mustk.newsapp.util.Constant.HEADLINE_SIZE
-import com.mustk.newsapp.util.Constant.LANGUAGE_GL
+import com.mustk.newsapp.util.Constant.LANGUAGE_EN
 import com.mustk.newsapp.util.Constant.NO_CONNECTION
 import com.mustk.newsapp.util.Constant.NULL_JSON
 import com.mustk.newsapp.util.NetworkHelper
@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
         get() = _lastSelectedLanguageTabPosition
 
     private val initCategory = CATEGORY_GENERAL
-    private val initLanguage = LANGUAGE_GL
+    private val initLanguage = LANGUAGE_EN
     private var selectedCategory = initCategory
     private var selectedLanguage = initLanguage
 
